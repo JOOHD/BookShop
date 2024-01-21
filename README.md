@@ -217,16 +217,19 @@
 				    ㄴMIME TYPE 타입이 이미지일 경우, 첫 단어가 image로 시작, 이 방법으로 판단.<br/>
 					    ㄴview에서는 ajax의 error 속성을 추가하여 상태코드 400시, 콜백함수를 사용.<br/><br/>
 	
-	※ 업로드 이미지 출력 구현 ※	<br/>
-	1.url 매핑 메서드 작성 <br/>
-		  ㄴ비동기 방식 url을 호출하면 이미지를 반환해주는 url 매핑 메서드를 구현(미리보기 이미지 구현위해)<br/>
-		  ㄴurl 메서드 '파일경로' + '파일 이름' 파람으로 받고, 해당 데이터에 맞는 이미지파일 view에 전송.<br/>
-			  ㄴ이미지 파일을 주고받기 위해서는 byte 배열 타입 사용.<br/>
-			  (이미지 파일은 binary(0과 1로만 구성, text 제외 한 모든 파일 저장) 파일 해당,)	<br/>        
-	2.ContentType 명시 & 데이터 파일 반환<br/>
-		  ㄴ비동기 방식에서 @ResponseBody & @ResponseEntity 중, body에 데이터를 첨부한다는 동일,<br/>
-		     하지만 @ResponseEntity를 사용하여 header의 'ContentType' 이미지 파일임을 명확함을 위해 <br/>
-	3.file 객체 생성<br/>
-		  ㄴ현재 관리자 관련 기능들을 구현주잉여서 AdminController에 작업을 진행하려 했으나,<br/>
-		     관리자가 아닐 시, Interceptor 필터를 거쳐야 하기 때문에 접근에 제한.<br/>
-		     이미지는 비로그인이여도 접근이 가능해야 하기 때문에, 상품 BookController.java에 작성.<br/>
+	※ 업로드 이미지 출력 구현 ※<br/>	
+	1.url 매핑 메서드 반환 & ContentType 명시<br/>
+		ㄴ비동기 방식 url을 호출하면 이미지를 반환해주는 url 매핑 메서드를 구현(미리보기 이미지 구현위해)<br/>
+		    @ResponseBody & @ResponseEntity 중, body에 데이터를 첨부한다는 동일,<br/>
+		    하지만 @ResponseEntity를 사용하여 header의 'ContentType' 이미지 파일임을 명확하게 설정,<br/>
+		ㄴurl 메서드 '파일경로' + '파일 이름' 파람으로 받고, 해당 데이터에 맞는 이미지파일 view에 전송.<br/>
+			 ㄴ이미지 파일을 주고받기 위해서는 byte 배열 타입 사용.<br/>
+			   (이미지 파일은 binary(0과 1로만 구성, text 제외 한 모든 파일 저장) 파일 해당,)<br/>
+	2.file 객체 생성<br/>
+		ㄴ현재 관리자 관련 기능들을 구현주잉여서 AdminController에 작업을 진행하려 했으나,<br/>
+		    관리자가 아닐 시, Interceptor 필터를 거쳐야 하기 때문에 접근에 제한.<br/>
+		    이미지는 비로그인이여도 접근이 가능해야 하기 때문에, 상품 BookController.java에 작성.<br/><br/>
+	
+	정리 -> 파라미터 전달받은 '파일 경로', '파일 이름' 활용하여 File 객체 생성,<br/>
+		     MIME TYPE에 대한 정보를 얻어, ResponseEntity img 데이터를 복사하여 body에 추가,<br/>
+		     header의 'Content Type'에서 얻은 정보를 MIME TYPE으로 수정 후, Entity 객체를 view로 전송.
