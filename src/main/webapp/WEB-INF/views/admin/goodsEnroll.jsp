@@ -510,22 +510,16 @@
 		$("input[type='file']").on("change", function(e){	// <input type="file"> 요소는 로컬 파일 시스템에서 파일 선택
 			
 			let formData = new FormData(); // 객체의 주소를 변수에 저장.
+			
 			let fileInput = $('input[name="uploadFile"]');
 			let fileList = fileInput[0].files;
 			let fileObj = fileList[0];
 			
 			/*
-			console.log("fileList : " + fileList);
-			console.log("fileObj : " + fileObj);
-			
-			console.log("fileName : " + fileObj.name);
-			console.log("fileSize : " + fileObj.size);
-			console.log("fileType(MimeType) : " + fileObj.type);
-			*/
-			
 			if(!fileCheck(fileObj.name, fileObj.size)){
 				return false; // 파일 검증 실패시, 함수 종료
 			}
+			*/
 			
 			// key와 추후 추가할 url 매핑 메서드의 매개변수명이 동일해야 한다.
 			formData.append("uploadFile", fileObj);
@@ -538,8 +532,13 @@
 				type : 'POST',
 				dataType : 'json',		// view로 List 객체를 반환 과정에서 List 객체를 JSON 형식의 문자열로 변환
 										// JSON 형식의 문자열로 변환 해주기 위해 Jackson 라이브러리 사용해야 스프링이 변환.
-				success : function(result) {
+										
+				success : function(result) { // 첨부파일 responseEntity 콜백함수 성공 시(200),
 					console.log(result);
+				},
+			
+				error : function(result) { // 첨부파일 responseEntity 콜백함수 실패 시(400),
+					alert("이미지 파일이 아닙니다.");		
 				}
 			});
 					
@@ -548,7 +547,7 @@
 		
 		/* var, method related with attachFile */
 		let regex = new RegExp("(.*?)\.(jpg|png)$"); // 선언 및 초기화
-		let maxSize = 1048576; //1MB
+		let maxSize = 1048576; // 1MB
 		
 		function fileCheck(fileName, fileSize){
 			

@@ -2,6 +2,8 @@ package com.joo.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -291,12 +293,41 @@ public class AdminController {
 		  2. 썸네일 이미지 파일 생성 및 저장
 		  3. 각 이미지 정보 List 객체에 저장
 		  4. ResponseEntity를 통해서 뷰(view)로 http 상태 코드가 200이고 http Body에 이미지 정보가 담긴 List 객체를 전송
+		  5. MIME TYPE을 사용하여 파일 종류 체크.
 		*/
+		
+		/* 이미지 파일 체크 */
+		for(MultipartFile multipartFile : uploadFile) { // 전달받은 모든 파일(uploadFile)의 유형을 체크하기 위해 for문 구현
+			 
+			// 전달받은 파일(uploadFile)을 File 객체로 만들어주고 File 참조 변수에 대입.
+			File checkFile = new File(multipartFile.getOriginalFilename()); // getOriginalFilename() : 파일 이름 가져오는 메서드
+			
+			// MIME TYPE을 저장할 String type 변수 선언 후, null 초기화.
+			String type = null;
+			
+			// 반환 메서드 probeContentType() MIME TYPE -> String 반환/ IOException 발생 가능성 높음.
+			try {	
+				type = Files.probeContentType(checkFile.toPath());
+				log.info("MIME TYPE : " + type);	
+			} catch (IOException e) {				
+				e.printStackTrace();
+			}
+			
+			// MIME TYPE = image일 경우 첫 단어가 image로 시작, 이를 위해 startWIth() 메서드 사용.
+			if(!type.startsWith("image")) {
+				
+				// status를 반환 위해, ResponseEntity 객체에 첨부해줄 값이 null임을 알리기 위해, <AttachImageVO> 타입 참조 변수 선언
+				List<AttachImageVO> list = null;
+				
+				// if 구현부가 실행이 되었다는 것은 image가 아니라는 것이기 때문에 메서드 종료. 
+				return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST); // view에 반환 시, (null, 400);
+			}
+		}// for
 		
 		// 업로드 폴더 경로
 		String uploadFolder = "C:\\upload";
 		
-		// 날짜 데이터 -> 문자열 데이터로 변환 위해 변수 선언 및 초기화
+		/* 날짜 폴더 경로 */
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		// '오늘의 날짜' 데이터를 얻기 위해서 변수 선언 및 초기화
@@ -309,7 +340,7 @@ public class AdminController {
 		String datePath = str.replace("-", File.separator);
 		
 		/* 폴더 생성 */
-		File uploadPath = new File(uploadFolder, datePath); // (부모경로, 자식경로)
+		File uploadPath = new File(uploadFolder, datePath); // (업로드 폴더, 업로드 날짜)
 		
 		if(uploadPath.exists() == false) {
 			uploadPath.mkdirs(); // 한개 mkdir() or 여러개 mkdirs()
