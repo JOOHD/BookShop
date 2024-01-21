@@ -1,0 +1,95 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.joo.mapper.AdminMapper">
+
+	<!-- 상품 등록 -->
+  	<insert id="bookEnroll">	
+  	
+  		insert into joo_book(bookName, authorId, publeYear, publisher, cateCode, bookPrice, bookStock, bookDiscount, bookIntro, bookContents)
+		values(#{bookName},#{authorId}, #{publeYear},#{publisher},#{cateCode},#{bookPrice},#{bookStock},#{bookDiscount},#{bookIntro},#{bookContents})
+
+  	</insert>
+  	
+  	<!-- 상품 리스트 -->
+  	<select id="goodsGetList" resultType="com.joo.model.BookVO">
+  		
+  		select bookId, bookName, b.authorName, c.cateName, bookStock, a.regDate
+  		from joo_book a
+  		left outer join joo_author b on a.authorId = b.authorId
+  		left outer join joo_bcate c on a.cateCode = c.cateCode
+  		
+  		<if test = "keyword != null">
+  		
+  			where (bookName like concat ('%', #{keyword}, '%'))
+  			
+  		</if>
+  		
+  		order by bookId desc
+  		limit #{skip}, #{amount}
+  		
+  	</select>
+  	
+  	<!-- 상품 총 갯수 -->
+  	<select id="goodsGetTotal" resultType="int">
+  	
+  		select count(*) from joo_book
+  		
+  		<if test="keyword != null">
+  		
+  			where bookName like concat('%', #{keyword}, '%')
+  			
+  		</if>
+  		
+  	</select>
+  	
+  	<!--  상품 조회 페이지 -->
+  	<select id="goodsGetDetail" resultType="com.joo.model.BookVO">
+  	
+  	<!-- 조회 페이지에 사용자가 보기 편하도록 작가ID가 아닌 작가 이름이 나오도록  서브쿼리 삽입 -->
+  		select bookId, bookName,
+  		 
+  		<!-- 
+  			'joo_author' 테이블에서 'authorId'와 'joo_book' 테이블의 'authorId'가 일치하는 작가의 이름(authorName)을 가져오는 코드.
+  			즉, 'joo_author'테이블에서 작가의 이름을 검색하고, 이를 'joo_book' 테이블과 연결하여 'authorName' 컬럼으로 결과를 가져온다. 
+  		-->
+  		
+  		(select authorName from joo_author where authorId = joo_book.authorId) 
+  		
+  		authorName,	authorId, publeYear, publisher, cateCode, bookPrice, bookStock, bookDiscount, bookIntro, bookContents, regDate, updateDate
+  			
+		from joo_book where bookId = #{bookId}
+  		
+  	</select>
+  	
+  	<!-- 상품 정보 수정 -->
+  	<update id="goodsModify">
+  	
+  		update joo_book set bookName = #{bookName}, authorId = #{authorId}, publeYear = #{publeYear}, publisher = #{publisher}, cateCode = ${cateCode}, 
+			bookPrice = #{bookPrice}, bookStock = #{bookStock}, bookDiscount = #{bookDiscount}, bookIntro = #{bookIntro}, bookContents = #{bookContents}, updateDate = now()
+		where bookId = ${bookId}
+		
+  	</update>
+  	
+  	<!-- 상품 정보 삭제 -->
+  	<delete id="goodsDelete">
+  	
+  		delete from joo_book where bookId = #{bookId}
+  	
+  	</delete>
+  	
+  	<!-- 작가 정보 삭제 -->
+  	<delete id="authorDelete">
+  	
+  		delete from vam_author where authorId = #{authorId}
+  	
+  	</delete>
+  	
+  	<!-- 카테고리 리스트 -->
+  	<select id="cateList" resultType="com.joo.model.CateVO">
+  	
+  		select * from joo_bcate order by catecode
+  		
+  	</select>
+
+  </mapper>
