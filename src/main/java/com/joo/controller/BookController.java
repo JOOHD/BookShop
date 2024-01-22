@@ -32,6 +32,7 @@ public class BookController {
 		log.info("메인 페이지 진입");
 	}
 
+	/* 이미지 출력 */
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(String fileName) { // '파일 경로'+'파일 이름'을 전달받기 위해 String 타입
 

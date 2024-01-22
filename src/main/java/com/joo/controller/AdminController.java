@@ -283,7 +283,7 @@ public class AdminController {
 	}
 	
 	/* 첨부 파일 업로드 */
-	@PostMapping(value="/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // goodsEnroll.jsp ajax url
+	@PostMapping(value="/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_VALUE) // goodsEnroll.jsp ajax url
 	public ResponseEntity<List<AttachImageVO>> uploadAjaxActionPOST(MultipartFile[] uploadFile) { // 여러 개의 파일 업로드 처리를 위해 [] 추가.
 		
 		log.info("uploadAjaxActionPOST..........");

@@ -18,6 +18,36 @@
 	src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<style type="text/css">
+	#result_card img{
+		max-width: 100%;
+	    height: auto;
+	    display: block;
+	    padding: 5px;
+	    margin-top: 10px;
+	    margin: auto;	
+	}
+	#result_card {
+		position: relative;
+	}
+	.imgDeleteBtn{
+	    position: absolute;
+	    top: 0;
+	    right: 5%;
+	    background-color: #ef7d7d;
+	    color: wheat;
+	    font-weight: 900;
+	    width: 30px;
+	    height: 30px;
+	    border-radius: 50%;
+	    line-height: 26px;
+	    text-align: center;
+	    border: none;
+	    display: block;
+	    cursor: pointer;	
+	}
+	
+</style>
 </head>
 <body>
 
@@ -144,6 +174,12 @@
           			<div class="form_section_content">
 					<!-- 파일 여러개 input type="file" multiple> -->
 					<input type="file" id="fileItem" name='uploadFile' style="height: 30px;">
+					<div id="uploadResult">
+					<!--  
+						<div class="imgDeleteBtn">x</div>
+						<img src="/display?fileName=test.jpg">
+					-->	
+					</div>					
           			</div>
           		</div> 
 			</form>
@@ -534,7 +570,8 @@
 										// JSON 형식의 문자열로 변환 해주기 위해 Jackson 라이브러리 사용해야 스프링이 변환.
 										
 				success : function(result) { // 첨부파일 responseEntity 콜백함수 성공 시(200),
-					console.log(result);
+					console.log(result);	 
+					showUploadImage(result); // img 출력 메서드 
 				},
 			
 				error : function(result) { // 첨부파일 responseEntity 콜백함수 실패 시(400),
@@ -562,6 +599,40 @@
 			}
 			
 			return true;
+		}
+		
+		/* 이미지 출력 */
+		function showUploadImage(uploadResultArr){
+		
+			/* 전달받은 데이터 검증 */
+			if(!uploadResultArr || uploadResultArr.length == 0){return} // 데이터 전달 못 받을 시,
+		
+			let uploadResult = $("#uploadResult");	
+				
+			/* 
+				server -> view 반환 때, List타입의 데이터를 전송했고, view에서는 배열 형태로 전달을 받았다.
+				지금 코드는 한 개의 이미지 파일만 처리를 하기 때문에,배열 데이터 첫 번째 요소로 초기화.
+			*/
+			let obj = uploadResultArr[0];
+	
+			/* <div> 태그 내부에 이미지 출력하는 문자열 값 형태 코드 추가. */	
+			let str = "";	
+			
+			/* img 출력을 요청하는 url 매핑 메서드("/display")에 전달해줄 변수들. */
+			// let fileCallPath = obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName; // uploadPath 구분자(\) error
+			
+			// replace(/\\/g, '/') 의미는 대상 String 문자열 중 모든 '\'을 '/'로 변경해준다는 의미입니다.
+			let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
+			
+			// 기독성을 높이기 위해, 4번에 걸쳐서 코드를 작성.
+			str += "<div id='result_card'>";
+			str += "<img src='/display?fileName=" + fileCallPath + "'>";
+			str += "<div class='imgDeleteBtn'>x</div>";
+			str += "</div>";
+		
+			/* html() 메서드 호출하여 추가. */
+			uploadResult.append(str);
+		
 		}
 </script>
 </body>
