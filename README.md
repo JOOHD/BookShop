@@ -227,9 +227,17 @@
 			    (이미지 파일은 binary(0과 1로만 구성, text 제외 한 모든 파일 저장) 파일 해당,)<br/>
 	2.file 객체 생성<br/>
 		 ㄴ현재 관리자 관련 기능들을 구현주잉여서 AdminController에 작업을 진행하려 했으나,<br/>
-		     관리자가 아닐 시, Interceptor 필터를 거쳐야 하기 때문에 접근에 제한.<br/>
-		     이미지는 비로그인이여도 접근이 가능해야 하기 때문에, 상품 BookController.java에 작성.<br/><br/>
+		    관리자가 아닐 시, Interceptor 필터를 거쳐야 하기 때문에 접근에 제한.<br/>
+		    이미지는 비로그인이여도 접근이 가능해야 하기 때문에, 상품 BookController.java에 작성.<br/><br/>
 	
 	정리 -> 파라미터 전달받은 '파일 경로', '파일 이름' 활용하여 File 객체 생성,<br/>
 		     MIME TYPE에 대한 정보를 얻어, ResponseEntity img 데이터를 복사하여 body에 추가,<br/>
-		     header의 'Content Type'에서 얻은 정보를 MIME TYPE으로 수정 후, Entity 객체를 view로 전송.
+		     header의 'Content Type'에서 얻은 정보를 MIME TYPE으로 수정 후, Entity 객체를 view로 전송.<br/><br/>
+
+	고정 경로 http://localhost:8080/display?fileName=test.png<br/>
+	유동 경로 http://localhost:8080/display?fileName=2024/01/21/test.png<br/><br/>
+
+	※ 업로드 이미지 선택 시, 이미지 미리 보기 ※ <br/>
+	ㄴ업로드 이미지 요청 데이터(path, filename, uuid)를 받았을 때, ajax success 콜백 함수 이미지 데이터 출력.<br/>
+		 ㄴ코드 양이 길어서 메서드를 선언하여, 구현부에 이미지를 출력하는 코드 작성하여 함수 호출.<br/>
+			 ㄴ메서드를 미리 호출하고 인자 값으로 서버로 전달받은 result(path, filename, uuid) 부여.
