@@ -3,6 +3,7 @@ package com.joo.controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -293,14 +294,14 @@ public class AdminController {
 		  2. 썸네일 이미지 파일 생성 및 저장
 		  3. 각 이미지 정보 List 객체에 저장
 		  4. ResponseEntity를 통해서 뷰(view)로 http 상태 코드가 200이고 http Body에 이미지 정보가 담긴 List 객체를 전송
-		  5. MIME TYPE을 사용하여 파일 종류 체크.
+		  5. MIME TYPE을 사용하여 이미지 파일 종류 체크.
 		*/
 		
 		/* 이미지 파일 체크 */
 		for(MultipartFile multipartFile : uploadFile) { // 전달받은 모든 파일(uploadFile)의 유형을 체크하기 위해 for문 구현
 			 
 			// 전달받은 파일(uploadFile)을 File 객체로 만들어주고 File 참조 변수에 대입.
-			File checkFile = new File(multipartFile.getOriginalFilename()); // getOriginalFilename() : 파일 이름 가져오는 메서드
+			File checkFile = new File(multipartFile.getOriginalFilename()); // getOriginalFilename() : view에서 파일 이름 그대로 가져오는 메서드
 			
 			// MIME TYPE을 저장할 String type 변수 선언 후, null 초기화.
 			String type = null;
@@ -434,6 +435,43 @@ public class AdminController {
 		ResponseEntity<List<AttachImageVO>> result = new ResponseEntity<List<AttachImageVO>>(list, HttpStatus.OK);
 		
 		return result;
+	}
+	
+	/* 이미지 파일 삭제 */
+	@PostMapping("/deleteFile")
+	public ResponseEntity<String> deleteFile(String fileName) { // 파일 이름/경로 전달받기 위해 String type, fileName 파라미터
+		
+		log.info("deleteFile.........." + fileName);
+		
+		File file = null;
+		
+		try { // fileName = thumbnailFile, decode는 url에서 문자(%20, %2F) 방지.
+			
+			/* 썸네일 파일 삭제 */ 
+			file  = new File("c:\\upload\\" + URLDecoder.decode(fileName,"UTF-8"));
+			
+			file.delete();
+			
+			/* 원본 파일 삭제 */
+			String originFileName = file.getAbsolutePath().replace("s_", "");
+			
+			// String 클래스의 replace()는 첫 번째 인자를 두 번째 인자 문자열로 치환.
+			
+			log.info("originFileName : " + originFileName);
+			
+			file = new File(originFileName);
+			
+			file.delete();
+		
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			
+			return new ResponseEntity<String>("fail", HttpStatus.NOT_IMPLEMENTED);
+		} // catch
+		
+		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 	
 	/* 비동기방식 로그아웃 메서드 */

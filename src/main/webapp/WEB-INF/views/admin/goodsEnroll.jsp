@@ -545,11 +545,18 @@
 		/* 이미지 업로드 */
 		$("input[type='file']").on("change", function(e){	// <input type="file"> 요소는 로컬 파일 시스템에서 파일 선택
 			
-			let formData = new FormData(); // 객체의 주소를 변수에 저장.
+			/* 이미지 존재시 삭제 */
+			if($(".imgDeleteBtn").length > 0){
+				deleteFile();
+			}
 			
+			let formData = new FormData(); 
 			let fileInput = $('input[name="uploadFile"]');
 			let fileList = fileInput[0].files;
 			let fileObj = fileList[0];
+			
+			console.log("fileInput : " + fileInput);
+			console.log("fileList : " + fileList);
 			
 			/*
 			if(!fileCheck(fileObj.name, fileObj.size)){
@@ -560,7 +567,7 @@
 			// key와 추후 추가할 url 매핑 메서드의 매개변수명이 동일해야 한다.
 			formData.append("uploadFile", fileObj);
 			
-			$.ajax({ // processData, contentType 속성 값을 false로 해주어야 첨부파일 서버로 전송 가능
+			$.ajax({ 					// processData, contentType 속성 값을 false로 해주어야 첨부파일 서버로 전송 가능
 				url: '/admin/uploadAjaxAction',
 				processData : false,	// 서버로 전송할 데이터를 queryString 형태로 변환할지 여부
 				contentType : false,	// 서보로 전송되는 데이터의 content-type
@@ -604,15 +611,22 @@
 		/* 이미지 출력 */
 		function showUploadImage(uploadResultArr){
 		
+			/* 
+				server -> view 반환 때, List타입의 데이터를 전송했고, view에서는 배열 형태로 전달을 받았다.
+				지금 코드는 한 개의 이미지 파일만 처리를 하기 때문에,배열 데이터 첫 번째 요소로 초기화.
+				
+				여러개의 파일이 있는 경우,
+				for(let i = 0; i < uploadResultArr.length; i++) {
+					let obj = uploadResultArr[i];
+					let fileCallPath = obj.uploadPath.replace.....
+				}
+			*/
+			
 			/* 전달받은 데이터 검증 */
 			if(!uploadResultArr || uploadResultArr.length == 0){return} // 데이터 전달 못 받을 시,
 		
 			let uploadResult = $("#uploadResult");	
 				
-			/* 
-				server -> view 반환 때, List타입의 데이터를 전송했고, view에서는 배열 형태로 전달을 받았다.
-				지금 코드는 한 개의 이미지 파일만 처리를 하기 때문에,배열 데이터 첫 번째 요소로 초기화.
-			*/
 			let obj = uploadResultArr[0];
 	
 			/* <div> 태그 내부에 이미지 출력하는 문자열 값 형태 코드 추가. */	
@@ -624,15 +638,56 @@
 			// replace(/\\/g, '/') 의미는 대상 String 문자열 중 모든 '\'을 '/'로 변경해준다는 의미입니다.
 			let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
 			
-			// 기독성을 높이기 위해, 4번에 걸쳐서 코드를 작성.
+			// 가독성을 높이기 위해, 4번에 걸쳐서 코드를 작성.
 			str += "<div id='result_card'>";
 			str += "<img src='/display?fileName=" + fileCallPath + "'>";
-			str += "<div class='imgDeleteBtn'>x</div>";
+			str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
 			str += "</div>";
 		
 			/* html() 메서드 호출하여 추가. */
 			uploadResult.append(str);
 		
+		}
+		
+		/* 이미지 삭제 버튼 동작 */
+		$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+			
+			deleteFile(); // 파일 삭제 메서드 호출.
+		});
+		
+		/* 파일 삭제 메서드 */
+		function deleteFile(){
+			
+			let targetFile = $(".imgDeleteBtn").data("file");
+			
+			let targetDiv = $("#result_card"); // result_card = 미리보기 x img?
+			
+			/* 
+				fileName 속성명에 targetFile(이미지 파일 경로) 속성 값 부여, 
+				서버의 메서드 파라미터 String fileName 선언 = 매핑
+				
+				targetFile = 문자 데이터 = dataType = text
+				
+				파일 삭제 성공 시, 미리 보기 이미지 삭제 파일 <input> 태그 초기화
+			*/ 
+			
+			$.ajax({
+				url: '/admin/deleteFile',
+				data : {fileName : targetFile}, 
+				dataType : 'text',
+				type : 'POST',
+				success : function(result){
+					console.log(result);
+					
+					targetDiv.remove();
+					$("input[type='file']").val("");
+				},
+				error : function(result){
+					console.log(result);
+					
+					alert("파일을 삭제하지 못하였습니다.")
+				}
+	       	});
 		}
 </script>
 </body>
