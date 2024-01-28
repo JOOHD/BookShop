@@ -625,7 +625,7 @@
 			/* 전달받은 데이터 검증 */
 			if(!uploadResultArr || uploadResultArr.length == 0){return} // 데이터 전달 못 받을 시,
 		
-			let uploadResult = $("#uploadResult");	
+			let uploadResult = $("#uploadResult"); // 파일 업로드 결과
 				
 			let obj = uploadResultArr[0];
 	
@@ -638,7 +638,11 @@
 			// replace(/\\/g, '/') 의미는 대상 String 문자열 중 모든 '\'을 '/'로 변경해준다는 의미입니다.
 			let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
 			
-			// 가독성을 높이기 위해, 4번에 걸쳐서 코드를 작성.
+			/*
+				 str += 코드는 HTML에 동적으로 이미지를 추가하고, 
+				 fileCallPath 변수는 해당 이미지의 경로를 나타내며, 
+				 삭제 버튼을 눌렀을 때 어떤 파일을 삭제할 것인지를 식별하는 역할. 
+			*/ 
 			str += "<div id='result_card'>";
 			str += "<img src='/display?fileName=" + fileCallPath + "'>";
 			str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
@@ -656,7 +660,7 @@
 		});
 		
 		/* 파일 삭제 메서드 */
-		function deleteFile(){
+		function deleteFile(){ // 기존 미리 보기 이미지가 업로드 되어있는 경우, 삭제 해주는 함수.
 			
 			let targetFile = $(".imgDeleteBtn").data("file");
 			
@@ -680,7 +684,7 @@
 					console.log(result);
 					
 					targetDiv.remove();
-					$("input[type='file']").val("");
+					$("input[type='file']").val(""); // 파일 입력 초기화("")
 				},
 				error : function(result){
 					console.log(result);
