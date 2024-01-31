@@ -557,6 +557,7 @@
 			
 			console.log("fileInput : " + fileInput);
 			console.log("fileList : " + fileList);
+			console.log("fileObj : " + fileObj);
 			
 			/*
 			if(!fileCheck(fileObj.name, fileObj.size)){
@@ -628,6 +629,8 @@
 			let uploadResult = $("#uploadResult"); // 파일 업로드 결과
 				
 			let obj = uploadResultArr[0];
+			
+			console.log("obj : " + obj);
 	
 			/* <div> 태그 내부에 이미지 출력하는 문자열 값 형태 코드 추가. */	
 			let str = "";	
@@ -641,11 +644,16 @@
 			/*
 				 str += 코드는 HTML에 동적으로 이미지를 추가하고, 
 				 fileCallPath 변수는 해당 이미지의 경로를 나타내며, 
-				 삭제 버튼을 눌렀을 때 어떤 파일을 삭제할 것인지를 식별하는 역할. 
+				 삭제 버튼을 눌렀을 때 어떤 파일을 삭제할 것인지를 식별하는 역할.
+				 
+				 <input name= imageList[0].fileName, uuid, uploadPath> 이미지 정보를 담는 input 태그 추가
 			*/ 
 			str += "<div id='result_card'>";
 			str += "<img src='/display?fileName=" + fileCallPath + "'>";
 			str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
+			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
+			str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
 			str += "</div>";
 		
 			/* html() 메서드 호출하여 추가. */

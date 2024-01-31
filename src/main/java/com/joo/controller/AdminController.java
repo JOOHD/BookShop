@@ -87,7 +87,7 @@ public class AdminController {
 	@PostMapping(value="/goodsEnroll")
 	public String goodsEnrollPOST(BookVO book, RedirectAttributes rttr) {
 	
-		// log.info("goodsEnrollPOST...." + book);
+		log.info("goodsEnrollPOST...." + book);
 		
 		adminService.bookEnroll(book);
 		
