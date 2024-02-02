@@ -275,7 +275,20 @@
 
 	1.서버에 등록<br/>
 		ㄴ상품 이미지에 대한 정보를 BookVO 객체에 포함시켜서 전달 하도록 VO클래스에 변수 선언.<br/>
-			 ㄴ서버에서는 여러 개의 이미지 등록 가능하도록 List 구조의 AttachImageVO 타입 변수 선언.<br/>
+			 ㄴ서버에서는 여러 개의 이미지 등록 가능하도록 List 구조의 AttachImageVO 타입 변수 선언.<br/><br/>
+
+		ㄴ기존 등록 메서드는 Service 단계에서 새로 작성 했지만, Mapper 단계의 메서드에서 호출.<br/>
+			 ㄴService 단계의 기존 bookEnroll() 메서드에서 imageEnroll() 메서드를 호출.<br/>
+			 ㄴbookEnroll() 는 view 로 부터 전달받은 데이터를 BookVO 통해, 상품/이미지 정보 DB에 등록 <br/><br/>
+
+			 문제점 : imageEnroll() 쿼리문에는 'bookId' 가 반드시 필요, 하지만 (외래키 설정 때문에)<br/>
+					 서버로 부터 전달받은 BookVO 객체에는 'bookId' 데이터가 없다.<br/><br/>
+
+			 해결 : bookEnroll() 먼저 호출을 하고, 해당 메서드에는 '상품 정보' 쿼리 삽입 동시에,<br/>
+					 새롭게 부여되는 bookId column 값을 BookVO 객체의 bookId 변수에 반환.<br/>
+						 ㄴ반환받기 위해 MyBatis의 <selectKey> 태그 활용.<br/>
+							 ㄴ반환받은 'bookId' 정보를 활용하여 이미지 정보 DB 등록을 처리.<br/><br/>
+								
 	2.view에 등록<br/> 
 		ㄴ<input>태그 추가하기 앞서, 주의점 세 가지<br/>
 			 1.javascript를 통해 동적으로 추가, 이미지가 등록되었을 때, 서버에 이미지 정보 전달.<br/>

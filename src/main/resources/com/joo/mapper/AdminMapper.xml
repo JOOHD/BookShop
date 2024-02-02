@@ -6,6 +6,24 @@
 	<!-- 상품 등록 -->
   	<insert id="bookEnroll">	
   	
+  		<!--   		
+	  		Mapper 단계의 bookEnroll() 메서드 수행 후, 등록한 'bookId' 컬럼(Column)값을 
+	  		파라미터로 전달된 BookVO객체의 'bookId' 변수에 반환되도록 해주록 하기 위해 
+	  		AdminMapper.xml 파일의 bookEnroll() 메서드가 수행하는 <insert> 태그에 <selectkey> 태그를 적용
+	  		
+	  		<selectkey> : autoincrement, IDENTITY 을 지원하지 않는 데이터에 자동 생성키 기능 효과를 발현 시키기 위해 사용하거나,
+	  		쿼리문에서 특정 칼럼 값을 반환받기 위해 사용.
+	  		
+	  		selectKey 쿼리문 해석 : '상품정보' 등록하는 insert문이 실행되기 전에 <selectKey> 내의 쿼리문 실행,
+	  							 쿼리 문의 결과 값 keyProperty 릐 속성 값으로 지정한 'bookId'에 resultType 속성 값으로 지정한 int 타입 반환.
+  		 -->
+  		 
+  		<selectKey resultType = "int" keyProperty = "bookId" order = "BEFORE">
+  		
+  				select MAX(bookId) +1 from joo_book
+  				
+  		</selectKey>
+  	
   		insert into joo_book(bookName, authorId, publeYear, publisher, cateCode, bookPrice, bookStock, bookDiscount, bookIntro, bookContents)
 		values(#{bookName},#{authorId}, #{publeYear},#{publisher},#{cateCode},#{bookPrice},#{bookStock},#{bookDiscount},#{bookIntro},#{bookContents})
 
@@ -84,6 +102,13 @@
   		delete from vam_author where authorId = #{authorId}
   	
   	</delete>
+  	
+  	<!-- 이미지 등록 -->
+  	<insert id="imageEnroll">
+  	
+  		insert into joo_image(bookId, fileName, uploadPath, uuid) values (#{bookId}, #{fileName}, #{uploadPath}, #{uuid})
+  	
+  	</insert>
   	
   	<!-- 카테고리 리스트 -->
   	<select id="cateList" resultType="com.joo.model.CateVO">

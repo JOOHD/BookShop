@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -78,7 +79,7 @@ public class AdminMapperTests {
 	}
 	*/
 	
-	/* 상품 정보 수정 */
+	/* 상품 정보 수정 
 	@Test
 	public void goodsModifyTest() {
 		
@@ -98,7 +99,7 @@ public class AdminMapperTests {
 		
 		mapper.goodsModify(book);
 	}
-	
+	*/
 	
 	/* 상품 정보 삭제 
 	@Test
@@ -113,4 +114,18 @@ public class AdminMapperTests {
 		}
 	}
 	*/
+	
+	/* 이미지 등록 */
+	@Test
+	public void imageEnrollTest() {
+		
+		AttachImageVO vo = new AttachImageVO();
+		
+		vo.setBookId(1);
+		vo.setFileName("Test");
+		vo.setUploadPath("Test");
+		vo.setUuid("Test");
+		
+		mapper.imageEnroll(vo);
+	}
 }
