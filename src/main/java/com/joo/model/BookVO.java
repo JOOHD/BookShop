@@ -173,11 +173,11 @@ public class BookVO {
 		this.updateDate = updateDate;
 	}
 
-	public List<AttachImageVO> getimageList() {
+	public List<AttachImageVO> getImageList() {
 		return imageList;
 	}
 
-	public void setimageList(List<AttachImageVO> imageList) {
+	public void setImageList(List<AttachImageVO> imageList) {
 		this.imageList = imageList;
 	}
 

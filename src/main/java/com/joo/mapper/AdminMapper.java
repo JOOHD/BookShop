@@ -12,6 +12,9 @@ public interface AdminMapper {
 	/* 상품 등록 */
 	public void bookEnroll(BookVO book);
 	
+	/* 이미지 등록 */
+	public void imageEnroll(AttachImageVO vo);
+	
 	/* 카테고리 리스트 */
 	public List<CateVO> cateList();
 	
@@ -30,7 +33,6 @@ public interface AdminMapper {
 	/* 상품 정보 삭제 */
 	public int goodsDelete(int bookId);
 	
-	/* 이미지 등록 */
-	public void imageEnroll(AttachImageVO vo);
+	
 	
 }

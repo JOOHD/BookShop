@@ -274,11 +274,14 @@
 		 해당 컬럼은 오직,joo_book 테이블의 bookId 에 존재하는 데이터만 등록 가능 하도록 외래키 설정.<br/><br/>
 
 	1.서버에 등록<br/>
-		ㄴ상품 이미지에 대한 정보를 BookVO 객체에 포함시켜서 전달 하도록 VO클래스에 변수 선언.<br/>
-			 ㄴ서버에서는 여러 개의 이미지 등록 가능하도록 List 구조의 AttachImageVO 타입 변수 선언.<br/><br/>
+		ㄴ서버에서는 여러 개의 이미지 등록 가능하도록 List 구조의 AttachImageVO 타입 변수 선언.<br/>
+			 ㄴimageEnroll(Mapper 단계)는 하나의 이미지, bookVO 클래스는 여러 이미지 List 타입.<br/>
+				 ㄴimageEnroll이 데이터를 처리 할 수 있도록, imageList 요소 하나씩 for문 사용하여 넘김.<br/><br/>
 
 		ㄴ기존 등록 메서드는 Service 단계에서 새로 작성 했지만, Mapper 단계의 메서드에서 호출.<br/>
 			 ㄴService 단계의 기존 bookEnroll() 메서드에서 imageEnroll() 메서드를 호출.<br/>
+				ㄴimageList() 메서드는 List 타입, 따라서 for문을 이용하여 각 요소 크기만큼 데이터 처리.<br/>
+					ㄴServiceImpl 클래스에 람다식을 이용하여, bookEnroll()에서 imageEnroll 호출.<br/>
 			 ㄴbookEnroll() 는 view 로 부터 전달받은 데이터를 BookVO 통해, 상품/이미지 정보 DB에 등록 <br/><br/>
 
 			 문제점 : imageEnroll() 쿼리문에는 'bookId' 가 반드시 필요, 하지만 (외래키 설정 때문에)<br/>
@@ -288,7 +291,17 @@
 					 새롭게 부여되는 bookId column 값을 BookVO 객체의 bookId 변수에 반환.<br/>
 						 ㄴ반환받기 위해 MyBatis의 <selectKey> 태그 활용.<br/>
 							 ㄴ반환받은 'bookId' 정보를 활용하여 이미지 정보 DB 등록을 처리.<br/><br/>
-								
+							
+		ㄴ<selectKey><br/> 
+			 문제점 : order 속성값이 "BEFORE" 이고.INSERT문이 실행 되기 전에 <selectKey> 쿼리문이 실행.<br/>
+				 ㄴ가장 최근 등록한 row를 삭제 후, 새로운 정보 추가했을 때, bookId 값과 반환 값 불일치.<br/><br/>
+
+				 ex)'bookId'가 3107인 행을 지우고 새로운 행을 추가했을때, 'bookId'가 3108인 행이 추가<br/>
+					 되지만 <selectkey>를 통해 반환받은 결과는 3107 혹은 더 작은 값입니다.<br/><br/>
+
+			 해결 : order="AFTER" 로 바꿔주고, 쿼리문 MAX(bookId) +1 ->  MAX(bookId) 코드 변경.<br/>
+					 (INSERT문이 실행 된 후, <selectKey> 쿼리문 실행.<br/><br/>
+
 	2.view에 등록<br/> 
 		ㄴ<input>태그 추가하기 앞서, 주의점 세 가지<br/>
 			 1.javascript를 통해 동적으로 추가, 이미지가 등록되었을 때, 서버에 이미지 정보 전달.<br/>

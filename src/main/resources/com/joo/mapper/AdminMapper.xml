@@ -16,11 +16,16 @@
 	  		
 	  		selectKey 쿼리문 해석 : '상품정보' 등록하는 insert문이 실행되기 전에 <selectKey> 내의 쿼리문 실행,
 	  							 쿼리 문의 결과 값 keyProperty 릐 속성 값으로 지정한 'bookId'에 resultType 속성 값으로 지정한 int 타입 반환.
+	  							 
+	  							 order = BEFORE -> AFTER / MAX(bookId) +1 -> MAX(bookId)
+	  							 ㄴinsert문이 실행된 뒤에 <selectKey> 실행, joo_table의 bookId 값중 가장 큰 값 반환(BookVO(bookId).
   		 -->
   		 
-  		<selectKey resultType = "int" keyProperty = "bookId" order = "BEFORE">
+  		<!-- selectKey 사용 이유는 순전 'bookId'의 값을 반환 받아 imageEnroll에 사용하기 위함. --> 
+  		<selectKey resultType = "int" keyProperty = "bookId" order = "AFTER">
   		
-  				select MAX(bookId) +1 from joo_book
+  				<!-- select MAX(bookId) from joo_book -->
+  				SELECT LAST_INSERT_ID();
   				
   		</selectKey>
   	
