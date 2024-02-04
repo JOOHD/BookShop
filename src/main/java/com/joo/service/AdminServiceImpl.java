@@ -1,10 +1,10 @@
 package com.joo.service;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.joo.mapper.AdminMapper;
 import com.joo.model.BookVO;
@@ -16,14 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class AdminServiceImpl implements AdminService {
-
-	// private static final Logger log =
-	// LoggerFactory.getLogger(AdminService.class);
+	
+	// private static final Logger log = LoggerFactory.getLogger(AdminService.class);
 
 	@Autowired
 	private AdminMapper adminMapper;
 
 	/* 상품 등록 */
+	@Transactional
 	@Override
 	public void bookEnroll(BookVO book) {
 
@@ -53,11 +53,13 @@ public class AdminServiceImpl implements AdminService {
 		*/
 		
         // 람다식 활용한 for문
-		book.getImageList().forEach(attach ->{	// 'BookVO' 객체의 이미지 목록 가져오기(attach -> 변수로 이미지 받기.
+		book.getImageList().forEach(attach ->{	// 'BookVO' 객체의 이미지 목록 가져오기(attach 변수로 이미지 받기.
 			
 			attach.setBookId(book.getBookId()); // 순회 중인 이미지(attach)의 bookId를 'BookVO' 객체의 bookId로 설정.
 												// 이미지를 등록할 때 각 이미지가 어떤 상품에 속하는지를 나타 냄. 
 			adminMapper.imageEnroll(attach);	// attach를 imageEnroll() 메서드에 전달. 이 메서드는 db에 등록하는 역할.
+			
+			log.info("attach : " + attach);
 		});
 	}
 

@@ -46,7 +46,7 @@ public class AdminServiceTests {
 		image1.setUploadPath("test image 1");
 		image1.setUuid("test1111");
 		
-		image2.setFileName("test Image 2");
+		image2.setFileName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		image2.setUploadPath("test image 2");
 		image2.setUuid("test2222");
 		

@@ -79,8 +79,6 @@ public class AdminController {
 		
 		model.addAttribute("cateList", cateList);
 		
-		// log.info("변경 전......." + list);
-		// log.info("변경 후......." + cateList);
 	}
 	
 	/* 상품 등록 */

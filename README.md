@@ -302,6 +302,13 @@
 			 해결 : order="AFTER" 로 바꿔주고, 쿼리문 MAX(bookId) +1 ->  MAX(bookId) 코드 변경.<br/>
 					 (INSERT문이 실행 된 후, <selectKey> 쿼리문 실행.<br/><br/>
 
+		※ transaction 적용 ※<br/> 
+			 ㄴbookEnroll() 메서드에서 두 개의 쿼리 작동 시, 하나의 쿼리라도 발생 시, 예외 상황 발생도록.<br/>
+			 ㄴserviceImpl 클래스에 @Transaction 미적용/적용 시, Junit 작동하여 차이점 알아보자.<br/>
+				 실험 : img1 객체에는 정상 코드, img2 객체에는 고의 적인 에러 발생 하도록 코드 구현.<br/>
+				 @Transaction 미적용, DB에서 img1 쿼리,작동하여 데이터가 전달, img2 데이터는 미전달<br/>
+				 @Transaction 적용, DB에서 예외 상황 발생하여, img1, img2 작업 모두 취소.<br/><br/>
+
 	2.view에 등록<br/> 
 		ㄴ<input>태그 추가하기 앞서, 주의점 세 가지<br/>
 			 1.javascript를 통해 동적으로 추가, 이미지가 등록되었을 때, 서버에 이미지 정보 전달.<br/>
