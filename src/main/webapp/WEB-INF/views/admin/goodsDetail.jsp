@@ -13,6 +13,16 @@
 	integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
 	crossorigin="anonymous"></script>
 	<script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>
+	<style type="text/css">
+	#result_card img{
+		max-width: 100%;
+	    height: auto;
+	    display: block;
+	    padding: 5px;
+	    margin-top: 10px;
+	    margin: auto;	
+	}
+	</style>
 </head>
 </head>
 <body>
@@ -144,6 +154,17 @@
 				</div>
 				<div class="form_section_content bct">
 					<textarea name="bookContents" id="bookContents_textarea" disabled>${goodsInfo.bookContents}</textarea>
+				</div>
+			</div>
+			
+			<div class="form_section">
+				<div class="form_Section_title">
+					<label>상품 이미지</label>
+				</div>
+				<div class="form_section_content">
+					<div id="uploadResult">
+					
+					</div>
 				</div>
 			</div>
 
@@ -337,9 +358,41 @@
 			console.log('targetCate2.cateCode : ' + targetCate2.cateCode);
 			console.log('targetCate2.cateParent : ' + targetCate2.cateParent);
 			
+			/* 이미지 정보 호출 */
+			let bookId = '<c:out value="${goodsInfo.bookId}"/>';
+			let uploadResult = $("#uploadResult");
+			
+			// 요청 url, 전달 데이터, 골백함수
+			$.getJSON("/getAttachList", {bookId : bookId}, function(arr){
+				
+				if(arr.length === 0){
+					
+					let str = "";
+					str += "<div id='result_card'>";
+					str += "<img src='/resources/img/noImage.png'>";
+					str += "</div>;"
+					
+					uploadResult.html(str);
+					
+					return;
+				}
+				
+				let str = "";
+				let obj = arr[0]; // 서버에서 배열로 데이터를 작성했기에, 뷰에서 배열로 전달 받는다.
+								  // 작성한 상품 이미지는 하나의 이미지만 저장하고 출력하기때문에 배열의 첫 번째 요소로 변수를 지정.
+				
+			 	let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+			 	str += "<div id='result_card'";
+				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "'";
+				str += ">";
+				str += "<img src='/display?fileName=" + fileCallPath +"'>";
+				str += "</div>";
+				
+				uploadResult.html(str);	
+			});
 			
 		}); // $(document).ready
-		
+		;
 		/* 목록 이동 버튼 */
 		$("#cancelBtn").on("click", function(e){
 			e.preventDefault();
