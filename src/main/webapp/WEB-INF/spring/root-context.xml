@@ -14,7 +14,7 @@
 	<!-- DB Connect -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig"> 
         <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property> 
-        <property name="jdbcUrl" value="jdbc:log4jdbc:mysql://localhost:3306/shoppingMall?serverTimezone=Asia/Seoul"></property> 
+        <property name="jdbcUrl" value="jdbc:log4jdbc:mysql://localhost:3306/BookShop?serverTimezone=Asia/Seoul"></property> 
         <property name="username" value="root"></property> 
         <property name="password" value="1234"></property> 
     </bean> 
@@ -57,13 +57,5 @@
 	<mybatis-spring:scan base-package="com.joo.mapper"/>
     <context:component-scan base-package="com.joo.model"></context:component-scan>
     <context:component-scan base-package="com.joo.service"></context:component-scan>
-    
-    <!-- AspectJ 라이브러리를 이용한 Proxy 객체를 생성 -->
-    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-    
-    <!-- XML 방식으로 AOP 기능을 설정할 때 사용 : 이 예제에는 어노테이션을 사용하므로 필요없긴 하다. -->
-    <aop:config></aop:config>
-    
-    
 			
 </beans>

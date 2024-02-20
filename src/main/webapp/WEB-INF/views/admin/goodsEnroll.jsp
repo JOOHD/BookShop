@@ -546,7 +546,7 @@
 		$("input[type='file']").on("change", function(e){	// <input type="file"> 요소는 로컬 파일 시스템에서 파일 선택
 			
 			/* 이미지 존재시 삭제 */
-			if($(".imgDeleteBtn").length > 0){
+			if($("#result_card").length > 0){
 				deleteFile();
 			}
 			

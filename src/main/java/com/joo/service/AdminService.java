@@ -6,6 +6,7 @@ import com.joo.model.BookVO;
 import com.joo.model.CateVO;
 import com.joo.model.Criteria;
 
+
 public interface AdminService {
 
 	/* 상품 등록 */

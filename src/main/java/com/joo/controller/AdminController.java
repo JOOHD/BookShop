@@ -33,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.joo.mapper.AttachMapper;
 import com.joo.model.AttachImageVO;
 import com.joo.model.AuthorVO;
 import com.joo.model.BookVO;

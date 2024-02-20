@@ -392,7 +392,7 @@
 			});
 			
 		}); // $(document).ready
-		;
+		
 		/* 목록 이동 버튼 */
 		$("#cancelBtn").on("click", function(e){
 			e.preventDefault();

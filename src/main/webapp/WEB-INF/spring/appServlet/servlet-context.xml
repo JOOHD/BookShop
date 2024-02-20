@@ -27,11 +27,11 @@
     <interceptors>
         <interceptor>
             <mapping path="/member/login.do"></mapping>
-            <beans:bean id="loginIntreceptor" class="com.joo.interceptor.LoginInterceptor"></beans:bean>
+            <beans:bean id="loginInterceptor" class="com.joo.interceptor.LoginInterceptor"></beans:bean>
         </interceptor>
         <interceptor>
             <mapping path="/admin/**"></mapping>
-            <beans:bean id="AdminIntreceptor" class="com.joo.interceptor.AdminInterceptor"></beans:bean>
+            <beans:bean id="AdminInterceptor" class="com.joo.interceptor.AdminInterceptor"></beans:bean>
         </interceptor>
     </interceptors>
  

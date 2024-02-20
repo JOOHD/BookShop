@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import com.joo.mapper.MemberMapper;
 import com.joo.model.MemberVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -16,6 +19,8 @@ public class MemberServiceImpl implements MemberService {
 	public void memberJoin(MemberVO member) throws Exception {
 		
 		membermapper.memberJoin(member); // MemberMapper join 메서드 호출
+		
+		log.info("api test");
 	}
 
 	@Override

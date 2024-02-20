@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,7 +48,7 @@ public class MemberController {
 
 	/* 회원가입 페이지 */
 	@PostMapping(value = "/join")
-	public String joinPOST(MemberVO member) throws Exception {
+	public String joinPOST(@RequestBody MemberVO member) throws Exception {
 
 		String rawPw = "";    // 인코딩 전 비밀번호
 		String encodePw = ""; // 인코딩 후 비밀번호

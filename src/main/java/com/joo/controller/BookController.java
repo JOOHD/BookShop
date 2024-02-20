@@ -13,17 +13,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.joo.model.AttachImageVO;
+import com.joo.service.AttachService;
 
 @Controller
 public class BookController {
 
 	private static final Logger log = LoggerFactory.getLogger(BookController.class);
+	
+	@Autowired
+	private AttachService attachService;
+	
+	/* 이미지 정보 반환 */
+	@GetMapping(value="/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<AttachImageVO>> getAttachList(int bookId){
+	
+		log.info("getAttachList.........." + bookId);
+		
+		return new ResponseEntity<List<AttachImageVO>>(attachService.getAttachList(bookId), HttpStatus.OK);
+	}
 
 	// 메인 페이지 이동
 	@GetMapping(value = "main")
@@ -60,4 +71,5 @@ public class BookController {
 		
 		return result;
 	}
+	
 }
