@@ -400,8 +400,6 @@
 	/*   
 	 이벤트 사용자 선택에 따라 분류들이 변경되도록 할 차례, 새로 작성할 코드는 렌더링 될 때 실행 될 코드와 구분 위해. 
 	 새로 추가한 두 번째 <script> 태그에 사용자 선택에 따라 카테고리 분류가 변경 되록해주는 기능을 하는 Javascript 코드를 추가합니다. 
-	 (해당 코드는 '상품 등록' 페이지의 코드를 그대로 가져왔습니다. 
-		단 위에서 이미 대분류를 출력시키는 코드는 존재하기 때문에 대분류 <option> 태그를 출력시키는 코드는 추가하지 않았습니다.)
 	*/
 	
 	/* 카테고리 */
@@ -656,7 +654,8 @@
 	/* 파일 삭제 메서드 */
 	function deleteFile(){
 
-		$("#result_card").remove();
+		// $(".imgDeleteBtn").remove(); -> #result_card (str += "<div id='result_card'>";)
+		$("#result_card").remove(); // db 데이터는 삭제 x, view 데이터만
 
 	}	
 	
@@ -665,7 +664,7 @@
 		
 		/* 이미지 존재시 삭제 */
 		if($("#result_card").length > 0){
-			deleteFile(); // DB에 저장된 이미지도 삭제.
+			deleteFile(); // view에 저장된 이미지만 삭제.
 		}
 				
 		let formData = new FormData();

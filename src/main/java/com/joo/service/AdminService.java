@@ -2,6 +2,7 @@ package com.joo.service;
 
 import java.util.List;
 
+import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
 import com.joo.model.CateVO;
 import com.joo.model.Criteria;
@@ -29,4 +30,7 @@ public interface AdminService {
 	
 	/* 상픔 정보 삭제 */
 	public int goodsDelete(int bookId);
+	
+	/* 지정 상품 이미지 정보 얻기 */
+	public List<AttachImageVO> getAttachInfo(int bookId);
 }

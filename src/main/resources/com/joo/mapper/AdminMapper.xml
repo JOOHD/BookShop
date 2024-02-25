@@ -17,7 +17,7 @@
 	  		selectKey 쿼리문 해석 : '상품정보' 등록하는 insert문이 실행되기 전에 <selectKey> 내의 쿼리문 실행,
 	  							 쿼리 문의 결과 값 keyProperty 릐 속성 값으로 지정한 'bookId'에 resultType 속성 값으로 지정한 int 타입 반환.
 	  							 
-	  							 order = BEFORE -> AFTER / MAX(bookId) +1 -> MAX(bookId)
+	  							 order = AFTER / MAX(bookId) +1 -> MAX(bookId)
 	  							 ㄴinsert문이 실행된 뒤에 <selectKey> 실행, joo_table의 bookId 값중 가장 큰 값 반환(BookVO(bookId).
   		 -->
   		 
@@ -115,11 +115,32 @@
   	
   	</insert>
   	
+  	<!-- 지정 상품 이미지 전체 삭제 --> 
+	<delete id="deleteImageAll">
+	
+		delete FROM joo_image where bookId = #{bookId}
+	
+	</delete>
+	
+	<!-- 어제자 날짜 이미지 리스트 -->
+  	<select id="checkFileList" resultType="com.joo.model.AttachImageVO">
+  	
+  		select * from joo_image where uploadpath = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y\%m\%d')
+  	
+  	</select>
+  	
   	<!-- 카테고리 리스트 -->
   	<select id="cateList" resultType="com.joo.model.CateVO">
   	
   		select * from joo_bcate order by catecode
   		
+  	</select>
+  	
+  	<!-- 지정 상품 이미지 정보 얻기 -->
+  	<select id="getAttachInfo" resultType="com.joo.model.AttachImageVO">
+  	
+  		select * from joo_image where bookId = #{bookId}
+  	
   	</select>
 
   </mapper>

@@ -30,11 +30,11 @@ public class AttachFileCheckTask {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(); // 현재 시간의 Calendar 객체를 가져온다.
 		
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.DATE, -1);	// 현재 날짜를 가져오는 코드
 		
-		String str = sdf.format(cal.getTime());
+		String str = sdf.format(cal.getTime());// Calendar -> Date 객체로 변환
 		
 		return str.replace("-", File.separator);
 	}
@@ -62,12 +62,13 @@ public class AttachFileCheckTask {
 			checkFilePath.add(path);
 		});
 		
-		// 디렉토리 파일 리스트
+		// 디렉토리 파일 리스트(폴더에 저장된 이미지들의 정보)
 		File targetDir = Paths.get("C:\\upload", getFolderYesterDay()).toFile();
-		File[] targetFile = targetDir.listFiles();
+		File[] targetFile = targetDir.listFiles(); // 해당 디렉토리에 저장되어 있는 파일들을 File 객체로 생성하여 요소로 가지는 배열 반환.
 		
-		// 삭제 대상 파일 리스트(분류)
+		// 삭제 대상 파일 리스트(분류)       
 		List<File> removeFileList = new ArrayList<File>(Arrays.asList(targetFile));
+		
 		for(File file : targetFile) {
 			
 			checkFilePath.forEach(checkFile ->{

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.joo.mapper.AdminMapper;
+import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
 import com.joo.model.CateVO;
 import com.joo.model.Criteria;
@@ -100,22 +101,54 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	/* 상품 정보 수정 */
+	@Transactional // 두 개 이상의 쿼리 요청하기 때문에 적용, 
 	@Override
 	public int goodsModify(BookVO vo) {
 
 		log.info("(service)goodsGetModify.............");
 				
-		return adminMapper.goodsModify(vo);
+		// 수정된 상품 정보 DB에 반영 메서드 호출, 수정 결과 result 변수 선언하여 대입
+		int result = adminMapper.goodsModify(vo);
+		
+		// 상품 수정 success (result = 1)
+		if(result == 1 && vo.getImageList() != null && vo.getImageList().size() > 0) {
+		
+			adminMapper.deleteImageAll(vo.getBookId());
+			
+			// List 전달받은 imageList를 요소 순서대로 DB에 저장. (List<AttachImageVO> imageList)
+			vo.getImageList().forEach(attach -> {
+				
+				// AttachImageVO의 bookId에는 값이 할당이 되지 않아서, 해당 값 세팅.
+				attach.setBookId(vo.getBookId()); // BookVO, AttachImagVO의 bookId는 다르다.
+				adminMapper.imageEnroll(attach);
+			});
+		}
+		
+		return result;
 	}
 
 	/* 상품 정보 삭제 */
 	@Override
+	@Transactional // goodsDelete, deleteImageAll 두 개의 쿼리 실행 때문에.
 	public int goodsDelete(int bookId) {
 		
 		log.info("(service)goodsDelete................");
 		
+		// 이미지 정보 삭제 메서드 호출ㄱㄽㄱ
+		adminMapper.deleteImageAll(bookId);
+		
 		return adminMapper.goodsDelete(bookId);
 		
 	}
+
+	/* 지정 상품 이미지 정보 얻기 */
+	@Override
+	public List<AttachImageVO> getAttachInfo(int bookId) {
+		
+		log.info("(service)getAttachInfo................");
+		
+		return adminMapper.getAttachInfo(bookId);
+	}
+	
 
 }

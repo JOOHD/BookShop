@@ -1,5 +1,7 @@
 package com.joo.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.joo.model.AttachImageVO;
-import com.joo.model.BookVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -115,7 +116,7 @@ public class AdminMapperTests {
 	}
 	*/
 	
-	/* 이미지 등록 */
+	/* 이미지 등록 
 	@Test
 	public void imageEnrollTest() {
 		
@@ -128,4 +129,36 @@ public class AdminMapperTests {
 		
 		mapper.imageEnroll(vo);
 	}
+	*/
+	
+	/* 지정 상품 이미지 삭제 
+	@Test
+	public void deleteImageAllTEST() {
+		
+		int bookId = 40;
+		
+		mapper.deleteImageAll(bookId);
+	}
+	*/
+	
+	/* 어제자 날짜 이미지 리스트 
+	@Test
+	public void checkImageList() {
+		
+		mapper.checkFileList();
+		
+	}
+	*/
+	
+	/* 지정 상품 이미지 정보 얻기 
+	@Test
+	public void getAttachInfoTest() {
+		
+		int bookId = 41;
+		
+		List<AttachImageVO> list = mapper.getAttachInfo(bookId);
+		
+		System.out.println("list : " + list );
+	}
+	*/
 }
