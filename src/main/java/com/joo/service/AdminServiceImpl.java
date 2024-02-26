@@ -134,7 +134,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		log.info("(service)goodsDelete................");
 		
-		// 이미지 정보 삭제 메서드 호출ㄱㄽㄱ
+		// 이미지 정보 삭제 메서드 호출
 		adminMapper.deleteImageAll(bookId);
 		
 		return adminMapper.goodsDelete(bookId);

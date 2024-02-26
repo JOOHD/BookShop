@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.joo.model.AttachImageVO;
 import com.joo.service.AttachService;
+import com.joo.service.BookService;
 
 @Controller
 public class BookController {
@@ -26,6 +27,9 @@ public class BookController {
 	
 	@Autowired
 	private AttachService attachService;
+	
+	@Autowired
+	private BookService bookService;
 	
 	/* 이미지 정보 반환 */
 	@GetMapping(value="/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

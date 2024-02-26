@@ -39,7 +39,7 @@ public interface AdminMapper {
 	/* 상품 정보 삭제 */
 	public int goodsDelete(int bookId);
 	
-	/* 지정 상품 이미지 정보 어기 */
+	/* 지정 상품 이미지 정보 얻기 */
 	public List<AttachImageVO> getAttachInfo(int bookId);
 	
 	

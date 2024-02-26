@@ -156,10 +156,10 @@ public class AdminController {
 
 		log.info("goodsDeletePOST.........");
 
-		// 서버 파일 삭제를 가장 먼저 처리 & img 정보 반환 메서드 호출
+		// 서버 파일 삭제를 가장 먼저 처리 & fileList(img정보 내장) 
 		List<AttachImageVO> fileList = adminService.getAttachInfo(bookId);
 
-		if (fileList != null) { // fileList에 상품 이미지가 존재 한다면,
+		if (fileList != null) { // fileList에 상품 이미지가 존재 한다면, AttachImageVO 객체의 요소를 가지는 List 객체가 저장.
 
 			// DB로부터 가져온 이미지 정보 Path 객체 생성 
 			List<Path> pathList = new ArrayList();
