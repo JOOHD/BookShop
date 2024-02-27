@@ -13,10 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.joo.model.AttachImageVO;
+import com.joo.model.BookVO;
+import com.joo.model.Criteria;
+import com.joo.model.PageDTO;
 import com.joo.service.AttachService;
 import com.joo.service.BookService;
 
@@ -75,5 +79,49 @@ public class BookController {
 		
 		return result;
 	}
+	
+	/* 상품 검색 */
+	@GetMapping("search")
+	public String searchGoodsGET(Criteria cri, Model model) {
+		
+		log.info("cri : " + cri);
+		
+		// 상품 검색
+		List<BookVO> list = bookService.getGoodsList(cri);
+		
+		log.info("pre list : " + list);
+		
+		if(!list.isEmpty()) {	// 상품 목록이 있는 경우,
+			model.addAttribute("list", list);
+			
+			log.info("list : " + list);
+		} else {				// 상품 목록이 없는 경우.
+			model.addAttribute("listCheck", "empty");
+			
+			return "search";
+		}
+		// 페이지 번호, 상품 게시물 리스트
+		model.addAttribute("pageMaker", new PageDTO(cri, bookService.goodsGetTotal(cri)));
+		
+		return "search";
+	}
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

@@ -40,7 +40,7 @@ public class Criteria {
 		this(1,10);
 	}
 	
-	/* 검색 타입 데이터 배열 변환 */
+	/* 검색 타입 데이터 배열 변환 작가="A", 책제목="T", 카테고리="C" */
 	public String[] getTypeArr() {
 		return type == null? new String[] {}:type.split("");
 	}

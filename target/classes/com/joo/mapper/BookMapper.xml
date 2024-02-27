@@ -13,6 +13,13 @@
 	
 	</sql>
 	
+	<!-- 작가 id 리스트 요청 -->
+		<select id="getAuthorIdList" resultType="String">
+		
+			select authorId from joo_author where authorName like concat ('%', #{keyword}, '%')
+		
+		</select>
+	
 	<!-- 상품 검색 -->
 	<select id="getGoodsList" resultType="com.joo.model.BookVO">
 	

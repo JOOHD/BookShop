@@ -18,6 +18,7 @@ public class BookMapperTests {
 	@Autowired
 	private BookMapper mapper;
 	
+	/*
 	@Test
 	public void getGoodsListTest() {
 		
@@ -34,6 +35,22 @@ public class BookMapperTests {
 		int goodsTotal = mapper.goodsGetTotal(cri);
 		System.out.println("total : " + goodsTotal);
 		
+	}
+	*/
+	
+	/* 작가 id 리스트 요청 */
+	@Test
+	public void getAuthorId() {
+		
+		String keyword = "아";
+		
+		String[] list = mapper.getAuthorIdList(keyword);
+		
+		System.out.println("결과 : " + list.toString());
+		
+		for(String id : list ) {
+			System.out.println("개별 결과 : " + id);
+		}
 	}
 	
 }
