@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.joo.model.Criteria;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 public class AdminMapperTests {
@@ -157,4 +159,6 @@ public class AdminMapperTests {
 		System.out.println("list : " + list );
 	}
 	*/
+	
+	
 }

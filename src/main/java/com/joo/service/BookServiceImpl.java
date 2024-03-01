@@ -1,11 +1,11 @@
 package com.joo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.joo.mapper.AdminMapper;
 import com.joo.mapper.BookMapper;
 import com.joo.model.BookVO;
 import com.joo.model.Criteria;
@@ -28,14 +28,20 @@ public class BookServiceImpl implements BookService {
 		/*	
 		 	getAuthorIdList()는 Criteria 객체의 authorArr 값을 저장하게 해주는 역할인 
 			getGoodsList() Service에서 Criteria authorArr이 부여되면, 이 객체를 그대로 getGoodsTotal에 사용.
-			그래서 불 필요한 중복을 방지하고자 getGoodsList에만 구현.		  
+			그래서 불필요한 중복을 방지하고자 getGoodsList에만 구현.		  
 		 */
 		String type= cri.getType();
 		String[] typeArr = type.split("");
+		String[] authorArr = bookMapper.getAuthorIdList(cri.getKeyword());
+		 
+		if(type.equals("A") || type.equals("AC") || type.equals("AT") || type.equals("ACT")) {
+			if(authorArr.length == 0) { 		 //  authorArr이 빈 배열일 경우
+				return new ArrayList<BookVO>();  //  Controller에 요소가 없는 빈 List 반환.
+			}
+		}
 		
 		for(String t : typeArr) {
 			if(t.equals("A")) {
-				String[] authorArr = bookMapper.getAuthorIdList(cri.getKeyword());
 				cri.setAuthorArr(authorArr);
 			}
 		}
