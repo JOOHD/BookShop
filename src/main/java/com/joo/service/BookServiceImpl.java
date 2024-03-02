@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
 		String[] typeArr = type.split("");
 		String[] authorArr = bookMapper.getAuthorIdList(cri.getKeyword());
 		 
-		if(type.equals("A") || type.equals("AC") || type.equals("AT") || type.equals("ACT")) {
+		if(type.equals("A") || type.equals("AC") || type.equals("AT") || type.equals("ACT") || type.equals("T")) {
 			if(authorArr.length == 0) { 		 //  authorArr이 빈 배열일 경우
 				return new ArrayList<BookVO>();  //  Controller에 요소가 없는 빈 List 반환.
 			}
