@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,14 +49,15 @@
 								<select name="type">
 									<option value="T">책 제목</option>
 									<option value="A">작가</option>
-								</select> <input type="text" name="keyword">
+								</select> 
+								<input type="text" name="keyword" value="<c:out value="${pageMaker.cri.keyword}"/>">
 								<button class="btn search_btn">검 색</button>
 							</div>
 						</form>
 					</div>
 				</div>
+				
 				<div class="login_area">
-
 					<!-- 로그인 하지 않은 상태 -->
 					<c:if test="${member == null }">
 						<div class="login_button">
@@ -113,12 +115,12 @@
 									<td class="price">
 										<div class="org_price">
 											<del>
-												${list.bookPrice}
+												<fmt:formatNumber value="${list.bookPrice}" pattern="#,### 원" />
 											</del>
 										</div>
 										<div class="sell_price">
 											<strong>
-												<c:out value="${list.bookPrice * (1-list.bookDiscount)}"/>
+												<fmt:formatNumber value="${list.bookPrice * (1-list.bookDiscount)}" pattern="#,### 원" />
 											</strong>
 										</div>
 									</td>
@@ -210,7 +212,7 @@
 		</div>
 	</div>
 
-	<script>
+<script>
 	
 		/* gnb_area 로그아웃 버튼 적용 */
 		$("#gnb_logout_button").click(function() {
@@ -232,13 +234,24 @@
 			
 			e.preventDefault();
 			
-			moveForm.find("input[name='pageMaker]'").val($(this).attr("href"));
+			moveForm.find("input[name='pageMaker']").val($(this).attr("href"));
 			
 			moveForm.submit();
 			
 		});
-	</script>
-
+		
+		/* <option> 태그 중 사용자가 사용한 type의 selected 속성 부여 */
+		$(document).ready(function(){
+			
+			// 검색 타입 selected
+			const selectedType = '<c:out value="${pageMaker.cri.type}"/>';
+			if(selectedType != ""){
+				$("select[name='type']").val(selectedType).attr("selected", "selected");
+			}
+				
+		});
+		
+</script>
 
 </body>
 </html>
