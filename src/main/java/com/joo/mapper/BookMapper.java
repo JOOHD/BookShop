@@ -3,6 +3,8 @@ package com.joo.mapper;
 import java.util.List;
 
 import com.joo.model.BookVO;
+import com.joo.model.CateFilterDTO;
+import com.joo.model.CateVO;
 import com.joo.model.Criteria;
 
 public interface BookMapper {
@@ -21,4 +23,16 @@ public interface BookMapper {
 	
 	/* 작가 id 리스트 요청 */
 	public String[] getAuthorIdList(String keyword); 
+	
+	/* 국내 카테고리 리스트 */
+	public List<CateVO> getCateCode1();
+	
+	/* 국내 카테고리 리스트 */
+	public List<CateVO> getCateCode2();
+	
+	/* 검색 대상 카테고리 리스트 */
+	public String[] getCateList(Criteria cri);
+	
+	/* 카테고리 정보(+검색대상 갯수) */
+	public CateFilterDTO getCateInfo(Criteria cri);
 }

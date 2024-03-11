@@ -28,27 +28,30 @@ import com.joo.service.BookService;
 public class BookController {
 
 	private static final Logger log = LoggerFactory.getLogger(BookController.class);
-	
+
 	@Autowired
 	private AttachService attachService;
-	
+
 	@Autowired
 	private BookService bookService;
-	
+
 	/* 이미지 정보 반환 */
-	@GetMapping(value="/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<AttachImageVO>> getAttachList(int bookId){
-	
+	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<AttachImageVO>> getAttachList(int bookId) {
+
 		log.info("getAttachList.........." + bookId);
-		
+
 		return new ResponseEntity<List<AttachImageVO>>(attachService.getAttachList(bookId), HttpStatus.OK);
 	}
 
 	// 메인 페이지 이동
 	@GetMapping(value = "main")
-	public void mainPageGet() {
+	public void mainPageGet(Model model) {
 
 		log.info("메인 페이지 진입");
+
+		model.addAttribute("cate1", bookService.getCateCode1());
+		model.addAttribute("cate2", bookService.getCateCode2());
 	}
 
 	/* 이미지 출력 */
@@ -64,64 +67,54 @@ public class BookController {
 		ResponseEntity<byte[]> result = null;
 
 		try {
-			
+
 			// Response의 header와 관련된 설정의 객체 선언.
 			HttpHeaders header = new HttpHeaders();
-			
+
 			// header의 'Content Type'에 대상 파일의 MIME TYPE을 부여해주는 코드를 추가.
 			header.add("Content-type", Files.probeContentType(file.toPath()));
-			
+
 			// 첫 번째 파람 = 출력시킬 대상 이미지 데이터 파일/ copyTo = 파일을 복사하여 Byte 배열로 반환.
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
-	
+
 	/* 상품 검색 */
-	@GetMapping("search")
+	@GetMapping("/search")
 	public String searchGoodsGET(Criteria cri, Model model) {
-		
+
 		log.info("cri : " + cri);
-		
+
 		// 상품 검색
 		List<BookVO> list = bookService.getGoodsList(cri);
-		
+
 		log.info("pre list : " + list);
-		
-		if(!list.isEmpty()) {	// 상품 목록이 있는 경우,
+
+		if (!list.isEmpty()) { // 상품 목록이 있는 경우,
 			model.addAttribute("list", list);
-			
+
 			log.info("list : " + list);
-		} else {				// 상품 목록이 없는 경우.
+		} else { 			   // 상품 목록이 없는 경우.
 			model.addAttribute("listCheck", "empty");
-			
+
 			return "search";
 		}
 		// 페이지 번호, 상품 게시물 리스트
 		model.addAttribute("pageMaker", new PageDTO(cri, bookService.goodsGetTotal(cri)));
-		
+
+		String[] typeArr = cri.getType().split("");
+
+		for (String s : typeArr) {
+			if (s.equals("T") || s.equals("A")) {
+				model.addAttribute("filter_info", bookService.getCateInfoList(cri));
+			}
+		}
+
 		return "search";
 	}
-	
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

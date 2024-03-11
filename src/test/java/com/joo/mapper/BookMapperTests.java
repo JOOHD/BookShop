@@ -54,7 +54,7 @@ public class BookMapperTests {
 	}
 	*/
 	
-	/* 검색 (동적 쿼리 적용) - 작가 */
+	/* 검색 (동적 쿼리 적용) - 작가 
 	@Test
 	public void getGoodsListTest1() {
 		
@@ -77,7 +77,7 @@ public class BookMapperTests {
 	}
 	
 	
-	/* 검색 (동적 쿼리 적용) - 책제목*/	
+	/* 검색 (동적 쿼리 적용) - 책제목
 	@Test 
 	public void getGoodsListTest2() {
 		Criteria cri = new Criteria();
@@ -99,7 +99,7 @@ public class BookMapperTests {
 	}
 	
 	
-	/* 검색 (동적 쿼리 적용) - 카테고리*/
+	/* 검색 (동적 쿼리 적용) - 카테고리
 	@Test 
 	public void getGoodsListTest3() {
 		Criteria cri = new Criteria();
@@ -119,7 +119,7 @@ public class BookMapperTests {
 	}
 	
 	
-	/* 검색 (동적 쿼리 적용) - 카테고리 + 작가 */
+	/* 검색 (동적 쿼리 적용) - 카테고리 + 작가 
 	@Test 
 	public void getGoodsListTest4() {
 		Criteria cri = new Criteria();
@@ -140,7 +140,7 @@ public class BookMapperTests {
 		
 	}
 	
-	/* 검색 (동적 쿼리 적용) - 카테고리 + 책 제목 */
+	/* 검색 (동적 쿼리 적용) - 카테고리 + 책 제목 
 	@Test 
 	public void getGoodsListTest5() {
 		Criteria cri = new Criteria();
@@ -160,5 +160,42 @@ public class BookMapperTests {
 		System.out.println("list : " + list);	
 		
 	}
+	*/
 	
+	/* 카테고리 리스트 
+	@Test
+	public void getCateListTest1() {
+		
+		Criteria cri = new Criteria();
+		
+		String type = "TC";
+		String keyword = "test";
+		
+		cri.setType(type);
+		cri.setKeyword(keyword);
+		
+		String[] cateList = mapper.getCateList(cri);
+		
+		for(String codeNum : cateList) {
+			System.out.println("codeNum ::::: " + codeNum);
+		}
+	}
+	*/
+	
+	/* 카테고리 정보 얻기 */
+	@Test
+	public void getCateInfoTest1() {
+		
+		Criteria cri = new Criteria();
+		
+		String type = "T";
+		String keyword = "test";
+		String cateCode = "104001";
+		
+		cri.setType(type);
+		cri.setKeyword(keyword);
+		cri.setCateCode(cateCode);
+		
+		mapper.getCateInfo(cri);
+	}
 }
