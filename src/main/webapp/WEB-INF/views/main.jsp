@@ -38,7 +38,7 @@
 			<div class="top_area">
 				<!-- 로고 영역 -->
 				<div class="logo_area">
-					<a href="/main"><img src="resources/img/mLogo.png"></a>
+					<a href="/main"><img src="resources/img/HLogo.png"></a>
 				</div>
 				<div class="search_area">
 					<div class="search_wrap">
@@ -124,7 +124,7 @@
 				<div class="footer_container">
 
 					<div class="footer_left">
-						<img src="resources/img/Logo.png">
+						<img src="resources/img/FLogo.png">
 					</div>
 					<div class="footer_right">
 						(주) JooBook 대표이사 : OOO <br> 사업자등록번호 : ooo-oo-ooooo <br>

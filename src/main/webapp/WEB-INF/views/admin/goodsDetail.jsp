@@ -174,7 +174,7 @@
 			</div>
 		</div>
 
-
+		<!-- localhost:8080/admin/goodsDetail?pageNum=1&amount=10&keyword=&bookId=61 -->
 		<form id="moveForm" action="/admin/goodsManage" method="get" >
 			<input type="hidden" name="pageNum" value="${cri.pageNum}">
 			<input type="hidden" name="amount" value="${cri.amount}">

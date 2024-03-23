@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
@@ -116,5 +117,15 @@ public class BookController {
 
 		return "search";
 	}
-
+	
+	/* 상품 상세 */
+	@GetMapping("/goodsDetail/{bookId}") // {bookId} : Spring에서 사용자가 전송한 식별자 값을 변수로 인식하도록 템플릿 변수
+	public String goodsDetailGet(@PathVariable("bookId")int bookId, Model model) {
+		
+		log.info("goodsDetailGET()...........");
+		
+		model.addAttribute("goodsInfo", bookService.getGoodsInfo(bookId));
+		
+		return "/goodsDetail";
+	}
 }

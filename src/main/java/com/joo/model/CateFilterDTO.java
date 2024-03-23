@@ -26,8 +26,10 @@ public class CateFilterDTO {
 		return cateCode;
 	}
 
+	// cateCode 변수에 값이 들어올때(국내1/외2) 첫 번째 숫자가 국내/외 구분을 할 숫자이고 추출하여, cateGroup 변수에 값 저장.
 	public void setCateCode(String cateCode) {
 		this.cateCode = cateCode;
+		this.cateGroup = cateCode.split("")[0]; 
 	}
 
 	public int getCateCount() {
@@ -44,7 +46,6 @@ public class CateFilterDTO {
 
 	public void setCateGroup(String cateGroup) {
 		this.cateGroup = cateGroup;
-		this.cateGroup = cateCode.split("")[0]; //cateCode 변수에 값이 들어올때(국내1/외2)
 	}
 
 	@Override

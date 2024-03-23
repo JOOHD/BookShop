@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.joo.mapper.AdminMapper;
 import com.joo.mapper.AttachMapper;
 import com.joo.mapper.BookMapper;
 import com.joo.model.AttachImageVO;
@@ -25,6 +26,9 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private AttachMapper attachMapper;
+	
+	@Autowired
+	private AdminMapper adminMapper;
 
 	/* 상픔 검색 */
 	@Override
@@ -77,6 +81,7 @@ public class BookServiceImpl implements BookService {
 		return bookMapper.goodsGetTotal(cri);
 	}
 
+	/* 국내 카테고리 리스트 */
 	@Override
 	public List<CateVO> getCateCode1() {
 
@@ -85,6 +90,7 @@ public class BookServiceImpl implements BookService {
 		return bookMapper.getCateCode1();
 	}
 
+	/* 외국 카테고리 리스트 */
 	@Override
 	public List<CateVO> getCateCode2() {
 
@@ -93,6 +99,7 @@ public class BookServiceImpl implements BookService {
 		return bookMapper.getCateCode2();
 	}
 
+	/* 검색 대상 카테고리 리스트 */
 	@Override
 	public String[] getCateList(Criteria cri) {
 		
@@ -102,6 +109,7 @@ public class BookServiceImpl implements BookService {
 		return bookMapper.getCateList(cri);
 	}
 
+	/* 카테고리 정보(+검색대상 갯수) */
 	@Override
 	public CateFilterDTO getCateInfo(Criteria cri) {
 		
@@ -111,6 +119,7 @@ public class BookServiceImpl implements BookService {
 		return bookMapper.getCateInfo(cri);			
 	}
 
+	/* 검색결과 카테고리 필터 정보 */
 	@Override
 	public List<CateFilterDTO> getCateInfoList(Criteria cri) {
 
@@ -122,11 +131,15 @@ public class BookServiceImpl implements BookService {
 		String[] typeArr = cri.getType().split("");
 		String [] authorArr;
 		
+		// type 분류
 		for(String type : typeArr) {
 			if(type.equals("A")) {
 				// authorId의 정보가 필요, authorIdList 호출하여 id 반환 후, cri에 추가.
 				authorArr = bookMapper.getAuthorIdList(cri.getKeyword());
-				cri.setAuthorArr(authorArr);
+				if(authorArr.length == 0) {
+					return filterInfoList;
+				}
+				cri.setAuthorArr(authorArr);					
 			}
 		}
 		
@@ -134,21 +147,39 @@ public class BookServiceImpl implements BookService {
 		String[] cateList = bookMapper.getCateList(cri);
 		
 		// cateCode 기존 값을 유지 해 주기 위한 임식 변수 생성.
-		String tempCateCode = cri.getCateCode();
+		// String tempCateCode = cri.getCateCode();
 		
+		// cateCode 분류
 		for(String cateCode : cateList) {
 			cri.setCateCode(cateCode);
+			
+			log.info("cateCode : " + cateCode);
+			log.info("cri : " + cri);
 			
 			// 카테고리 필터 정보를 List 객체에 담기.
 			CateFilterDTO filterInfo = bookMapper.getCateInfo(cri);
 			filterInfoList.add(filterInfo); // getCateInfoList() 반환 할 List객체 요소로 추가.
+			
+			log.info("filterInfo : " + filterInfo);
+			log.info("filterInfoList : " + filterInfoList);
 		}
 		
 		// 임시 카테고리 코드 값을 cateCode에 저장. 
-		cri.setCateCode(tempCateCode);
-		
+		// cri.setCateCode(tempCateCode);
+
 		// '카테고리 코드'가 담긴 List 객체 "filterInfoList" 추가.
 		return filterInfoList;
+	}
+
+	@Override
+	public BookVO getGoodsInfo(int bookId) {
+		
+		log.info("getGoodsInfo..........");
+		
+		BookVO goodsInfo = bookMapper.getGoodsInfo(bookId);
+		goodsInfo.setImageList(adminMapper.getAttachInfo(bookId));
+		
+		return goodsInfo;
 	}
 	
 	

@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>          
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>       
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,7 +50,7 @@
 		<div class="top_area">
 			<!-- 로고영역 -->
 			<div class="logo_area">
-				<a href="/main"><img src="resources/img/mLogo.png"></a>
+				<a href="/main"><img src="resources/img/HLogo.png"></a>
 			</div>
 			<div class="search_area">
                 	<div class="search_wrap">
@@ -84,13 +85,42 @@
 				</c:if>			
 			</div>
 			<div class="clearfix"></div>			
-		</div>
-		
+		</div>		
 		<div class="content_area">		
+		
 			<!-- 게시물 o -->
 			<c:if test="${listcheck != 'empty'}">
-					
 				
+				<div class="search_filter">
+					<div class="filter_button_wrap">
+						<button class="filter_button filter_active" id="filter_button_a">국내</button>
+						<button class="filter_button" id="filter_button_b">외국</button>
+					</div>
+					
+					<div class="filter_content filter_a">				
+					<!--<c:if test="${fn:length(filter_info) >0}">값 있음 </c:if>-->
+						<c:forEach items="${filter_info}" var="filter">
+							<c:if test="${filter.cateGroup eq '1'}">
+								<a href="${filter.cateCode}">${filter.cateName}(${filter.cateCount})</a>
+							</c:if>
+						</c:forEach>
+						
+					</div>
+					<div class="filter_content filter_b">
+						<c:forEach items="${filter_info}" var="filter">
+							<c:if test="${filter.cateGroup eq '2'}">
+								<a href="${filter.cateCode}">${filter.cateName}(${filter.cateCount})</a>
+							</c:if>
+						</c:forEach>
+					</div>		
+					
+					<form id="filter_form" action="/search" method="get" >
+						<input type="hidden" name="keyword">
+						<input type="hidden" name="cateCode">
+						<input type="hidden" name="type">
+					</form>						
+													
+				</div>		
 				<div class="list_search_result">
 					<table class="type_list">
 						<colgroup>
@@ -216,7 +246,7 @@
 			<div class="footer_container">
 				
 				<div class="footer_left">
-					<img src="resources/img/Logo.png">
+					<img src="resources/img/FLogo.png">
 				</div>
 				<div class="footer_right">
 					(주) JooBook    대표이사 : OOO
@@ -251,8 +281,7 @@
 	});
 	
 
-	/* 페이지 이동 버튼 */
-	
+	/* 페이지 이동 버튼 */	
 	const moveForm = $('#moveForm');
 	
 	$(".pageMaker_btn a").on("click", function(e){
@@ -266,7 +295,22 @@
 	});		
 	
 	/* 검색 필터 */
-
+	let buttonA = $("#filter_button_a");
+	let buttonB = $("#filter_button_b");
+	
+	buttonA.on("click", function(){
+		$(".filter_b").css("display", "none");
+		$(".filter_a").css("display", "block");		
+		buttonA.attr("class", "filter_button filter_active");
+		buttonB.attr("class", "filter_button");
+	});	
+	
+	buttonB.on("click", function(){
+		$(".filter_a").css("display", "none");
+		$(".filter_b").css("display", "block");
+		buttonB.attr("class", "filter_button filter_active");
+		buttonA.attr("class", "filter_button");		
+	});
 	
 	/* 필터링 태그 동작 */
 	
