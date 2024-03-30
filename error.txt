@@ -1,0 +1,118 @@
+※org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
+
+원인 : spring boot와 spring fox의 버전이 맞지 않아 발생하는 에러
+해결 : application.properties 
+		- spring: mvc: pathmatch: matching-strategy: ant_path_matcher 추가
+			ㄴ ex) http://localhost:8081/swagger-ui/index.html
+
+
+----------------------------------------IntelliJ----------------------------------------
+
+※failed to push some refs to "repository"
+ㄴgit push -f origin master 강제 push 협업에서는 비추천
+
+----------------------------------------GIT----------------------------------------
+※Error creating bean with name 'adminServiceImpl' defined in file........Initialization of bean failed; 
+ㄴ발생 : 잘 굴러가던 프로젝트가 tomcat 실행 시, localhost:/8080 에서 404에러 발생.
+ㄴ과정 : ServiceImpl.java class 가 표기 되었기에 어노테이션 문제라고들 구글링 블로거들이 해결 책을 주었다.
+		ㄴ하지만, 해결 실패, clean, project build, maven project update,,, 등등 처방을 해보았지만 실패..
+ㄴ원인 : root-contex.xml 에서 aop 관련 bean 등록을 했었는데 그 후에 탈이 났다고 생각해서 지운 후, 재 실행.
+	---- 후....4시간 태운 에러.
+
+※기본 에러 발생 시, 취할 수 있는 조치
+1.window - show view - problem 창 띄우기
+2.project - clean
+3.project 우클릭 - properties - project facets (java ver 확인)/ Runtime (tomcat ver 확인).
+4.project 우클릭 - Maven - update project
+
+※C:\Users\user\AppData\Roaming\Code\User\workspaceStorage
+ㄴjava language server (vscode) 작업 공간 디렉토리
+(일반적 can't be resolve to a type error 발생시 작업 폴더 삭제하면 error 해결)
+
+※Tomcat server configuration at missing 
+ㄴ다시 server tomcat 만들기 (Tomcat config 파일의 경로가 꼬여버린 것.)
+
+lombok.jar 은 압축 풀지말고 다운받은 폴더 그대로 eclipse.exe 폴더 밑에 같이 두면 된다.(하... 30분 날렷네)
+C:\Users\user\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar
+
+※tomcat start -> 500 error page(can't find page) 폴더가 없어서..
+/WEB-INF/spring/appServlet/security-context.xml
+
+※No qualifying bean of type 'com.joo.mapper.MemberMapper' available:
+ㄴroot-context.xml, mapper.xml namespace 경로 설정 잘못햇을 경우.
+
+※HTTP Status 405 - Request method 'GET/POST' not supported
+ㄴform 과 Controller의 method 방식이 다르기 때문.
+ㄴmethod = {RequestMethod.GET,RequestMethod.POST} 수정하면 해결.
+
+※이클립스 빨간색 엑스 표시 없애는 방법
+ㄴ프로젝트 마우스 오른쪽 클릭 후 Spring > Remove Spring Project Nature 클릭 후 
+ㄴ다시 프로젝트 마우스 오른쪽 클릭 후 Spring > Add Spring Project Nature 클릭하면 Spring에서 에러표시 나는 버그 현상들이 사라진다.
+
+※ 이클립스 작동시, js 파일 흑백 문제 발생 
+ㄴ해결법으로 install market으로 add 하고 적용하려고 했는데? 플러그인 설치 애러 발생 
+ㄴ해결법으로 제어판 -> 방화벽 -> 이클립스 허용 -> 문제 해결
+
+※ Failed to convert property value of type 'java.lang.String' to required type 'int' for property 
+
+----------------------------------------DB & Query----------------------------------------
+
+※ table doesn't exists Error
+ㄴdb table 명을 바꾸고, xml class query에 변경 table 을 적용해줘야 한다.
+
+※ Access denied for user 'root'@'localhost'
+ㄴ환경변수시스템에서 path 새로 만들기 -> mysql or oracle path 생성
+
+※ org.apache.ibatis.binding.BindingException: Invalid bound statement (not found)
+ㄴ 거즌 path or spelling error /  xml파일 위치와 namespaces, query 확인 잘하기 
+
+※ you have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near
+ㄴmapper.xml query grammer 에러 띄어쓰기 콤마(,) 단어철자 등등 잘 살펴보기.
+
+※ cannot add or update a child row: a foreign key constraint fails
+ㄴforeing key에 값을 삽입할 때, 참조하는 테이블의 PK에 해당하는 값만 삽입해야 하지만 이를 어길시 에러.
+ㄴ외래 키는 참조하는 테이블의 기본 키와 동일한 데이터 유형과 길이를 가져야 합니다.
+ㄴ12/15 한번 더 에러 발생 똑같은 에러 메시지, 해결 방법, 기존 테이블들을 삭제하고 다시 생성해주었는데..
+ㄴ실무에서는 이렇게 하면 큰일이 날 텐데.. 참조 무결성이 이제 감은 잡히는데 어떻게 좋은 방향으로 해결햐?
+
+※jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column
+ㄴ내 상황을 기준으로 nationId type = varchar(2) 였다. 타입이 int가 아닌 String였는데, 너무 짧았음.
+ㄴalter table joo_nation modify nationId varchar(10); 로 길이를 변경해주었다.
+
+※/WEB-INF/views/admin/authorManage.jsp (행: [130], 열: [0]) 종료되지 않은 [&lt;c:out] 태그
+ㄴ엔드 태그를 확인했고 문제 없는 코드였는데, 계속 같은 에러 메시지 발생,
+ㄴJSTL 태그 안에는 JSP 스크립트 주석을 사용 -> 해결  <%--JSP 주석 --> or </c:if/forEach> end tag.
+
+※is not valid at this position expecting an identifier 
+ㄴ'column name' 구글링 결과론 esc 밑에 있는 ``이 문자를 사용했더니 해결(MySQL version up Error) 
+
+※invalid use of null value error
+ㄴ컬럼을 추가하거나 수정하여서 해당 컬럼이 null 값이 발생함.
+ㄴupdate [테이블명] set [컬럼명]=[값] where [컬럼명] is null
+ㄴalter table [테이블명] modify column [컬럼명][컬러타입] not null;
+
+※ 문제 - goodsDetail 상품 상세 페이지에서 상품 가격 값이 보이지 않음 (0으로 표기 됨.)
+ㄴ문제 해결을 위한 시도 : 개발자도구 console.log("${goodsInfo.bookPrice}"); 결과 = 0 
+	ㄴ 로컬에서 상품 등록을 하고, db 확인 해보면 정상적으로 값이 들어옴
+		ㄴclient -> server  정상적으로 데이터가 이동, 반대로 server -> client가 문제라는 것.
+ㄴ그래서 AdminMapper.xml 의 쿼리 확인 했는데, 상품 조회 페이지 select 문에 'bookPrice' 빠져 있었음.
+
+※Column 'cateCode' in where clause is ambiguous
+ㄴ문제 : xml query 부분에서 cateCode가 어디 테이블인지 명시 안 해서 발생
+	ㄴ해결 : cateCode ~~ ->>>> a.cateCode like ~~
+
+※ERROR 1366 (HY000): Incorrect string value:
+ㄴ문제 : 원래는 3780 error 발생 (FK 대상 테이블 타입이 참조 대상과 타입이 맞지 않아서 발생)
+	ㄴ해결 : 그런데 column type을 modify 해서 3780 해결 하려는데, 이번에는 1366 발생 
+		ㄴ해결2 : 일단 1366부터 해결코자, "DEFAULT CHARSET=utf8;" 를 테이블 마지막에 입력하자 모두 해결
+
+※Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails (`bookshop`.`joo_cart`, CONSTRAINT `joo_cart_ibfk_2` FOREIGN KEY (`bookId`) REFERENCES `joo_book` (`bookId`))	0.015 sec
+ㄴ문제 : 참조키가 있을 때 부모 테이블에서 키와 매칭되는 로우가 없을 때 발생.
+	ㄴ원인 : insert into joo_cart values(1,"test", 46, 29); bookId(46) -> bookId(6)
+			joo_book 테이블에 bookId(46) 이 없었다. insert여서 45까지있어서 추가하려고 46을 했다.
+	ㄴ해결 : 매칭이 안됐다는 뜻이기에 기존에 있는 bookId(6)으로 바꾸어주었다.
+
+※Parameter index out of range (1 > number of parameters, which is 0).
+ㄴ문제 : DAO/XML 에서 쿼리문 error 발생.
+	ㄴ원인 : 쿼리문 오타, ?/parameter 매핑 불일치.
+	ㄴ해결 : 쿼리문 오타.
