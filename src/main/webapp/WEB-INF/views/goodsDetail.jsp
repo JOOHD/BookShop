@@ -130,17 +130,23 @@
 								<fmt:formatNumber value="${goodsInfo.bookPrice*goodsInfo.bookDiscount}" pattern="#,### 원" />
 								할인]
 							</div>
+							<div>
+								적립 포인트 : <span class="point_span"></span>원
+							</div>
 						</div>
 						<div class="line"></div>
 						<div class="button">
 							<div class="button_quantity">
-								주문수량 <input type="text" value="1"> <span>
-									<button>+</button>
-									<button>-</button>
+								주문수량 
+								<input type="text" class="quantity_input" value="1"> 
+								<span>
+									<button class="plus_btn">+</button>
+									<button class="minus_btn">-</button>
 								</span>
 							</div>
 							<div class="button_set">
-								<a class="btn_cart">장바구니 담기</a> <a class="btn_buy">바로구매</a>
+								<a class="btn_cart">장바구니 담기</a> 
+								<a class="btn_buy">바로구매</a>
 							</div>
 						</div>
 					</div>
@@ -216,13 +222,62 @@
 			
 			let tempYear = year.substr(0,10);
 			
-			let yearArray = tempYear.split("-") cder22452
+			let yearArray = tempYear.split("-") 
 			let publeYear = yearArray[0] + "년 " + yearArray[1] + "월 " + yearArray[2] + "일";
 			
 			$(".publeyear").html(publeYear);
 			
-			
+			/* 포인트 삽입 */
+			let salePrice = "${goodsInfo.bookPrice - (goodsInfo.bookPrice * goodsInfo.bookDiscount)}"
+			let point = salePrice * 0.05;
+			point = Math.floor(point);	// 소수점 나머지 버리기.
+			$(".point_span").text(point);
 		});
+		
+		// 수량 버튼 조작
+		let quantity = $(".quantity_input").val();
+		$(".plus_btn").on("click", function(){
+			$(".quantity_input").val(++quantity);
+		});
+		$(".minus_btn").on("click", function(){
+			if(quantity > 1){
+				$(".quantity_input").val(--quantity);
+			} 			
+		});
+		
+		// 서버로 전송할 데이터 객체 대입.
+		const form = {
+				memberId : '${member.memberId}',
+				bookId : '${goodsInfo.bookId}',
+				bookCount : '' // 수량 경우 버튼 클릭 직전까지 변경할 수 있기 때문에 빈 값.
+		}
+		
+		// 장바구니 추가 버튼
+		$(".btn_cart").on("click", function(e){
+			// 사용자가 버튼을 클릭했을 때 값이 확정되기 때문에 구현부에 가장 먼저 서버로 전송할 객체 bookCount 값 부여
+			form.bookCount = $(".quantity_input").val();
+			$.ajax({
+				url: '/cart/add',
+				type: 'POST',
+				data: form,
+				success: function(result){
+					cartAlert(result);
+				}
+			})
+		});
+		
+		function cartAlert(result){
+			if(result == '0'){
+				alert("장바구니에 추가를 하지 못하였습니다.");
+			} else if(result == '1'){
+				alert("장바구니에 추가되었습니다.");
+			} else if(result == '2'){
+				alert("장바구니에 이미 추가되어져 있습니다.");
+			} else if(result == '5'){
+				alert("로그인이 필요합니다.");	
+			}
+		}
+		
 	</script>
 
 </body>

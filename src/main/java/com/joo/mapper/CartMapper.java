@@ -7,7 +7,7 @@ import com.joo.model.CartDTO;
 public interface CartMapper {
 
 	/* 카트 추가 */
-	public int addCart(CartDTO cart); // 반환 타입 int : 성공 1, 실패 0
+	public int addCart(CartDTO cart) throws Exception; // 반환 타입 int : 성공 1, 실패 0
 	
 	/* 카트 삭제 */
 	public int deleteCart(int cartId);

@@ -30,7 +30,7 @@
 						</c:if>
 						<li><a id="gnb_logout_button">로그아웃</a></li>
 						<li>마이페이지</li>
-						<li>장바구니</li>
+						<li><a href="/cart/${member.memberId}">장바구니</a></li>
 						<li>고객센터</li>
 					</c:if>
 				</ul>

@@ -56,8 +56,8 @@ public class CartMapperTests {
 		
 		mapper.modifyCount(cart);
 	}
-	*/
 	
+	/* 카트 목록
 	@Test
 	public void getCartTest() {
 		
@@ -70,5 +70,19 @@ public class CartMapperTests {
 			System.out.println("init cart : " + cart);
 		}
 	}
+	*/
 	
+	@Test
+	public void checkCartTest() {
+		
+		String memberId = "test";
+		int bookId = 6;
+		
+		CartDTO cart = new CartDTO();
+		cart.setMemberId(memberId);
+		cart.setBookId(bookId);
+		
+		CartDTO resultCart = mapper.checkCart(cart);
+		System.out.println("결과 : " + resultCart);
+	}
 }

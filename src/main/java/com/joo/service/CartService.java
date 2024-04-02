@@ -20,4 +20,7 @@ public interface CartService {
 	
 	/* 카트 확인 */
 	public CartDTO checkCart(CartDTO cart);
+	
+	/* 장바구니 정보 리스트 */
+	public List<CartDTO> getCartList(String memberId);
 }
