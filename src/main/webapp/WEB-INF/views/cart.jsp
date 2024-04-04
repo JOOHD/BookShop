@@ -104,13 +104,25 @@
 						<tbody>
 							<c:forEach items="${cartInfo}" var="ci">
 								<tr>
-									<td class="td_width_1"></td>
+									<td class="td_width_1 cart_info_td">		
+									<input type="checkbox" class="individual_cart_checkbox input_size_20" checked="checked">							
+									<input type="hidden" class="individual_bookPrice_input" value="${ci.bookPrice}">
+									<input type="hidden" class="individual_salePrice_input" value="${ci.salePrice}">
+									<input type="hidden" class="individual_bookCount_input" value="${ci.bookCount}">
+									<input type="hidden" class="individual_totalPrice_input" value="${ci.salePrice * ci.bookCount}">
+									<input type="hidden" class="individual_point_input" value="${ci.point}">
+									<input type="hidden" class="individual_totalPoint_input" value="${ci.totalPoint}">
+									</td>
 									<td class="td_width_2"></td>
+										<div class="image_wrap" data-bookId="${ci.imageList[0].bookId}" data-path="${ci.imageList[0].uploadPath}" data-uuid="${ci.imageList[0].uuid}" data-filename="${ci.imageList[0].fileName}">										
 									<td class="td_width_3">${ci.bookName}</td>
-									<td class="td_width_4 price_td"><del>
-											정가 :
-											<fmt:formatNumber value="${ci.bookPrice}" pattern="#,### 원" />
-										</del><br> 판매가 : <span class="red_color"><fmt:formatNumber value="${ci.salePrice}" pattern="#,### 원" /></span><br> 마일리지 : <span class="green_color"><fmt:formatNumber value="${ci.point}" pattern="#,###" /></span></td>
+									<td class="td_width_4 price_td">
+									<del>
+										정가 :
+										<fmt:formatNumber value="${ci.bookPrice}" pattern="#,### 원" />
+									</del>
+									<br> 
+										판매가 : <span class="red_color"><fmt:formatNumber value="${ci.salePrice}" pattern="#,### 원" /></span><br> 마일리지 : <span class="green_color"><fmt:formatNumber value="${ci.point}" pattern="#,###" /></span></td>
 									<td class="td_width_4 table_text_align_center">
 										<div class="table_text_align_center quantity_div">
 											<input type="text" value="${ci.bookCount}" class="quantity_input">
@@ -231,7 +243,72 @@
 	<!-- class="wrapper" -->
 
 	<script>
+	
+		$(document).ready(function(){
+			
+			/* 종합 정보 색션 정보 삽입 */
+			setTotalInfo();
+			
+		});
 		
+		/* 체크여부에따른 종합 정보 변화 */
+		$(".individual_cart_checkbox").on("change", function(){
+			/* 총 주문 정보 세팅(배송비, 총 가격, 마일리지, 물품 수, 종류) */
+			setTotalInfo($(".cart_info_td"));
+		});
+	
+		/* 총 주문 정보 세팅(배송비, 총 가격, 마일리지, 물품 수, 종류) */
+		function setTotalInfo(){
+			
+			let totalPrice = 0;				// 총 가격
+			let totalCount = 0;				// 총 갯수
+			let totalKind = 0;				// 총 종류
+			let totalPoint = 0;				// 총 마일리지
+			let deliveryPrice = 0;			// 배송비
+			let finalTotalPrice = 0; 		// 최종 가격(총 가격 + 배송비)
+			
+			$(".cart_info_td").each(function(index, element){
+				// <td> 태그 내부에 있는 <input> 태그 정보에 접근하기 위해 jquery 식별자 "find" 사용.	
+			 	
+				if($(element).find(".individual_cart_checkbox").is(":checked") === true){ // 체크일때 if문 실행.				
+					// 총 가격
+					totalPrice += parseInt($(element).find(".individual_totalPrice_input").val());
+					// 총 갯수
+					totalCount += parseInt($(element).find(".individual_bookCount_input").val());
+					// 총 종류
+					totalKind += 1;
+					// 총 마일리지
+					totalPoint += parseInt($(element).find(".individual_totalPoint_input").val());
+				}
+			});
+			
+			/* 배송비 결정 */
+			if(totalPrice >= 30000){
+				deliveryPrice = 0;
+			} else if(totalPrice == 0){
+				deliveryPrice = 0;
+			} else {
+				deliveryPrice = 3000;
+			}
+			
+			/* 최종 가격 */
+			finalTotalPrice = totalPrice + deliveryPrice;
+			
+			/* 값 삽입 */
+			// 총 가격
+			$(".totalPrice_span").text(totalPrice);
+			// 총 갯수
+			$(".totalCount_span").text(totalCount);
+			// 총 종류
+			$(".totalKind_span").text(totalKind);
+			// 총 마일리지
+			$(".totalPoint_span").text(totalPoint);
+			// 배송비
+			$(".delivery_price").text(deliveryPrice);	
+			// 최종 가격(총 가격 + 배송비)
+			$(".finalTotalPrice_span").text(finalTotalPrice.toLocaleString());
+		}
+	
 	</script>
 
 </body>
