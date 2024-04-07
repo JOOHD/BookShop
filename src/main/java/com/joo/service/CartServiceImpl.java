@@ -20,7 +20,7 @@ public class CartServiceImpl implements CartService {
 	private CartMapper cartMapper;
 	
 	@Autowired
-	private AttachMapper attachMapper;
+	private AttachMapper attachMapper;	// 장바구니 이미지 삽입 위해.
 	
 	@Override
 	public int addCart(CartDTO cart) {
@@ -53,6 +53,7 @@ public class CartServiceImpl implements CartService {
 			dto.initSalePrice();
 			
 			log.info("dto : " + dto);
+			
 			/* 이미지 정보 얻기 */
 			int bookId = dto.getBookId();
 			
@@ -60,20 +61,22 @@ public class CartServiceImpl implements CartService {
 			
 			// log.info("imageList : " + imageList);
 			
+			log.info("dto2 : " + dto);
 			dto.setImageList(imageList);
+			log.info("dto2 : " + dto);
 		}
 		
 		return cart; // 세팅된 값 반환
 	}
 
 	@Override
-	public int deleteCart(int cartId) {
-		
-		return 0;
-	}
-
-	@Override
 	public int modifyCount(CartDTO cart) {
+		
+		return cartMapper.modifyCount(cart);
+	}
+	
+	@Override
+	public int deleteCart(int cartId) {
 		
 		return 0;
 	}

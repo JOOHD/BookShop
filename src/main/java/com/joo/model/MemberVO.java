@@ -1,5 +1,7 @@
 package com.joo.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -30,6 +32,7 @@ public class MemberVO {
 	private int adminCk;
 
 	// 등록일자
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private int regDate;
 
 	// 회원 돈

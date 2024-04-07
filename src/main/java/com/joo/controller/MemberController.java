@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.joo.model.MemberVO;
 import com.joo.service.MemberService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = {"회원 관련 페이지 Controller"})
 @Controller
 @RequestMapping(value = "/member") // 회원 관련 호출은 명확하게 구분 짓기 위해
 public class MemberController {
@@ -39,16 +44,18 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder pwEncoder;
 
-	/* 회원가입 페이지 이동 */
+	@ApiOperation(value = "회원가입 페이지 이동")
 	@GetMapping(value = "/join")
 	public void joinGet() {
 
 		log.info("회원가입 페이지 진입");
 	}
 
-	/* 회원가입 페이지 */
+	@ApiOperation(value = "회원가입 페이지")
 	@PostMapping(value = "/join")
-	public String joinPOST(@RequestBody MemberVO member) throws Exception {
+	public String joinPOST(
+			@DateTimeFormat(pattern = "yyyy-MM-dd")
+			@RequestBody MemberVO member) throws Exception {
 
 		String rawPw = "";    // 인코딩 전 비밀번호
 		String encodePw = ""; // 인코딩 후 비밀번호
@@ -75,14 +82,14 @@ public class MemberController {
 	 * 페이지로 리다이렉트 or 에러 메시지를 표시하는 등의 작업 수행 return "errorPage"; } }
 	 */
 
-	/* 로그인 페이지 이동 */
+	@ApiOperation(value = "로그인 페이지 이동")
 	@GetMapping(value = "/login")
 	public void loginGet() {
 
 		log.info("로그인 페이지 진입");
 	}
 	
-	/* 로그인 */
+	@ApiOperation(value = "로그인")
 	@PostMapping(value="login.do")
 	public String loignPOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) throws Exception {
 	
@@ -131,7 +138,7 @@ public class MemberController {
 		
 	}
 	
-	/* 메인페이지 로그아웃 */
+	@ApiOperation(value = "메인페이지 로그아웃")
 	@GetMapping(value="logout.do")
 	public String logoutMainGET(HttpServletRequest request) throws Exception {
 		
@@ -145,7 +152,7 @@ public class MemberController {
 		return "redirect:/main";
 	}
 
-	/* 아이디 중복 검사 */
+	@ApiOperation(value = "아이디 중복 검사")
 	@RequestMapping(value = "/memberIdChk", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String memberIdChkPOST(String memberId) throws Exception {
@@ -163,7 +170,7 @@ public class MemberController {
 		}
 	}
 
-	/* 이메일 인증 */
+	@ApiOperation(value = "이메일 인증")
 	@RequestMapping(value = "/mailCheck", method = RequestMethod.GET)
 	@ResponseBody
 	public String mailCheckGET(String email) throws Exception {

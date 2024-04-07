@@ -25,6 +25,10 @@ import com.joo.model.PageDTO;
 import com.joo.service.AttachService;
 import com.joo.service.BookService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = {"상품 관련 페이지 Controller"})
 @Controller
 public class BookController {
 
@@ -36,7 +40,7 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 
-	/* 이미지 정보 반환 */
+	@ApiOperation(value = "이미지 정보 반환")
 	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<AttachImageVO>> getAttachList(int bookId) {
 
@@ -45,7 +49,7 @@ public class BookController {
 		return new ResponseEntity<List<AttachImageVO>>(attachService.getAttachList(bookId), HttpStatus.OK);
 	}
 
-	// 메인 페이지 이동
+	@ApiOperation(value = "메인 페이지 이동")
 	@GetMapping(value = "main")
 	public void mainPageGet(Model model) {
 
@@ -55,7 +59,7 @@ public class BookController {
 		model.addAttribute("cate2", bookService.getCateCode2());
 	}
 
-	/* 이미지 출력 */
+	@ApiOperation(value = "이미지 출력")
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(String fileName) { // '파일 경로'+'파일 이름'을 전달받기 위해 String 타입
 
@@ -84,7 +88,7 @@ public class BookController {
 		return result;
 	}
 
-	/* 상품 검색 */
+	@ApiOperation(value = "상품 검색")
 	@GetMapping("/search")
 	public String searchGoodsGET(Criteria cri, Model model) {
 
@@ -118,7 +122,7 @@ public class BookController {
 		return "search";
 	}
 	
-	/* 상품 상세 */
+	@ApiOperation(value = "상품 상세")
 	@GetMapping("/goodsDetail/{bookId}") // {bookId} : Spring에서 사용자가 전송한 식별자 값을 변수로 인식하도록 템플릿 변수
 	public String goodsDetailGet(@PathVariable("bookId")int bookId, Model model) {
 		

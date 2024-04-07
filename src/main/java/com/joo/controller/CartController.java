@@ -17,6 +17,10 @@ import com.joo.model.CartDTO;
 import com.joo.model.MemberVO;
 import com.joo.service.CartService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = {"장바구니 관련 페이지 Controller"})
 @Controller
 public class CartController {
 
@@ -31,7 +35,7 @@ public class CartController {
 	 * 5: 로그인 필요
 	 */
 	
-	/* 장바구니 등록 */
+	@ApiOperation(value = "장바구니 등록")
 	@PostMapping("/cart/add")
 	@ResponseBody // 반환 값은 int 지만, @ResponseBody 때문에 반환 값 String 
 	public String addCartPOST(CartDTO cart, HttpServletRequest request) {
@@ -51,12 +55,22 @@ public class CartController {
 		return result + "";
 	}
 	
-	/* 장바구니 정보 리스트 */
+	@ApiOperation(value = "장바구니 정보 리스트")
 	@GetMapping("/cart/{memberId}")
 	public String cartPageGET(@PathVariable("memberId") String memberId, Model model) {
 		
 		model.addAttribute("cartInfo", cartService.getCartList(memberId));
 		
 		return "/cart";
+	}
+	
+	@ApiOperation(value = "장바구니 수량 수정")
+	@PostMapping("/cart/update")
+	public String updateCartPOST(CartDTO cart) {
+		
+		cartService.modifyCount(cart);
+	
+		// memberId 는 장바구니 페이지 이동에 필요로 한 데이터.("/cart/사용자아이디")
+		return "redirect:/cart/" + cart.getMemberId();
 	}
 }

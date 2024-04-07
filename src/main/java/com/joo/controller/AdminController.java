@@ -43,8 +43,12 @@ import com.joo.model.PageDTO;
 import com.joo.service.AdminService;
 import com.joo.service.AuthorService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Tag;
 import net.coobird.thumbnailator.Thumbnails;
 
+@Api(tags = {"관리자 전용 페이지 Controller"})
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -57,14 +61,14 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
-	/* 관리자 메인 페이지 이동 */
+	@ApiOperation(value = "관리자 메인 페이지 이동")
 	@GetMapping(value = "main")
 	public void adminMainGET() throws Exception {
 
 		log.info("관리자 페이지 이동");
 	}
 
-	/* 상품 등록 페이지 접속 */
+	@ApiOperation(value = "상품 등록 페이지 접속")
 	@GetMapping(value = "goodsEnroll")
 	public void goodsEnrollGET(Model model) throws Exception {
 
@@ -83,7 +87,7 @@ public class AdminController {
 
 	}
 
-	/* 상품 등록 */
+	@ApiOperation(value = "상품 등록")
 	@PostMapping(value = "/goodsEnroll")
 	public String goodsEnrollPOST(BookVO book, RedirectAttributes rttr) {
 
@@ -96,7 +100,7 @@ public class AdminController {
 		return "redirect:/admin/goodsManage";
 	}
 
-	/* 상품 관리 페이지 접속 */
+	@ApiOperation(value = "상품 관리 페이지 접속")
 	@GetMapping(value = "goodsManage")
 	public void goodsManageGET(Criteria cri, Model model) throws Exception {
 
@@ -117,7 +121,7 @@ public class AdminController {
 
 	}
 
-	/* 상품 조회 페이지, 상품 수정 페이지 */
+	@ApiOperation(value = "상품 조회/수정 페이지")
 	@GetMapping({ "/goodsDetail", "/goodsModify" })
 	public void goodsGetInfoGET(int bookId, Criteria cri, Model model) throws JsonProcessingException {
 
@@ -136,7 +140,7 @@ public class AdminController {
 
 	}
 
-	/* 상품 정보 수정 */
+	@ApiOperation(value = "상품 정보 수정")
 	@PostMapping("/goodsModify")
 	public String goodsModifyPOST(BookVO vo, RedirectAttributes rttr) {
 
@@ -150,7 +154,7 @@ public class AdminController {
 
 	}
 
-	/* 상품 정보 삭제 */
+	@ApiOperation(value = "상품 정보 삭제")
 	@PostMapping("/goodsDelete")
 	public String goodsDeletePOST(int bookId, RedirectAttributes rttr) {
 
@@ -189,13 +193,13 @@ public class AdminController {
 
 	}
 
-	/* 작가 등록 페이지 접속 */
+	@ApiOperation(value = "작가 등록 페이지 접속")
 	@GetMapping(value = "authorEnroll")
 	public void authorEnrollGET() throws Exception {
 		log.info("작가 등록 페이지 접속");
 	}
 
-	/* 작가 관리 페이지 접속 */
+	@ApiOperation(value = "작가 관리 페이지 접속")
 	@GetMapping(value = "authorManage")
 	public void authorManageGET(Criteria cri, Model model) throws Exception {
 
@@ -215,7 +219,7 @@ public class AdminController {
 		model.addAttribute("pageMaker", new PageDTO(cri, authorService.authorGetTotal(cri)));
 	}
 
-	/* 작가 등록 */
+	@ApiOperation(value = "작가 등록")
 	@PostMapping(value = "authorEnroll.do")
 	public String authorEnrollPOST(AuthorVO author, RedirectAttributes rttr) throws Exception {
 
@@ -230,7 +234,7 @@ public class AdminController {
 		return "redirect:/admin/authorManage";
 	}
 
-	/* 작가 상세, 수정 페이지 */
+	@ApiOperation(value = "작가 상세/수정 페이지")
 	@GetMapping({ "/authorDetail", "/authorModify" })
 	public void authorGetInfoGET(int authorId, Criteria cri, Model model) throws Exception {
 
@@ -243,7 +247,7 @@ public class AdminController {
 		model.addAttribute("authorInfo", authorService.authorGetDetail(authorId));
 	}
 
-	/* 작가 정보 수정 */
+	@ApiOperation(value = "작가 정보 수정")
 	// @PostMapping(value="/authroModify")
 	@RequestMapping(value = "/authorModify", method = { RequestMethod.POST })
 	public String authorModifyPOST(AuthorVO author, RedirectAttributes rttr) throws Exception {
@@ -257,6 +261,7 @@ public class AdminController {
 		return "redirect:/admin/authorManage";
 	}
 
+	@ApiOperation(value = "작가 등록 페이지 접속")
 	/* 작가 검색 팝업창 */
 	@GetMapping("/authorPop")
 	public void authorPopGET(Criteria cri, Model model) throws Exception {
@@ -278,7 +283,7 @@ public class AdminController {
 		model.addAttribute("pageMaker", new PageDTO(cri, authorService.authorGetTotal(cri)));
 	}
 
-	/* 작가 정보 삭제 */
+	@ApiOperation(value = "작가 정보 삭제")
 	@PostMapping("/authorDelete")
 	public String authorDeletePOST(int authorId, RedirectAttributes rttr) {
 
@@ -307,7 +312,7 @@ public class AdminController {
 
 	}
 
-	/* 첨부 파일 업로드 */
+	@ApiOperation(value = "첨부 파일 업로드")
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_VALUE) // goodsEnroll.jsp ajax url
 	public ResponseEntity<List<AttachImageVO>> uploadAjaxActionPOST(MultipartFile[] uploadFile) { // 여러 개의 파일 업로드 처리를 위해
 																									// [] 추가.
@@ -459,7 +464,7 @@ public class AdminController {
 		return result;
 	}
 
-	/* 이미지 파일 삭제 */
+	@ApiOperation(value = "이미지 파일 삭제")
 	@PostMapping("/deleteFile")
 	public ResponseEntity<String> deleteFile(String fileName) { // 파일 이름/경로 전달받기 위해 String type, fileName 파라미터
 
@@ -495,7 +500,7 @@ public class AdminController {
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 
-	/* 비동기방식 로그아웃 메서드 */
+	@ApiOperation(value = "비동기방식 로그아웃 메서드")
 	@PostMapping(value = "logout.do")
 	@ResponseBody
 	public void logoutPOST(HttpServletRequest request) throws Exception {

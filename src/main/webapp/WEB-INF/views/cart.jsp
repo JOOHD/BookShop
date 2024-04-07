@@ -103,7 +103,7 @@
 						<caption>표 내용 부분</caption>
 						<tbody>
 							<c:forEach items="${cartInfo}" var="ci">
-								<tr>
+								<tr><!-- input 태그에 쉽게 접근 위해 td태그 뒤에 값 추가. -->
 									<td class="td_width_1 cart_info_td">		
 									<input type="checkbox" class="individual_cart_checkbox input_size_20" checked="checked">							
 									<input type="hidden" class="individual_bookPrice_input" value="${ci.bookPrice}">
@@ -113,8 +113,11 @@
 									<input type="hidden" class="individual_point_input" value="${ci.point}">
 									<input type="hidden" class="individual_totalPoint_input" value="${ci.totalPoint}">
 									</td>
-									<td class="td_width_2"></td>
-										<div class="image_wrap" data-bookId="${ci.imageList[0].bookId}" data-path="${ci.imageList[0].uploadPath}" data-uuid="${ci.imageList[0].uuid}" data-filename="${ci.imageList[0].fileName}">										
+									<td class="td_width_2">
+										<div class="image_wrap" data-bookId="${ci.imageList[0].bookId}" data-path="${ci.imageList[0].uploadPath}" data-uuid="${ci.imageList[0].uuid}" data-filename="${ci.imageList[0].fileName}">
+											<img>
+										</div>
+									</td>											
 									<td class="td_width_3">${ci.bookName}</td>
 									<td class="td_width_4 price_td">
 									<del>
@@ -128,7 +131,8 @@
 											<input type="text" value="${ci.bookCount}" class="quantity_input">
 											<button class="quantity_btn plus_btn">+</button>
 											<button class="quantity_btn minus_btn">-</button>
-										</div> <a class="quantity_modify_btn">변경</a>
+										</div> 
+										<a class="quantity_modify_btn" data-cartId="${ci.cartId}">변경</a>
 									</td>
 									<td class="td_width_4 table_text_align_center"><fmt:formatNumber value="${ci.salePrice * ci.bookCount}" pattern="#,### 원" /></td>
 									<td class="td_width_4 table_text_align_center delete_btn"><button>삭제</button></td>
@@ -203,6 +207,13 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- 수량 조정 form -->
+		<form action="/cart/update" method="post" class="quantity_update_form">
+			<input type="hidden" name="cartId" class="update_cartId">
+			<input type="hidden" name="bookCount" class="update_bookCount">
+			<input type="hidden" name="memberId" value="${member.memberId}"> <!-- 장바구니 페이지 이동 위한 값. -->
+		</form>
 
 		<!-- Footer 영역 -->
 		<div class="footer_nav">
@@ -244,10 +255,29 @@
 
 	<script>
 	
+		/* 사용자가 화면 이동햇을 때 바로 데이터 확인 위해 document method 추가. */
 		$(document).ready(function(){
 			
 			/* 종합 정보 색션 정보 삽입 */
 			setTotalInfo();
+			
+			/* 이미지 삽입 */
+			$(".image_wrap").each(function(i, obj) { // 모든 상품의 img 출력 위해 each 사용.
+				
+				const bobj = $(obj);
+			
+				if(bobj.data("bookId")){
+					const uploadPath = bobj.data("path");
+					const uuid = bobj.data("uuid");
+					const fileName = bobj.data("filename");
+					
+					const fileCallPath = encodeURIComponent(uploadPath + "/s_" + uuid + "_" + fileName);
+					
+					$(this).find("img").attr('src','/display?fileName=' + fileCallPath);
+				} else {
+					$(this).find("img").attr('src','/resources/img/noImage.png');
+				}
+			});
 			
 		});
 		
@@ -308,6 +338,30 @@
 			// 최종 가격(총 가격 + 배송비)
 			$(".finalTotalPrice_span").text(finalTotalPrice.toLocaleString());
 		}
+		
+		/* 수량버튼 */
+		$(".plus_btn").on("click", function(){
+			let quantity = $(this).parent("div").find("input").val();
+			$(this).parent("div").find("input").val(++quantity);
+		});
+		$(".minus_btn").on("click", function(){
+			let quantity = $(this).parent("div").find("input").val();
+			if(quantity > 1){
+				$(this).parent("div").find("input").val(--quantity);		
+			} 
+		});
+		
+		/* 수량 수정 버튼 */
+		$(".quantity_modify_btn").on("click", function(){
+			// parent() 호출하는 객체의 부모에 접근 / find() 객체 내부의 인자 값으로 부여한 식별자 객체 접근. 
+			let cartId = $(this).data("cartId");
+			let bookCount = $(this).parent("td").find("input").val();
+			
+			// server 전송
+			$(".update_cartId").val(cartId);
+			$(".update_bookCount").val(bookCount);
+			$(".quantity_update_form").submit();
+		});
 	
 	</script>
 
