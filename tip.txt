@@ -340,10 +340,22 @@ ADD = 1.HTML(name, id, class, type)은 VO/DTO 변수명과 같아야 한다.
 
 ------------------------------------------------------Annot/Method------------------------------------------------------
 Map -> JSON
-writeValueAsString(Value); = value : String 타입으로 변환할 대상.
-readValue(arg, type) =  arg : 지정된 타입으로 변환할 대상 / type : 어떤 타입으로 변환 할 것인지 명시. 
+●writeValueAsString(Value); = value : String 타입으로 변환할 대상.
+●readValue(arg, type) =  arg : 지정된 타입으로 변환할 대상 / type : 어떤 타입으로 변환 할 것인지 명시. 
 
-@PathVariable
+●toLocaleString()
+숫자를 해당 지역 설정에 맞는 문자열로 변환하는 데 사용(특정 국가 or 언어의 형식).
+ex)
+const number = 1234567.89;
+const formattedNumber = number.toLocaleString(); // 기본 지역 설정에 따라 포맷
+console.log(formattedNumber); // 출력 예: "1,234,567.89"
+
+●is()
+선택한 요소 집합 중에서 주어진 선택자, 요소 or jQuery 객체와 일치하는 요소가 있는지 여부를 확인.
+ex)
+if($(element).find(".individual_cart_checkbox").is(":checked") === true)
+
+●@PathVariable
 @GetMapping("/goodsDetail/{bookId}")
 public String getGoodsDetail(@PathVariable("bookId")int bookId, Model model) {}
 

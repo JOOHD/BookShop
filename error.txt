@@ -116,3 +116,13 @@ C:\Users\user\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar
 ㄴ문제 : DAO/XML 에서 쿼리문 error 발생.
 	ㄴ원인 : 쿼리문 오타, ?/parameter 매핑 불일치.
 	ㄴ해결 : 쿼리문 오타.
+
+※No qualifying bean of type 'service.CartService' available : expected at least 1 been which qualifies as autowire
+	candidate. dependenc annotations
+ㄴ문제 : 어노테이션 적용 문제 
+	ㄴ원인 : service class 의 interface, Implemnets 에 해당 로직의 @Service 라는 것을 알려줘야 한다. 
+	ㄴ해결 : CasrtServiceImpl.java class에 @Servcie 어노테이션 붙임.
+
+※Unreachable code
+ㄴ문제 : 구조 상 도달할 수 없는 코드
+	ㄴ해결 : 위치 수정.
