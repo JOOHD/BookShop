@@ -73,4 +73,13 @@ public class CartController {
 		// memberId 는 장바구니 페이지 이동에 필요로 한 데이터.("/cart/사용자아이디")
 		return "redirect:/cart/" + cart.getMemberId();
 	}
+	
+	@ApiOperation(value = "장바구니 삭제")
+	@PostMapping("/cart/delete")
+	public String deleteCartPOST(CartDTO cart) {
+	
+		cartService.deleteCart(cart.getCartId());
+		
+		return "redirect:/cart/" + cart.getMemberId();
+	}
 }

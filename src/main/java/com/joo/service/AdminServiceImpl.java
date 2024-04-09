@@ -56,8 +56,7 @@ public class AdminServiceImpl implements AdminService {
         // 람다식 활용한 for문
 		book.getImageList().forEach(attach ->{	// 'BookVO' 객체의 이미지 목록 가져오기(attach 변수로 이미지 받기.
 			
-			attach.setBookId(book.getBookId()); // 순회 중인 이미지(attach)의 bookId를 'BookVO' 객체의 bookId로 설정.
-												// 이미지를 등록할 때 각 이미지가 어떤 상품에 속하는지를 나타 냄. 
+			attach.setBookId(book.getBookId()); // 이미지를 등록할 때 각 이미지가 어떤 상품에 속하는지를 식별. 
 			adminMapper.imageEnroll(attach);	// attach를 imageEnroll() 메서드에 전달. 이 메서드는 db에 등록하는 역할.
 			
 			log.info("attach : " + attach);

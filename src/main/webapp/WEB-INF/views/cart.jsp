@@ -64,7 +64,7 @@
 						<span><a href="/member/join">회원가입</a></span>
 					</c:if>
 
-					<!-- 로그인한 상태 -->
+					<!-- 로그인 한 상태 -->
 					<c:if test="${ member != null }">
 						<div class="login_success_area">
 							<span> 회원 : ${member.memberName} </span> <span> 충전금액 :${member.money} </span> <span> 포인트 : ${member.point} </span> <a href="/member/logout.do">로그아웃</a>
@@ -84,6 +84,12 @@
 				<!-- cartInfo -->
 				<div class="content_totalCount_section">
 
+					<!-- 체크박스 전체 여부 -->
+					<div class="all_check_input_div">
+						<input type="checkbox" class="all_check_input input_size_20" checked="checked">
+						<span class="all_chcek_span">전체선택</span>
+					</div>
+					
 					<table class="subject_table">
 						<caption>표 제목 부분</caption>
 						<tbody>
@@ -114,7 +120,11 @@
 									<input type="hidden" class="individual_totalPoint_input" value="${ci.totalPoint}">
 									</td>
 									<td class="td_width_2">
-										<div class="image_wrap" data-bookId="${ci.imageList[0].bookId}" data-path="${ci.imageList[0].uploadPath}" data-uuid="${ci.imageList[0].uuid}" data-filename="${ci.imageList[0].fileName}">
+										<div class="image_wrap" 
+											data-bookId="${ci.imageList[0].bookId}" 
+											data-path="${ci.imageList[0].uploadPath}" 
+											data-uuid="${ci.imageList[0].uuid}" 
+											data-filename="${ci.imageList[0].fileName}">
 											<img>
 										</div>
 									</td>											
@@ -132,10 +142,12 @@
 											<button class="quantity_btn plus_btn">+</button>
 											<button class="quantity_btn minus_btn">-</button>
 										</div> 
-										<a class="quantity_modify_btn" data-cartId="${ci.cartId}">변경</a>
+										<button class="quantity_modify_btn" data-cartId="${ci.cartId}">변경</button>
 									</td>
 									<td class="td_width_4 table_text_align_center"><fmt:formatNumber value="${ci.salePrice * ci.bookCount}" pattern="#,### 원" /></td>
-									<td class="td_width_4 table_text_align_center delete_btn"><button>삭제</button></td>
+									<td class="td_width_4 table_text_align_center delete_btn">
+										<button class="delete_btn" data-cartid="${ci.cartId}">삭제</button>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -215,6 +227,12 @@
 			<input type="hidden" name="memberId" value="${member.memberId}"> <!-- 장바구니 페이지 이동 위한 값. -->
 		</form>
 
+		<!-- 삭제 form -->
+		<form action="/cart/delete" method="post" class="quantity_update_form">
+			<input type="hidden" name="cartId" class="delete_cartId">
+			<input type="hidden" name="memberId" value="${member.memberId}">
+		</form>
+		
 		<!-- Footer 영역 -->
 		<div class="footer_nav">
 			<div class="footer_nav_container">
@@ -287,6 +305,20 @@
 			setTotalInfo($(".cart_info_td"));
 		});
 	
+		/* 체크박스 전체 선택 */
+		$(".all_check_input").on("click", function(){
+			
+			/* 체크박스 체크/해제 */
+			if($(".all_check_input").prop("checked")){
+				$(".individual_cart_checkbox").attr("checked", true);
+			} else{
+				$(".individual_cart_checkbox").attr("checked", false);
+			}
+			
+			/* 총 주문 정보 세팅(배송비, 총 가격, 마일리지, 물품 수, 종류) */
+			setTotalInfo($(".cart_info_td"));
+		});
+		
 		/* 총 주문 정보 세팅(배송비, 총 가격, 마일리지, 물품 수, 종류) */
 		function setTotalInfo(){
 			
@@ -308,7 +340,7 @@
 					// 총 종류
 					totalKind += 1;
 					// 총 마일리지
-					totalPoint += parseInt($(element).find(".individual_totalPoint_input").val());
+					totalPoint += parseInt($(element).find(".individual_totalPoint_input").val());					
 				}
 			});
 			
@@ -326,13 +358,13 @@
 			
 			/* 값 삽입 */
 			// 총 가격
-			$(".totalPrice_span").text(totalPrice);
+			$(".totalPrice_span").text(totalPrice.toLocaleString());
 			// 총 갯수
 			$(".totalCount_span").text(totalCount);
 			// 총 종류
 			$(".totalKind_span").text(totalKind);
 			// 총 마일리지
-			$(".totalPoint_span").text(totalPoint);
+			$(".totalPoint_span").text(totalPoint.toLocaleString());
 			// 배송비
 			$(".delivery_price").text(deliveryPrice);	
 			// 최종 가격(총 가격 + 배송비)
@@ -354,13 +386,21 @@
 		/* 수량 수정 버튼 */
 		$(".quantity_modify_btn").on("click", function(){
 			// parent() 호출하는 객체의 부모에 접근 / find() 객체 내부의 인자 값으로 부여한 식별자 객체 접근. 
-			let cartId = $(this).data("cartId");
+			let cartId = $(this).data("cartid");
 			let bookCount = $(this).parent("td").find("input").val();
 			
 			// server 전송
 			$(".update_cartId").val(cartId);
 			$(".update_bookCount").val(bookCount);
 			$(".quantity_update_form").submit();
+		});
+		
+		/* 장바구니 삭제 버튼 */
+		$(".delete_btn").on("click", function(e){
+			e.preventDefault();
+			const cartId = $(this).data("cartId");
+			$(".delete_cartId").val("cartId");
+			$(".quantity_delete_form").submit();
 		});
 	
 	</script>

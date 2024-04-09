@@ -47,23 +47,24 @@ public class CartServiceImpl implements CartService {
 		
 		for(CartDTO dto : cart) { // for문을 사용하여 DTO의 4개(sale/total price, point/total) 변수를 초기화.
 			
-			log.info("dto : " + dto);
+			// log.info("dto : " + dto);
 			
 			/* 종합 정보 초기화 */
 			dto.initSalePrice();
 			
-			log.info("dto : " + dto);
+			// log.info("dto : " + dto);
 			
 			/* 이미지 정보 얻기 */
 			int bookId = dto.getBookId();
 			
 			List<AttachImageVO> imageList = attachMapper.getAttachList(bookId);
 			
-			// log.info("imageList : " + imageList);
+			log.info("imageList : " + imageList);
 			
-			log.info("dto2 : " + dto);
+			// log.info("dto2 : " + dto);
 			dto.setImageList(imageList);
-			log.info("dto2 : " + dto);
+			// log.info("dto2 : " + dto);
+			
 		}
 		
 		return cart; // 세팅된 값 반환
@@ -78,7 +79,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public int deleteCart(int cartId) {
 		
-		return 0;
+		return cartMapper.deleteCart(cartId);
 	}
 
 	@Override
