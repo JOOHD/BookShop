@@ -118,6 +118,7 @@
 									<input type="hidden" class="individual_totalPrice_input" value="${ci.salePrice * ci.bookCount}">
 									<input type="hidden" class="individual_point_input" value="${ci.point}">
 									<input type="hidden" class="individual_totalPoint_input" value="${ci.totalPoint}">
+									<input type="hidden" class="individual_bookId_input" value="${ci.bookId}">	
 									</td>
 									<td class="td_width_2">
 										<div class="image_wrap" 
@@ -128,24 +129,24 @@
 											<img>
 										</div>
 									</td>											
-									<td class="td_width_3">${ci.bookName}</td>
+									<td class="td_width_3"><a href="/goodsDetail/${ci.bookId}">${ci.bookName}</td>
 									<td class="td_width_4 price_td">
-									<del>
-										정가 :
-										<fmt:formatNumber value="${ci.bookPrice}" pattern="#,### 원" />
-									</del>
-									<br> 
-										판매가 : <span class="red_color"><fmt:formatNumber value="${ci.salePrice}" pattern="#,### 원" /></span><br> 마일리지 : <span class="green_color"><fmt:formatNumber value="${ci.point}" pattern="#,###" /></span></td>
+									<del>정가 : <fmt:formatNumber value="${ci.bookPrice}" pattern="#,### 원" /></del><br> 
+										판매가 : <span class="red_color"><fmt:formatNumber value="${ci.salePrice}" pattern="#,### 원" /></span><br> 
+										마일리지 : <span class="green_color"><fmt:formatNumber value="${ci.point}" pattern="#,###" /></span>
+									</td>
 									<td class="td_width_4 table_text_align_center">
 										<div class="table_text_align_center quantity_div">
 											<input type="text" value="${ci.bookCount}" class="quantity_input">
 											<button class="quantity_btn plus_btn">+</button>
 											<button class="quantity_btn minus_btn">-</button>
 										</div> 
-										<button class="quantity_modify_btn" data-cartId="${ci.cartId}">변경</button>
+										<a class="quantity_modify_btn" data-cartid="${ci.cartId}">변경</a>
 									</td>
-									<td class="td_width_4 table_text_align_center"><fmt:formatNumber value="${ci.salePrice * ci.bookCount}" pattern="#,### 원" /></td>
-									<td class="td_width_4 table_text_align_center delete_btn">
+									<td class="td_width_4 table_text_align_center">
+										<fmt:formatNumber value="${ci.salePrice * ci.bookCount}" pattern="#,### 원" />
+									</td>
+									<td class="td_width_4 table_text_align_center">
 										<button class="delete_btn" data-cartid="${ci.cartId}">삭제</button>
 									</td>
 								</tr>
@@ -213,11 +214,11 @@
 						</table>
 					</div>
 				</div>
-				<!-- 구매 버튼 영역 -->
-				<div class="content_btn_section">
-					<a>주문하기</a>
-				</div>
 			</div>
+		</div>
+		<!-- 구매 버튼 영역 -->
+		<div class="content_btn_section">
+			<a class="order_btn">주문하기</a>
 		</div>
 		
 		<!-- 수량 조정 form -->
@@ -228,9 +229,14 @@
 		</form>
 
 		<!-- 삭제 form -->
-		<form action="/cart/delete" method="post" class="quantity_update_form">
+		<form action="/cart/delete" method="post" class="quantity_delete_form">
 			<input type="hidden" name="cartId" class="delete_cartId">
 			<input type="hidden" name="memberId" value="${member.memberId}">
+		</form>
+		
+		<!-- 주문 form -->
+		<form action="/order/${member.memberId}" method="get" class="order_form">
+			
 		</form>
 		
 		<!-- Footer 영역 -->
@@ -398,9 +404,37 @@
 		/* 장바구니 삭제 버튼 */
 		$(".delete_btn").on("click", function(e){
 			e.preventDefault();
-			const cartId = $(this).data("cartId");
-			$(".delete_cartId").val("cartId");
+			const cartId = $(this).data("cartid");
+			$(".delete_cartId").val(cartId);
 			$(".quantity_delete_form").submit();
+		});
+		
+		/* 주문 페이지 이동 */
+		$(".order_btn").on("click", function(){
+			
+			let form_contents = ''; // 초기화
+			let orderNumber = 0; 	// index 값 역할을 할 변수(orders[0], orders[1], orders[2]..)
+			
+			$(".cart_info_td").each(function(index, element){
+				
+				if($(element).find(".individual_cart_checkbox").is(":checked") === true){	//체크여부
+					
+					let bookId = $(element).find(".individual_bookId_input").val();
+					let bookCount = $(element).find(".individual_bookCount_input").val();
+					
+					let bookId_input = "<input name='orders[" + orderNumber + "].bookId' type='hidden' value='" + bookId + "'>";
+					form_contents += bookId_input;
+					
+					let bookCount_input = "<input name='orders[" + orderNumber + "].bookCount' type='hidden' value='" + bookCount + "'>";
+					form_contents += bookCount_input;
+					
+					orderNumber += 1;
+					
+				}
+			});
+			
+			$(".order_form").html(form_contents);
+			$(".order_form").submit();
 		});
 	
 	</script>

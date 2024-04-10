@@ -157,7 +157,22 @@
 					<div class="book_content">${goodsInfo.bookContents }</div>
 				</div>
 				<div class="line"></div>
-				<div class="content_bottom">리뷰</div>
+				<div class="content_bottom">
+					<div class="reply_subject">
+						<h2>리뷰</h2>
+					</div>
+					
+					<c:if test="${member != null}">
+						<div class="reply_button_wrap">
+							<button>리뷰 쓰기</button>
+						</div>
+					</c:if>		
+				</div>
+				<!-- 주문 form -->
+				<form action="/order/${member.memberId}" method="get" class="order_form">
+					<input type="hidden" name="orders[0].bookId" value="${goodsInfo.bookId}">
+					<input type="hidden" name="orders[0].bookCount" value=""><!-- 사용자가 구매 버튼을 눌렀을 때 확정이기 때문에 js 코드로 동적 추가. -->
+				</form>
 			</div>
 		</div>
 
@@ -278,6 +293,13 @@
 				location.href="/member/login";
 			}
 		}
+		
+		/* 바로구매 버튼 */
+		$(".btn_buy").on("click", function(){
+			let bookCount = $(".quantity_input").val();
+			$(".order_form").find("input[name='orders[0].bookCount']").val(bookCount);
+			$(".order_form").submit();
+		});
 		
 	</script>
 

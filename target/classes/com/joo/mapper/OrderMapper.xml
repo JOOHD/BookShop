@@ -1,0 +1,14 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.joo.mapper.OrderMapper">
+
+	<select id="getGoodsInfo" resultType="com.joo.model.OrderPageItemDTO">
+	
+		select bookId, bookName, bookPrice, bookDiscount
+		from joo_book 
+		where bookId = #{bookId}
+	
+	</select>
+
+  </mapper>

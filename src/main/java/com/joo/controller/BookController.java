@@ -24,6 +24,7 @@ import com.joo.model.Criteria;
 import com.joo.model.PageDTO;
 import com.joo.service.AttachService;
 import com.joo.service.BookService;
+import com.joo.service.CartService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +40,9 @@ public class BookController {
 
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private CartService cartService;
 
 	@ApiOperation(value = "이미지 정보 반환")
 	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -124,7 +128,7 @@ public class BookController {
 	
 	@ApiOperation(value = "상품 상세")
 	@GetMapping("/goodsDetail/{bookId}") // {bookId} : Spring에서 사용자가 전송한 식별자 값을 변수로 인식하도록 템플릿 변수
-	public String goodsDetailGet(@PathVariable("bookId")int bookId, Model model) {
+	public String goodsDetailGet(@PathVariable int bookId, Model model) {
 		
 		log.info("goodsDetailGET()...........");
 		
