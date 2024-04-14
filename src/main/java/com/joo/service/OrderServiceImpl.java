@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.joo.mapper.AttachMapper;
 import com.joo.mapper.OrderMapper;
+import com.joo.model.AttachImageVO;
 import com.joo.model.OrderPageItemDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderMapper orderMapper;
+	
+	@Autowired
+	private AttachMapper attachMapper;
 	
 	@Override
 	public List<OrderPageItemDTO> getGoodsInfo(List<OrderPageItemDTO> orders) {
@@ -49,6 +54,10 @@ public class OrderServiceImpl implements OrderService {
 			
 			// (salePrice, totalPrice, savePoint, totalSavePoint) 값 세팅.
 			goodsInfo.initSaleTotal();
+			
+			List<AttachImageVO> imageList = attachMapper.getAttachList(goodsInfo.getBookId());
+			
+			goodsInfo.setImageList(imageList);
 			
 			log.info("goodsInfo3 : " + goodsInfo); // 계산된 값 세팅
 			// 만들어내야 할 상품 정보가 모두 세팅된 객체(List) 추가.

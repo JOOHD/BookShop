@@ -1,5 +1,7 @@
 package com.joo.model;
 
+import java.util.List;
+
 public class OrderPageItemDTO { // 상품 데이터를 담을 클래스
 	
 	/* view로부터 전달받을 값 */
@@ -17,6 +19,9 @@ public class OrderPageItemDTO { // 상품 데이터를 담을 클래스
 	private int point;
 	private int totalPoint;
 	
+	/* 상품 이미지 */
+	private List<AttachImageVO> imageList;
+	
 	public void initSaleTotal() { // DB에서 꺼내올 데이터가 아니라 계산으로 만들어 낼 수 있다.
 		this.salePrice = (int)(this.bookPrice * (1-this.bookDiscount));
 		this.totalPrice = this.salePrice * this.bookCount;
@@ -24,6 +29,14 @@ public class OrderPageItemDTO { // 상품 데이터를 담을 클래스
 		this.totalPoint = this.point * this.bookCount;
 	}
 	
+	public List<AttachImageVO> getImageList() {
+		return imageList;
+	}
+
+	public void setImageList(List<AttachImageVO> imageList) {
+		this.imageList = imageList;
+	}
+
 	public int getBookId() {
 		return bookId;
 	}
@@ -78,11 +91,13 @@ public class OrderPageItemDTO { // 상품 데이터를 담을 클래스
 	public void setTotalPoint(int totalPoint) {
 		this.totalPoint = totalPoint;
 	}
+
 	@Override
 	public String toString() {
 		return "OrderPageItemDTO [bookId=" + bookId + ", bookCount=" + bookCount + ", bookName=" + bookName
 				+ ", bookPrice=" + bookPrice + ", bookDiscount=" + bookDiscount + ", salePrice=" + salePrice
-				+ ", totalPrice=" + totalPrice + ", point=" + point + ", totalPoint=" + totalPoint + "]";
+				+ ", totalPrice=" + totalPrice + ", point=" + point + ", totalPoint=" + totalPoint + ", imageList="
+				+ imageList + "]";
 	}
 	
 	

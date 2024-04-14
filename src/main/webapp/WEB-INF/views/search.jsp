@@ -100,7 +100,9 @@
 						</div>
 
 						<form id="filter_form" action="/search" method="get">
-							<input type="hidden" name="keyword"> <input type="hidden" name="cateCode"> <input type="hidden" name="type">
+							<input type="hidden" name="keyword"> 
+							<input type="hidden" name="cateCode"> 
+							<input type="hidden" name="type">
 						</form>
 
 					</div>
@@ -172,7 +174,11 @@
 					</div>
 
 					<form id="moveForm" action="/search" method="get">
-						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"> <input type="hidden" name="amount" value="${pageMaker.cri.amount}"> <input type="hidden" name="keyword" value="${pageMaker.cri.keyword}"> <input type="hidden" name="cateCode" value="<c:out value="${pageMaker.cri.cateCode}"/>"> <input type="hidden" name="type" value="${pageMaker.cri.type}">
+						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"> 
+						<input type="hidden" name="amount" value="${pageMaker.cri.amount}"> 
+						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}"> 
+						<input type="hidden" name="cateCode" value="<c:out value="${pageMaker.cri.cateCode}"/>"> 
+						<input type="hidden" name="type" value="${pageMaker.cri.type}">
 					</form>
 
 
@@ -268,57 +274,54 @@
 		});
 
 		/* 필터링 태그 동작 */
+		$(".filter_content a").on("click", function(e){
+			e.preventDefault();
+			
+			let type = '<c:out value="${pageMaker.cri.type}"/>';
+			if(type === 'A' || type === 'T'){
+				type = type + 'C';
+			}
+			let keyword = '<c:out value="${pageMaker.cri.keyword}"/>';
+			let cateCode = ${this}.attr("href");
+			
+			$("#filter_form input[name='keyword']").val(keyword);
+			$("#filter_form input[name='cateCode']").val(cateCode);
+			$("#filter_form input[name='type']").val(type);
+			$("#filter_form").submit();
+		}
+		
+		
+		$(document).ready(function() {
 
-		$(document)
-				.ready(
-						function() {
+			// 검색 타입 selected
+			const selectedType = '<c:out value="${pageMaker.cri.type}"/>';
+			if(selectedType != ""){
+				$("select[name='type']").val(selectedType).attr("selected", "selected");	
+			}
+			
+			/* 이미지 삽입 */
+			$(".image_wrap").each(function(i, obj){
+				
+				const bobj = $(obj);
+				
+				if(bobj.data("bookid")){
+					const uploadPath = bobj.data("path");
+					const uuid = bobj.data("uuid");
+					const fileName = bobj.data("filename");
+					
+					const fileCallPath = encodeURIComponent(uploadPath + "/s_" + uuid + "_" + fileName);
+					
+					$(this).find("img").attr('src', '/display?fileName=' + fileCallPath);
+					
+				} else {
+					
+					$(this).find("img").attr('src', '/resources/img/goodsNoImage.png');
+					
+				}
 
-							// 검색 타입 selected
-							const selectedType = '<c:out value="${pageMaker.cri.type}"/>';
-							if (selectedType != "") {
-								$("select[name='type']").val(selectedType)
-										.attr("selected", "selected");
-							}
-
-							/* 이미지 삽입 */
-							$(".image_wrap")
-									.each(
-											function(i, obj) {
-
-												const bobj = $(obj);
-
-												if (bobj.data("bookid")) {
-													const uploadPath = bobj
-															.data("path");
-													const uuid = bobj
-															.data("uuid");
-													const fileName = bobj
-															.data("filename");
-
-													const fileCallPath = encodeURIComponent(uploadPath
-															+ "/s_"
-															+ uuid
-															+ "_" + fileName);
-
-													$(this)
-															.find("img")
-															.attr(
-																	'src',
-																	'/display?fileName='
-																			+ fileCallPath);
-
-												} else {
-
-													$(this)
-															.find("img")
-															.attr('src',
-																	'/resources/img/noImage.png');
-
-												}
-
-											});
-
-						});
+				
+			});	
+		});	
 	</script>
 
 </body>
