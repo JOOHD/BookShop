@@ -282,13 +282,13 @@
 				type = type + 'C';
 			}
 			let keyword = '<c:out value="${pageMaker.cri.keyword}"/>';
-			let cateCode = ${this}.attr("href");
+			let cateCode= $(this).attr("href");
 			
 			$("#filter_form input[name='keyword']").val(keyword);
 			$("#filter_form input[name='cateCode']").val(cateCode);
 			$("#filter_form input[name='type']").val(type);
 			$("#filter_form").submit();
-		}
+		});
 		
 		
 		$(document).ready(function() {
@@ -315,7 +315,7 @@
 					
 				} else {
 					
-					$(this).find("img").attr('src', '/resources/img/goodsNoImage.png');
+					$(this).find("img").attr('src', '/resources/img/noImage.png');
 					
 				}
 
