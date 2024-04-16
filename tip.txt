@@ -98,6 +98,19 @@ ex) RUNTIME_EXCEPTION(HttpStatus.BAD_REQUEST, "E0001"),
 
 ● javascript - alert 는 경고창
 
+● const : 한 번 값을 할당하면 재할당할 수 없는 상수 선언 사용할 때,
+    let  : 블록 범위 지역 변수를 선언, 값을 다시 할당할 수 있다.
+● propertychange change keyup paste input 
+	ㄴpropertychange : 요소의 속성(property)이 변경될 때 발생
+	ㄴchange : 요소의 값이 변경 될 때 (<input>, <select>, <textarea>)
+	ㄴkeyup : 입력란에 텍스트를 입력할 때 마다.
+	ㄴpaste : 용자가 컨텍스트 메뉴를 통해 내용을 붙여넣을 때
+	ㄴinput : 요소의 값이 변경될 때
+
+● const maxPoint = parseInt('${memberInfo.point}');
+	ㄴ '${memberInfo.point}' 이 코드 자체가 문자열로 표현되고 있다.
+		ㄴ그래서 parseInt로 문자열 -> 숫자로 변환.
+
 ●  eclipse Darkest Dark Theme with DevStyle 2022.6.13(스킨 런처 아이콘, 주석 등등 자동 적용)
 
 ● $(document)는 전체 HTML 문서를 jQuery 객체로 감싸는 것이며,

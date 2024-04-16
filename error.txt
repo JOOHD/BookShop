@@ -1,3 +1,7 @@
+※영어와 숫자 사이에 간격이 벌어진 경우
+ㄴ원인 : (전각 문자와 반각 문자 입력 등의 차이로 생긴 에러)
+	ㄴ해결 : ALT + '=' 키를 눌러주면 에러 해결.
+
 ※org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
 
 원인 : spring boot와 spring fox의 버전이 맞지 않아 발생하는 에러
@@ -52,8 +56,6 @@ C:\Users\user\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar
 ※ 이클립스 작동시, js 파일 흑백 문제 발생 
 ㄴ해결법으로 install market으로 add 하고 적용하려고 했는데? 플러그인 설치 애러 발생 
 ㄴ해결법으로 제어판 -> 방화벽 -> 이클립스 허용 -> 문제 해결
-
-※ Failed to convert property value of type 'java.lang.String' to required type 'int' for property 
 
 ----------------------------------------DB & Query----------------------------------------
 
@@ -112,6 +114,14 @@ C:\Users\user\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar
 			joo_book 테이블에 bookId(46) 이 없었다. insert여서 45까지있어서 추가하려고 46을 했다.
 	ㄴ해결 : 매칭이 안됐다는 뜻이기에 기존에 있는 bookId(6)으로 바꾸어주었다.
 
+※Error Code: 3780. Referencing column 'memberId' and referenced column 'memberId' in foreign key constraint 'joo_order_ibfk_1' are incompatible.	
+ㄴ문제 : 테이블 생성에서 문제 발생
+	ㄴ원인 : 1)외래키를 맺으려고 하는 두 개의 컬럼의 타입이 맞지 않은 경우.
+		    2)타입도 맞았는데 계속된 에러 발생이면, 'character set'이 동일하지 않기 때문에 발생하는 에러.
+			utfmb4_unicode_ci 로 보이는 부분이 테이블의 character set 설정이다. 
+			varchar, char 의 타입을 가진 컬럼에만 나온다. 따라서 varchar, char 로 외래키를 엮으려고 하는데 			에러가 난다면 Collation 값이 동일한지 확인.
+	ㄴ해결 : 테이블 끝에 character set=utf-8 입력.
+
 ※Parameter index out of range (1 > number of parameters, which is 0).
 ㄴ문제 : DAO/XML 에서 쿼리문 error 발생.
 	ㄴ원인 : 쿼리문 오타, ?/parameter 매핑 불일치.
@@ -126,3 +136,15 @@ C:\Users\user\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar
 ※Unreachable code
 ㄴ문제 : 구조 상 도달할 수 없는 코드
 	ㄴ해결 : 위치 수정.
+
+※Failed to convert property value of type 'java.lang.String' to required type 'int' for property 'cartId'
+ㄴ문제 : jquery 버튼 기능이 작동이 안됨.
+	ㄴ원인1 : const cartId = $(this).data("cartId"); / HTML data 속성 값을 가져올때, 소문자로 받아야한다.(약속)
+	ㄴ원인2 : <a class="quantity_modify_btn" data-cartid="${ci.cartId}">변경</button> 인데, 
+		      <button 태그를 사용하니까 에러 발생
+	ㄴ해결1 : data("cartid"); 로 대분자 -> 소문자로 바꾸어 주면서 해결.
+	ㄴ해결2 : 다시 a 태그로 원복.
+
+※ javax.el.ELException: Failed to parse the expression [${this}]
+ㄴ문제 : 갑자기 위에 에러 문구와 함께 특정 페이지 500 ERROR
+	ㄴ해결 : Server 프로젝트의 catalina.properties 맨 밑에 org.apache.el.parser.SKIP_IDENTIFIER_CHECK=true 추가.
