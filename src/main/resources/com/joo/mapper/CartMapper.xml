@@ -34,11 +34,18 @@
 	
 	</select>
 	
-		<!-- 카트 확인 -->
+	<!-- 카트 확인 -->
 	<select id="checkCart" resultType="com.joo.model.CartDTO">
 	
 		select * from joo_cart 
 		where memberId = #{memberId} and bookId = #{bookId}
 	
 	</select>
+	
+	<!-- 카트 주문 삭제 -->
+	<delete id="deleteOrderCart">
+	
+		delete from joo_cart where memberId = #{memberId} and bookId = #{bookId}
+	
+	</delete>
   </mapper>

@@ -1,14 +1,25 @@
 package com.joo.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.joo.mapper.AttachMapper;
+import com.joo.mapper.BookMapper;
+import com.joo.mapper.CartMapper;
+import com.joo.mapper.MemberMapper;
 import com.joo.mapper.OrderMapper;
 import com.joo.model.AttachImageVO;
+import com.joo.model.BookVO;
+import com.joo.model.CartDTO;
+import com.joo.model.MemberVO;
+import com.joo.model.OrderDTO;
+import com.joo.model.OrderItemDTO;
 import com.joo.model.OrderPageItemDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +33,15 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private AttachMapper attachMapper;
+	
+	@Autowired
+	private MemberMapper memberMapper;
+	
+	@Autowired
+	private CartMapper cartMapper;
+	
+	@Autowired
+	private BookMapper bookMapper;
 	
 	@Override
 	public List<OrderPageItemDTO> getGoodsInfo(List<OrderPageItemDTO> orders) {
@@ -64,6 +84,95 @@ public class OrderServiceImpl implements OrderService {
 			result.add(goodsInfo);
 		}
 		return result;
+	}
+
+	@Override
+	@Transactional // 여러 개의 쿼리 작업 시,
+	public void order(OrderDTO ord) {
+		
+		/* 사용할 데이터 가져오기 */
+			/* 회원 정보 */
+			MemberVO member = memberMapper.getMemberInfo(ord.getMemberId());
+			/* 주문 정보 */
+			List<OrderItemDTO> ords = new ArrayList<>();
+			for(OrderItemDTO oit : ord.getOrders()) {
+				OrderItemDTO orderItem = orderMapper.getOrderInfo(oit.getBookId());
+				
+				log.info("oit : " + oit);
+				log.info("orderItem1 : " + orderItem);
+				
+				// 수량 셋팅
+				orderItem.setBookCount(oit.getBookCount());
+				// 기본정보 셋팅
+				orderItem.initSaleTotal();
+				// List객체 추가
+				ords.add(orderItem);
+				log.info("orderItem2 : " + orderItem);
+				log.info("ords : " + ords);
+			}
+			/* OrderDTO 셋팅 */
+			ord.setOrders(ords);
+			ord.getOrderPriceInfo();
+			log.info("ord : " + ord);
+			
+		/* DB 주문, 주문상품(배송정보) 넣기 */
+			/* orderId 만들기 및 OrderDTO 객체 orderId에 저장 */
+			Date date = new Date();
+			SimpleDateFormat format = new SimpleDateFormat("_yyyyMMddmm");
+			
+			// joo_order tb에는 auto_increasement 적용 안함 -> 직접 부여 해주어야 됨.
+			// orderId = "회원 아이디" + "_년도 월 일 분"
+			String orderId = member.getMemberId() + format.format(date);
+			
+			log.info("orderId : " + orderId);
+			
+			ord.setOrderId(orderId);
+			
+			log.info("ord : " + ord);
+			
+			/* DB 넣기 */
+			orderMapper.enrollOrder(ord); 				// joo_order 등록
+			
+			for(OrderItemDTO oit : ord.getOrders()) {	// joo_orderItem 등록
+				log.info("oit1 : " + oit);
+				
+				oit.setOrderId(orderId);
+				
+				log.info("oit2 : " + oit);
+				orderMapper.enrollOrderItem(oit);
+			}
+		
+		/* 비용 포인트 변동 적용 */
+			/* 비용 차감 & 변동 돈(money) Member객체 적용 */
+			int calMoney = member.getMoney();
+			calMoney -= ord.getOrderFinalSalePrice(); 	// 상품 주문에서 사용한 포인트 차감.
+			
+			log.info("calMoney : " + calMoney);
+			
+			member.setMoney(calMoney);					// 주문으로 인해 획득할 포인트 변수에 저장.
+			
+			/* 변동 돈, 포인트 DB 적용 */
+			orderMapper.deductMoney(member);
+			
+		/* 재고 변동 적용 */
+			for(OrderItemDTO oit : ord.getOrders()) {
+				/*변동 재고 값 구하기 */
+				BookVO book = bookMapper.getGoodsInfo(oit.getBookId());
+				book.setBookStock(book.getBookStock() - oit.getBookCount());
+				
+				log.info("book : " + book);
+				/* 변동 값 DB 적용 */
+				orderMapper.deductStock(book);
+			}
+		
+		/* 장바구니 제거 */
+			for(OrderItemDTO oit : ord.getOrders()) {
+				CartDTO dto = new CartDTO();
+				dto.setMemberId(ord.getMemberId());
+				dto.setBookId(oit.getBookId());
+				
+				cartMapper.deleteOrderCart(dto);
+			}	
 	}
 
 }

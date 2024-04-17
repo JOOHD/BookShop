@@ -595,6 +595,7 @@ $(".order_btn").on("click", function(){
 		let bookCount_input = "<input name='orders[" + index + "].bookCount' type='hidden' value='" + bookCount + "'>";
 		form_contents += bookCount_input;
 	});
+	
 	$(".order_form").append(form_contents);
 	
 	/* 서버 전송 */

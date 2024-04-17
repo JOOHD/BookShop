@@ -3,6 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.joo.mapper.OrderMapper">
 
+	<!-- 주문 상품 정보(주문 페이지) -->
 	<select id="getGoodsInfo" resultType="com.joo.model.OrderPageItemDTO">
 	
 		select bookId, bookName, bookPrice, bookDiscount
@@ -10,5 +11,50 @@
 		where bookId = #{bookId}
 	
 	</select>
+	
+	<!-- 주문 상품 정보(주문 처리) -->
+	<select id="getOrderInfo" resultType="com.joo.model.OrderItemDTO">
+	
+		select bookId, bookPrice, bookDiscount
+		from joo_book where bookId = #{bookId}
+	
+	</select>
+	
+	<!-- 주문 테이블 등록 -->
+	<insert id="enrollOrder">
+	
+		insert into joo_order(orderId, addressee, memberId, memberAddr1, memberAddr2, memberAddr3, orderState, deliveryCost, usePoint)
+	values(#{orderId},#{addressee}, #{memberId}, #{memberAddr1}, #{memberAddr2}, #{memberAddr3}, '배송준비', #{deliveryCost}, #{usePoint})
+	
+	</insert>
+	
+	<!-- 주문 아이템 테이블 등록 -->
+	<insert id="enrollOrderItem">
+	
+		insert into joo_orderItem(orderId, bookId, bookCount, bookPrice, bookDiscount, savePoint)
+	values(#{orderId}, #{bookId}, #{bookCount}, #{bookPrice}, #{bookDiscount}, #{savePoint})
+	
+	</insert>
+	
+	<!-- 주문 금액 차감 -->
+	<update id="deductMoney">
+	
+		update joo_member set money = #{money}, point = #{point} where  memberid = #{memberId}
+	
+	</update>
+	
+	<!-- 주문 재고 차감 -->
+	<update id="deductStock">
+	
+		update joo_book set bookStock = #{bookStock} where bookId = #{bookId} 
+	
+	</update>
+	
+	<!-- 카트 주문 제거 -->
+	<delete id="deleteOrderCart">
+	
+		delete from joo_cart where memberId = #{memberId} and bookId = #{bookId}
+	
+	</delete>
 
   </mapper>

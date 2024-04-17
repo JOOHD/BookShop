@@ -20,4 +20,7 @@ public interface CartMapper {
 	
 	/* 카트 확인 */
 	public CartDTO checkCart(CartDTO cart); // 회원정보(memberId), 상품정보(bookId)
+	
+	/* 카트 제거(주문) */
+	public int deleteOrderCart(CartDTO dto);
 }

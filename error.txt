@@ -122,6 +122,11 @@ C:\Users\user\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar
 			varchar, char 의 타입을 가진 컬럼에만 나온다. 따라서 varchar, char 로 외래키를 엮으려고 하는데 			에러가 난다면 Collation 값이 동일한지 확인.
 	ㄴ해결 : 테이블 끝에 character set=utf-8 입력.
 
+※Cannot add or update a child row: a foreign key constraint fails (`bookshop`.`joo_orderitem`, CONSTRAINT 	`joo_orderitem_ibfk_2` FOREIGN KEY (`bookId`) REFERENCES `joo_book` (`bookId`))
+ㄴ문제 : mapper test 도중 발생 enroll 메서드 관련 insert into 쿼리문에서 발생
+	ㄴ원인 : 없는 bookId 를 넣어서 생긴 에러
+	ㄴ해결 : 값이 있는 bookId 데이터를 다시 넣어서 에러 해결.
+
 ※Parameter index out of range (1 > number of parameters, which is 0).
 ㄴ문제 : DAO/XML 에서 쿼리문 error 발생.
 	ㄴ원인 : 쿼리문 오타, ?/parameter 매핑 불일치.
