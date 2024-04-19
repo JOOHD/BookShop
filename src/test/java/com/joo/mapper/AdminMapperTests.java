@@ -1,11 +1,15 @@
 package com.joo.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.joo.model.AttachImageVO;
+import com.joo.model.BookVO;
 import com.joo.model.Criteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -15,7 +19,7 @@ public class AdminMapperTests {
 	@Autowired
 	private AdminMapper mapper;
 	
-	/* 상품 등록  
+	/* 상품 등록 */
 	@Test
 	public void bookEnrollTest() throws Exception{
 		
@@ -34,39 +38,39 @@ public class AdminMapperTests {
 		
 		mapper.bookEnroll(book);
 	}
-	*/
+
 	
-	/* 카테고리 리스트
+	/* 카테고리 리스트 */
 	@Test
 	public void cateListTest() throws Exception{
 		
 		System.out.println("cateList().........." + mapper.cateList());
 	}
-	 */
+
 	
-	/* 상품 리스트 & 상품 총 갯수 
+	/* 상품 리스트 & 상품 총 갯수 */
 	@Test
 	public void goodsGetListTest() {
 		
 		Criteria cri = new Criteria();
 		
-		/* 검색 조건 
+		/* 검색 조건 */
 		cri.setKeyword("테스트");
 		
-		/* 검색 리스트 
+		/* 검색 리스트 */
 		List list = mapper.goodsGetList(cri);
 		for(int i = 0; i < list.size(); i++) {
 			System.out.println("result......" + i + " : " + list.get(i));
 		}
 		
-		/* 상품 총 갯수 
+		/* 상품 총 갯수 */
 		int result = mapper.goodsGetTotal(cri);
 		System.out.println("result......" + result);
 		
 	}
-	*/
+
 	
-	/* 상품 조회 페이지 
+	/* 상품 조회 페이지 */
 	@Test
 	public void goodsGetDetailTest() {
 		
@@ -76,9 +80,9 @@ public class AdminMapperTests {
 		
 		System.out.println("상품 조회 데이터 : " + result);
 	}
-	*/
+
 	
-	/* 상품 정보 수정 
+	/* 상품 정보 수정 */
 	@Test
 	public void goodsModifyTest() {
 		
@@ -98,9 +102,8 @@ public class AdminMapperTests {
 		
 		mapper.goodsModify(book);
 	}
-	*/
 	
-	/* 상품 정보 삭제 
+	/* 상품 정보 삭제 */
 	@Test
 	public void goodsDeleteTest() {
 		
@@ -112,9 +115,9 @@ public class AdminMapperTests {
 			System.out.println("삭제 성공");
 		}
 	}
-	*/
+
 	
-	/* 이미지 등록 
+	/* 이미지 등록 */
 	@Test
 	public void imageEnrollTest() {
 		
@@ -127,9 +130,9 @@ public class AdminMapperTests {
 		
 		mapper.imageEnroll(vo);
 	}
-	*/
 	
-	/* 지정 상품 이미지 삭제 
+	
+	/* 지정 상품 이미지 삭제 */
 	@Test
 	public void deleteImageAllTEST() {
 		
@@ -137,18 +140,17 @@ public class AdminMapperTests {
 		
 		mapper.deleteImageAll(bookId);
 	}
-	*/
+
 	
-	/* 어제자 날짜 이미지 리스트 
+	/* 어제자 날짜 이미지 리스트 */
 	@Test
 	public void checkImageList() {
 		
 		mapper.checkFileList();
 		
 	}
-	*/
 	
-	/* 지정 상품 이미지 정보 얻기 
+	/* 지정 상품 이미지 정보 얻기 */
 	@Test
 	public void getAttachInfoTest() {
 		
@@ -158,7 +160,7 @@ public class AdminMapperTests {
 		
 		System.out.println("list : " + list );
 	}
-	*/
+
 	
 	
 }

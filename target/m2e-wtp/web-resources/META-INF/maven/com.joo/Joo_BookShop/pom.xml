@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.joo</groupId>
 	<artifactId>Joo_BookShop</artifactId>
-	<name>VamPa_MySQL</name>
+	<name>Joo_BookShop</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>

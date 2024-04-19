@@ -17,9 +17,9 @@ public class CartMapperTests {
 	@Autowired
 	private CartMapper mapper;
 	
-	/* 카트 추가
+	/* 카트 추가 */
 	@Test
-	public void addCart() {
+	public void addCart() throws Exception {
 		
 		String memberId = "admin";
 		int bookId = 2;
@@ -36,7 +36,7 @@ public class CartMapperTests {
 		System.out.println("결과 : " + result);
 	}
 	
-	/* 카트 삭제 
+	/* 카트 삭제 */
 	@Test
 	public void deleteCartTest() {
 		int cartId = 2;
@@ -44,7 +44,7 @@ public class CartMapperTests {
 		mapper.deleteCart(cartId);
 	}
 	
-	/* 카트 수량 변경
+	/* 카트 수량 변경 */
 	@Test
 	public void modifyCartTest() {
 		int cartId = 1;
@@ -57,7 +57,7 @@ public class CartMapperTests {
 		mapper.modifyCount(cart);
 	}
 	
-	/* 카트 목록
+	/* 카트 목록 */
 	@Test
 	public void getCartTest() {
 		
@@ -70,8 +70,7 @@ public class CartMapperTests {
 			System.out.println("init cart : " + cart);
 		}
 	}
-	*/
-	
+
 	@Test
 	public void checkCartTest() {
 		

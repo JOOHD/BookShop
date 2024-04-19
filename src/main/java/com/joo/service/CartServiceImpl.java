@@ -10,9 +10,6 @@ import com.joo.mapper.CartMapper;
 import com.joo.model.AttachImageVO;
 import com.joo.model.CartDTO;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class CartServiceImpl implements CartService {
 

@@ -21,7 +21,7 @@ public class OrderMapperTests {
 	@Autowired
 	private OrderMapper mapper;
 	
-	/* 상품 정보(주문 처리)
+	/* 상품 정보(주문 처리) */
 	@Test
 	public void getOrderInfoTest() {
 		
@@ -29,14 +29,14 @@ public class OrderMapperTests {
 		
 		System.out.println("result : " + orderInfo);
 	}
-	*/
+
 	
-	/* joo_order 테이블 등록 
+	/* joo_order 테이블 등록 */
 	@Test
 	public void enrollOrderTest() {
 		
 		OrderDTO ord = new OrderDTO();
-		List<OrderItemDTO> orders = new ArrayList();
+		List<OrderItemDTO> orders = new ArrayList<OrderItemDTO>();
 		
 		OrderItemDTO order1 = new OrderItemDTO();
 		
@@ -60,9 +60,9 @@ public class OrderMapperTests {
 		
 		mapper.enrollOrder(ord);
 	}
-	*/
+
 	
-	/* joo_itemOrder 테이블 등록
+	/* joo_itemOrder 테이블 등록 */
 	@Test
 	public void enrollOrderItemTest() {
 		
@@ -79,9 +79,9 @@ public class OrderMapperTests {
 		mapper.enrollOrderItem(oid);
 		
 	}
-	 */
+
 	
-	/* 회원 돈, 포인트 정보 변경 
+	/* 회원 돈, 포인트 정보 변경 */
 	@Test
 	public void deductMoneyTest() {
 		
@@ -93,9 +93,9 @@ public class OrderMapperTests {
 		
 		mapper.deductMoney(member);
 	}
-	*/
 	
-	/* 상품 재고 변경 
+	
+	/* 상품 재고 변경 */
 	@Test
 	public void deductStockTest() {
 		BookVO book = new BookVO();
@@ -105,5 +105,5 @@ public class OrderMapperTests {
 		
 		mapper.deductStock(book);
 	}
-	*/
+
 }

@@ -24,7 +24,6 @@ import com.joo.model.Criteria;
 import com.joo.model.PageDTO;
 import com.joo.service.AttachService;
 import com.joo.service.BookService;
-import com.joo.service.CartService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,12 +39,9 @@ public class BookController {
 
 	@Autowired
 	private BookService bookService;
-	
-	@Autowired
-	private CartService cartService;
 
 	@ApiOperation(value = "이미지 정보 반환")
-	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<AttachImageVO>> getAttachList(int bookId) {
 
 		log.info("getAttachList.........." + bookId);

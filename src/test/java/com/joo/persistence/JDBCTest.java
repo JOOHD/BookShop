@@ -7,11 +7,6 @@ import java.sql.DriverManager;
 
 import org.junit.Test;
 
-import static org.junit.Assert.fail;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 public class JDBCTest {
 	static {
 		try {

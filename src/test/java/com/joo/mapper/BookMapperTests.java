@@ -18,7 +18,7 @@ public class BookMapperTests {
 	@Autowired
 	private BookMapper mapper;
 	
-	/*
+
 	@Test
 	public void getGoodsListTest() {
 		
@@ -36,9 +36,9 @@ public class BookMapperTests {
 		System.out.println("total : " + goodsTotal);
 		
 	}
-	*/
+
 	
-	/* 작가 id 리스트 요청 
+	/* 작가 id 리스트 요청 */
 	@Test
 	public void getAuthorId() {
 		
@@ -52,9 +52,9 @@ public class BookMapperTests {
 			System.out.println("개별 결과 : " + id);
 		}
 	}
-	*/
+
 	
-	/* 검색 (동적 쿼리 적용) - 작가 
+	/* 검색 (동적 쿼리 적용) - 작가 */
 	@Test
 	public void getGoodsListTest1() {
 		
@@ -77,7 +77,7 @@ public class BookMapperTests {
 	}
 	
 	
-	/* 검색 (동적 쿼리 적용) - 책제목
+	/* 검색 (동적 쿼리 적용) - 책제목 */
 	@Test 
 	public void getGoodsListTest2() {
 		Criteria cri = new Criteria();
@@ -99,7 +99,7 @@ public class BookMapperTests {
 	}
 	
 	
-	/* 검색 (동적 쿼리 적용) - 카테고리
+	/* 검색 (동적 쿼리 적용) - 카테고리 */
 	@Test 
 	public void getGoodsListTest3() {
 		Criteria cri = new Criteria();
@@ -119,7 +119,7 @@ public class BookMapperTests {
 	}
 	
 	
-	/* 검색 (동적 쿼리 적용) - 카테고리 + 작가 
+	/* 검색 (동적 쿼리 적용) - 카테고리 + 작가 */
 	@Test 
 	public void getGoodsListTest4() {
 		Criteria cri = new Criteria();
@@ -140,7 +140,7 @@ public class BookMapperTests {
 		
 	}
 	
-	/* 검색 (동적 쿼리 적용) - 카테고리 + 책 제목 
+	/* 검색 (동적 쿼리 적용) - 카테고리 + 책 제목 */
 	@Test 
 	public void getGoodsListTest5() {
 		Criteria cri = new Criteria();
@@ -160,9 +160,8 @@ public class BookMapperTests {
 		System.out.println("list : " + list);	
 		
 	}
-	*/
 	
-	/* 카테고리 리스트 
+	/* 카테고리 리스트 */
 	@Test
 	public void getCateListTest1() {
 		
@@ -180,9 +179,9 @@ public class BookMapperTests {
 			System.out.println("codeNum ::::: " + codeNum);
 		}
 	}
-	*/
+
 	
-	/* 카테고리 정보 얻기 
+	/* 카테고리 정보 얻기 */
 	@Test
 	public void getCateInfoTest1() {
 		
@@ -198,7 +197,7 @@ public class BookMapperTests {
 		
 		mapper.getCateInfo(cri);
 	}
-	*/
+
 	
 	/* 상품 정보 */
 	@Test

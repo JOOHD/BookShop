@@ -1,6 +1,5 @@
 package com.joo.controller;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -13,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -45,7 +43,6 @@ import com.joo.service.AuthorService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
 import net.coobird.thumbnailator.Thumbnails;
 
 @Api(tags = {"관리자 전용 페이지 Controller"})
@@ -166,7 +163,7 @@ public class AdminController {
 		if (fileList != null) { // fileList에 상품 이미지가 존재 한다면, AttachImageVO 객체의 요소를 가지는 List 객체가 저장.
 
 			// DB로부터 가져온 이미지 정보 Path 객체 생성 
-			List<Path> pathList = new ArrayList();
+			List<Path> pathList = new ArrayList<Path>();
 
 			fileList.forEach(vo -> { // fileList 객체를 
 
@@ -378,7 +375,7 @@ public class AdminController {
 		}
 
 		/* 이미지 정보 담는 객체 */
-		List<AttachImageVO> list = new ArrayList();
+		List<AttachImageVO> list = new ArrayList<AttachImageVO>();
 
 		/* 향상된 for */
 		for (MultipartFile multipartFile : uploadFile) {
@@ -436,14 +433,14 @@ public class AdminController {
 				/* 방법 2 */
 				File thumbnailFile = new File(uploadPath, "s_" + uploadFileName);
 
-				BufferedImage bo_image = ImageIO.read(saveFile);
+				// BufferedImage bo_image = ImageIO.read(saveFile);
 
 				// 비율
-				double ratio = 3;
+				// double ratio = 3;
 
 				// 넓이 높이
-				int width = (int) (bo_image.getWidth() / ratio);
-				int height = (int) (bo_image.getHeight() / ratio);
+				// int width = (int) (bo_image.getWidth() / ratio);
+				// int height = (int) (bo_image.getHeight() / ratio);
 
 				// thumbnailaotr라이브러리는 ImageIO를 통한 코드 작성 보다 훨씬 간단히 생성.
 				Thumbnails.of(saveFile).size(160, 160).toFile(thumbnailFile);

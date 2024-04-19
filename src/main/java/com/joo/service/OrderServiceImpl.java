@@ -98,11 +98,13 @@ public class OrderServiceImpl implements OrderService {
 			for(OrderItemDTO oit : ord.getOrders()) {
 				OrderItemDTO orderItem = orderMapper.getOrderInfo(oit.getBookId());
 				
-				log.info("oit : " + oit);
+				log.info("oit2 : " + oit);
 				log.info("orderItem1 : " + orderItem);
 				
-				// 수량 셋팅
+				// 수량 셋팅 (joo_book tb에는 bookCount가 없음)
 				orderItem.setBookCount(oit.getBookCount());
+				// itemId 셋팅
+				orderItem.setOrderItemId(oit.getOrderItemId());
 				// 기본정보 셋팅
 				orderItem.initSaleTotal();
 				// List객체 추가
@@ -150,6 +152,11 @@ public class OrderServiceImpl implements OrderService {
 			log.info("calMoney : " + calMoney);
 			
 			member.setMoney(calMoney);					// 주문으로 인해 획득할 포인트 변수에 저장.
+			
+			/* 포인트 차감, 포인트 증가 & 변동 포인트 Member객체 적용 */
+			int calPoint = member.getPoint();
+			calPoint = calPoint - ord.getUsePoint() + ord.getOrderSavePoint();	// 기존 포인트 - 사용 포인트 + 획득 포인트
+			member.setPoint(calPoint);
 			
 			/* 변동 돈, 포인트 DB 적용 */
 			orderMapper.deductMoney(member);

@@ -3,8 +3,6 @@ package com.joo.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +25,6 @@ public class CartController {
 	@Autowired
 	private CartService cartService;
 
-	private static final Logger log = LoggerFactory.getLogger(CartController.class);
 	/*
 	 * 0: 등록 실패
 	 * 1: 등록 성공

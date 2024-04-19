@@ -1,5 +1,7 @@
 package com.joo.service;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.joo.model.AuthorVO;
+import com.joo.model.Criteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -20,7 +23,7 @@ public class AuthorServiceTests {
 	@Autowired
 	private AuthorService service;
 	
-	/* 작가 등록 테스트 
+	/* 작가 등록 테스트 */
 	@Test
 	public void authorEnrollTest() throws Exception {
 		
@@ -32,9 +35,8 @@ public class AuthorServiceTests {
 		
 		service.authorEnroll(author);
 	}
-	*/
 	
-	/* 작가 리스트 테스트 
+	/* 작가 리스트 테스트 */
     @Test
     public void authorGetListTest() throws Exception{
     	
@@ -47,9 +49,8 @@ public class AuthorServiceTests {
     		System.out.println("list" + i + "........." + list.get(i));
     	}
     }
-	*/
 	
-	/* 작가 상세 페이지 
+	/* 작가 상세 페이지 */
 	@Test
 	public void authorGetDetailTest() throws Exception{
 		
@@ -57,7 +58,6 @@ public class AuthorServiceTests {
 		
 		log.info("author....." + service.authorGetDetail(authorId));
 	}
-	*/
 	
 	/* 작가 수정 페이지 */
 	@Test

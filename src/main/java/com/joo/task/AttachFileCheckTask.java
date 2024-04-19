@@ -1,5 +1,5 @@
 package com.joo.task;
-
+/*
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class AttachFileCheckTask {
 
-	/*
+	
 	@Autowired
 	private AdminMapper mapper;
 	
@@ -87,5 +87,6 @@ public class AttachFileCheckTask {
 		
 		log.warn("========================================");
 	}
-	*/
+	
 }
+*/
