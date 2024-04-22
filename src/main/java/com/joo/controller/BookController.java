@@ -63,7 +63,7 @@ public class BookController {
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(String fileName) { // '파일 경로'+'파일 이름'을 전달받기 위해 String 타입
 
-		log.info("getImage().........." + fileName);
+		// log.info("getImage().........." + fileName);
 
 		// file = ('파일 경로' + '파일 이름') , '\\' 두개 사용한 이유는 인식할 수 있게 escape 문자 사용.
 		File file = new File("c:\\upload\\" + fileName);

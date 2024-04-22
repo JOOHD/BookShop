@@ -9,7 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.joo.model.CheckOrderVO;
 import com.joo.model.MemberVO;
 import com.joo.model.OrderDTO;
 import com.joo.model.OrderPageDTO;
@@ -42,6 +44,17 @@ public class OrderController {
 		
 		return "/order";
 	}
+	
+//	@ApiOperation(value = "상품 주문 확인")
+//	@PostMapping("/order/check")
+//	@ResponseBody
+//	public int checkOrderPOST(CheckOrderVO co) {
+//
+//		int result = orderService.checkOrder(co);
+//		log.info("co : " + co);
+//		 
+//		return result;
+//	}
 	
 	@ApiOperation(value = "상품 주문 처리")
 	@PostMapping("/order")

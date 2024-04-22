@@ -2,6 +2,7 @@ package com.joo.mapper;
 
 import com.joo.model.BookVO;
 import com.joo.model.CartDTO;
+import com.joo.model.CheckOrderVO;
 import com.joo.model.MemberVO;
 import com.joo.model.OrderDTO;
 import com.joo.model.OrderItemDTO;
@@ -29,5 +30,8 @@ public interface OrderMapper {
 	
 	/* 카트 주문 제거 */
 	public int deleteOrderCart(CartDTO dto);
+
+	/* 주문 확인(재고, 금액 마이너스 방지) */
+	// public int checkOrder(CheckOrderVO co);
 }
 

@@ -11,6 +11,7 @@ import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
 import com.joo.model.CateVO;
 import com.joo.model.Criteria;
+import com.joo.model.OrderDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -147,6 +148,22 @@ public class AdminServiceImpl implements AdminService {
 		log.info("(service)getAttachInfo................");
 		
 		return adminMapper.getAttachInfo(bookId);
+	}
+
+	/* 주문 상품 리스트 */
+	@Override
+	public List<OrderDTO> getOrderList(Criteria cri) {
+		
+		return adminMapper.getOrderList(cri);
+		
+	}
+	
+	/* 주문 총 갯수 */
+	@Override
+	public int getOrderTotal(Criteria cri) {
+		
+		return adminMapper.getOrderTotal(cri);
+		
 	}
 	
 

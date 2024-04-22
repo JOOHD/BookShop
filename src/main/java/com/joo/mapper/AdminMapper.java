@@ -6,6 +6,7 @@ import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
 import com.joo.model.CateVO;
 import com.joo.model.Criteria;
+import com.joo.model.OrderDTO;
 
 public interface AdminMapper {
 
@@ -41,6 +42,12 @@ public interface AdminMapper {
 	
 	/* 지정 상품 이미지 정보 얻기 */
 	public List<AttachImageVO> getAttachInfo(int bookId);
+	
+	/* 주문 상품 리스트 */
+	public List<OrderDTO> getOrderList(Criteria cri);	
+	
+	/* 주문 총 갯수 */
+	public int getOrderTotal(Criteria cri);
 	
 	
 }

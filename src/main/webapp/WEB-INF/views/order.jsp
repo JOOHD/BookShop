@@ -8,11 +8,12 @@
 <meta charset="UTF-8">
 <title>Welcome BookMall</title>
 <link rel="stylesheet" href="/resources/css/order.css">
-<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous">
-<!-- 다음주소 -->
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
-</script>
-</script>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+  <!-- 다음주소 -->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> 
 </head>
 <body>
 
@@ -340,7 +341,7 @@
 	</div>	<!-- class="wrap" -->
 </div>	<!-- class="wrapper" -->
 
-
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
 $(document).ready(function(){
 	
@@ -600,7 +601,34 @@ $(".order_btn").on("click", function(){
 	
 	/* 서버 전송 */
 	$(".order_form").submit();
+	
+	/* 서버로 전송할 데이터 객체  
+	const form = {
+		money : parseInt('${member.money}'),
+		bookStock : parseInt('${goodsInfo.bookStock}')
+	}*/
+
+	/* 주문 결제하기 버튼  
+	$.ajax({
+		url: '/order/check',
+		type : 'POST',
+		data : form,
+		success : function(result){
+			orderAlert(result);
+		}
+	});*/
+	
 });
+
+/*
+function orderAlert(result){
+	if(result == '0'){
+		alert("금액이 부족 합니다.");
+	} else if(result == '1'){
+		alert("해당 상품 재고가 없습니다.");
+		location.href="/order/{memberId}";
+	}
+}*/
 
 </script>
 

@@ -7,7 +7,9 @@
 	<select id="getGoodsInfo" resultType="com.joo.model.OrderPageItemDTO">
 	
 		select bookId, bookName, bookPrice, bookDiscount
-		from joo_book 
+		
+		from joo_book
+		 
 		where bookId = #{bookId}
 	
 	</select>
@@ -15,10 +17,31 @@
 	<!-- 주문 상품 정보(주문 처리) -->
 	<select id="getOrderInfo" resultType="com.joo.model.OrderItemDTO">
 	
+		<!-- orderItemId 값이 안 구해져서 시도해 보았으나 밑에 코드 에러 발생 24/04/22
+		select b.bookId, b.bookPrice, b.bookDiscount, o.orderItemId			
+		from joo_book as b
+		join joo_orderItem as o on b.bookId = o.bookId and o.orderId = #{orderId} 		
+		where b.bookId = #{bookId} -->
+		
 		select bookId, bookPrice, bookDiscount
-		from joo_book where bookId = #{bookId}
+		from joo_book where bookId = #{bookId} 
 	
 	</select>
+	
+	<!--  주문 확인(재고, 금액 마이너스 방지) 
+	<select id="checkOrder" resultType="com.joo.model.CheckOrderVO">
+	
+		select b.bookStock, m.money
+		
+		from BookVO b
+		
+		inner join MemberVO m on b.memberId = m.memberId
+		
+		where b.bookId = #{bookId} and memberId = #{memberId}
+		
+	
+	</select>-->
+	
 	
 	<!-- 주문 테이블 등록 -->
 	<insert id="enrollOrder">

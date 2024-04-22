@@ -17,6 +17,7 @@ import com.joo.mapper.OrderMapper;
 import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
 import com.joo.model.CartDTO;
+import com.joo.model.CheckOrderVO;
 import com.joo.model.MemberVO;
 import com.joo.model.OrderDTO;
 import com.joo.model.OrderItemDTO;
@@ -43,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private BookMapper bookMapper;
 	
+	/* 상품 정보 */
 	@Override
 	public List<OrderPageItemDTO> getGoodsInfo(List<OrderPageItemDTO> orders) {
 		
@@ -85,6 +87,19 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return result;
 	}
+	
+	/* 주문 확인(재고, 금액 마이너스 방지) 
+	@Override
+	public int checkOrder(CheckOrderVO co) {
+		
+		if(co.getMoney() <= 0) {			// 잔액 확인
+			return 0; // 잔액 부족
+		} else if(co.getBookStock() <= 0) {	// 재고 확인
+			return 1; // 재고 부족
+		}
+		return orderMapper.checkOrder(co);
+		
+	}*/
 
 	@Override
 	@Transactional // 여러 개의 쿼리 작업 시,
@@ -103,8 +118,8 @@ public class OrderServiceImpl implements OrderService {
 				
 				// 수량 셋팅 (joo_book tb에는 bookCount가 없음)
 				orderItem.setBookCount(oit.getBookCount());
-				// itemId 셋팅
-				orderItem.setOrderItemId(oit.getOrderItemId());
+				// 주문 아이템 번호 가져오기
+				orderItem.getOrderItemId();
 				// 기본정보 셋팅
 				orderItem.initSaleTotal();
 				// List객체 추가

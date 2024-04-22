@@ -37,6 +37,7 @@ import com.joo.model.AttachImageVO;
 import com.joo.model.AuthorVO;
 import com.joo.model.BookVO;
 import com.joo.model.Criteria;
+import com.joo.model.OrderDTO;
 import com.joo.model.PageDTO;
 import com.joo.service.AdminService;
 import com.joo.service.AuthorService;
@@ -513,5 +514,22 @@ public class AdminController {
 		HttpSession session = request.getSession();
 
 		session.invalidate();
+	}
+	
+	@ApiOperation(value = "주문 현황")
+	@GetMapping("/orderList")
+	public String orderListGET(Criteria cri, Model model) {
+		
+		List<OrderDTO> list = adminService.getOrderList(cri);
+		
+		if(!list.isEmpty()) {
+			model.addAttribute("list", list);
+			model.addAttribute("pageMaker", new PageDTO(cri, adminService.getOrderTotal(cri)));
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+		
+		
+		return "/admin/orderList";
 	}
 }
