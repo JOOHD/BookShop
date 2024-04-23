@@ -17,8 +17,8 @@ import com.joo.mapper.OrderMapper;
 import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
 import com.joo.model.CartDTO;
-import com.joo.model.CheckOrderVO;
 import com.joo.model.MemberVO;
+import com.joo.model.OrderCancelDTO;
 import com.joo.model.OrderDTO;
 import com.joo.model.OrderItemDTO;
 import com.joo.model.OrderPageItemDTO;
@@ -195,6 +195,52 @@ public class OrderServiceImpl implements OrderService {
 				
 				cartMapper.deleteOrderCart(dto);
 			}	
+	}
+	
+	/* 주문 취소 */
+	@Override
+	@Transactional
+	public void orderCancel(OrderCancelDTO dto) {
+		
+		/* 주문, 주문상품 객체 */
+			/*회원*/
+				MemberVO member = memberMapper.getMemberInfo(dto.getMemberId());
+			/*주문상품*/
+				List<OrderItemDTO> ords = orderMapper.getOrderItemInfo(dto.getOrderId());
+				for(OrderItemDTO ord : ords) {
+					ord.initSaleTotal();
+				}
+			/* 주문 */
+				OrderDTO orw = orderMapper.getOrder(dto.getOrderId());
+				orw.setOrders(ords);
+			
+				orw.getOrderPriceInfo();
+			
+			/* 주문상품 취소 DB */
+				orderMapper.orderCancel(dto.getOrderId());
+			
+			/* 돈, 포인트, 재고 변환 */
+				/* 돈 */
+				int calMoney = member.getMoney();
+				calMoney += orw.getOrderFinalSalePrice();
+				member.setMoney(calMoney);
+				
+				/* 포인트 */
+				int calPoint = member.getPoint();
+				calPoint = calPoint + orw.getUsePoint() - orw.getOrderSavePoint();
+				member.setPoint(calPoint);
+				
+					/* DB적용 */
+					orderMapper.deductMoney(member);
+				
+			/* 재고 */
+			for(OrderItemDTO ord : orw.getOrders()) {
+				BookVO book = bookMapper.getGoodsInfo(ord.getBookId());
+				book.setBookStock(book.getBookStock() + ord.getBookCount());
+				orderMapper.deductStock(book);
+			}		
+		
+		
 	}
 
 }

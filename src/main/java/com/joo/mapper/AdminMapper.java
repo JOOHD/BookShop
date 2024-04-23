@@ -49,5 +49,4 @@ public interface AdminMapper {
 	/* 주문 총 갯수 */
 	public int getOrderTotal(Criteria cri);
 	
-	
 }

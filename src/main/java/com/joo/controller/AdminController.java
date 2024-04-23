@@ -37,10 +37,14 @@ import com.joo.model.AttachImageVO;
 import com.joo.model.AuthorVO;
 import com.joo.model.BookVO;
 import com.joo.model.Criteria;
+import com.joo.model.MemberVO;
+import com.joo.model.OrderCancelDTO;
 import com.joo.model.OrderDTO;
 import com.joo.model.PageDTO;
 import com.joo.service.AdminService;
 import com.joo.service.AuthorService;
+import com.joo.service.MemberService;
+import com.joo.service.OrderService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,10 +58,16 @@ public class AdminController {
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
 	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
 	private AuthorService authorService;
 
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private MemberService memberService;
 
 	@ApiOperation(value = "관리자 메인 페이지 이동")
 	@GetMapping(value = "main")
@@ -531,5 +541,31 @@ public class AdminController {
 		
 		
 		return "/admin/orderList";
+	}
+
+	@ApiOperation(value = "주문 취소")
+	@PostMapping("/orderCancel")
+	public String orderCancelPOST(OrderCancelDTO dto, HttpServletRequest request) {
+		
+		orderService.orderCancel(dto);
+
+		// return "redirect:/admin/orderList?keyword=" + dto.getKeyword() + "&amount=" + dto.getAmount() + "&pageNum=" + dto.getPageNum();
+		MemberVO member = new MemberVO();
+		member.setMemberId(dto.getMemberId());
+		log.info("member : " + member);
+		
+		HttpSession session = request.getSession();
+		
+		try {
+				MemberVO memberLogin = memberService.memberLogin(member);
+				memberLogin.setMemberPw("");
+				session.setAttribute("member", memberLogin);
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return "redirect:/main";
 	}
 }
