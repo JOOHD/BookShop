@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.joo.model.CartDTO;
 import com.joo.model.MemberVO;
 import com.joo.service.CartService;
+import com.joo.service.OrderService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,9 @@ public class CartController {
 
 	@Autowired
 	private CartService cartService;
+	
+	@Autowired
+	private OrderService orderService;
 
 	/*
 	 * 0: 등록 실패

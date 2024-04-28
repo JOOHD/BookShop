@@ -53,7 +53,7 @@
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
 	<beans:bean id="swagger2Config"
-		class="com.joo.config.SwaggerConfig" />
+		class="com.joo.common.config.SwaggerConfig" />
 	<resources location="classpath:/META-INF/resources/"
 		mapping="swagger-ui.html" />
 	<resources location="classpath:/META-INF/resources/webjars/"

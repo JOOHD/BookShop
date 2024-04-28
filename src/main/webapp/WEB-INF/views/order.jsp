@@ -601,34 +601,45 @@ $(".order_btn").on("click", function(){
 	
 	/* 서버 전송 */
 	$(".order_form").submit();
-	
-	/* 서버로 전송할 데이터 객체  
-	const form = {
-		money : parseInt('${member.money}'),
-		bookStock : parseInt('${goodsInfo.bookStock}')
-	}*/
 
-	/* 주문 결제하기 버튼  
+	// 주문 확인을 위한 Ajax 호출
+    const money = parseInt('${member.money}');
+    const bookStock = parseInt('${goodsInfo.bookStock}');
+
+    // bookStock 값이 NaN인 경우, 기본값인 0으로 설정
+    const form = {
+        money: money,
+        bookStock: isNaN(bookStock) ? 0 : bookStock
+    };
+
+	/* 주문 결제하기 버튼 */  
 	$.ajax({
-		url: '/order/check',
+		url: '/order',
 		type : 'POST',
 		data : form,
 		success : function(result){
+			// 주문 확인 결과 처리
 			orderAlert(result);
+			
+			// 주문 확인에 문제가 없다면, 폼 데이털를 서버로 전송
+			if(result !== '0' && result !== '1') {
+				submitOrderForm();
+			}
 		}
-	});*/
-	
+	});
 });
 
-/*
 function orderAlert(result){
 	if(result == '0'){
 		alert("금액이 부족 합니다.");
 	} else if(result == '1'){
 		alert("해당 상품 재고가 없습니다.");
 		location.href="/order/{memberId}";
+	} else if(result == '2'){
+		alert("결제가 완료 되었습니다.");
 	}
-}*/
+}
+
 
 </script>
 

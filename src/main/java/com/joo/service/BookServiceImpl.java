@@ -76,16 +76,12 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public int goodsGetTotal(Criteria cri) {
 
-		log.info("getGoodsList().......");
-
 		return bookMapper.goodsGetTotal(cri);
 	}
 
 	/* 국내 카테고리 리스트 */
 	@Override
 	public List<CateVO> getCateCode1() {
-
-		log.info("getCateCode1().......");
 
 		return bookMapper.getCateCode1();
 	}
@@ -94,8 +90,6 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<CateVO> getCateCode2() {
 
-		log.info("getCateCode1().......");
-
 		return bookMapper.getCateCode2();
 	}
 
@@ -103,9 +97,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public String[] getCateList(Criteria cri) {
 		
-		// 코드 번호를 String 배열에 담아서 반환.
-		log.info("getCateList().......");
-		
+		// 코드 번호를 String 배열에 담아서 반환.		
 		return bookMapper.getCateList(cri);
 	}
 
@@ -114,16 +106,12 @@ public class BookServiceImpl implements BookService {
 	public CateFilterDTO getCateInfo(Criteria cri) {
 		
 		// '카테고리 이름', '카테고리 코드', '개수' 정보 CateFilterVO 반환.
-		log.info("getCateInfo().......");
-		
 		return bookMapper.getCateInfo(cri);			
 	}
 
 	/* 검색결과 카테고리 필터 정보 */
 	@Override
 	public List<CateFilterDTO> getCateInfoList(Criteria cri) {
-
-		log.info("getCateInfoList().......");
 		
 		// 반환할 데이터 담길 그릇 생성
 		List<CateFilterDTO> filterInfoList = new ArrayList<CateFilterDTO>();
@@ -153,15 +141,9 @@ public class BookServiceImpl implements BookService {
 		for(String cateCode : cateList) {
 			cri.setCateCode(cateCode);
 			
-			log.info("cateCode : " + cateCode);
-			log.info("cri : " + cri);
-			
 			// 카테고리 필터 정보를 List 객체에 담기.
 			CateFilterDTO filterInfo = bookMapper.getCateInfo(cri);
 			filterInfoList.add(filterInfo); // getCateInfoList() 반환 할 List객체 요소로 추가.
-			
-			log.info("filterInfo : " + filterInfo);
-			log.info("filterInfoList : " + filterInfoList);
 		}
 		
 		// 임시 카테고리 코드 값을 cateCode에 저장. 
@@ -173,8 +155,6 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public BookVO getGoodsInfo(int bookId) {
-		
-		log.info("getGoodsInfo..........");
 		
 		BookVO goodsInfo = bookMapper.getGoodsInfo(bookId);
 		goodsInfo.setImageList(adminMapper.getAttachInfo(bookId));

@@ -409,11 +409,11 @@
 			$(".quantity_delete_form").submit();
 		});
 		
-		/* 주문 페이지 이동 */
+		/* 주문 페이지 이동 */	
 		$(".order_btn").on("click", function(){
 			
-			let form_contents = ''; // 초기화
-			let orderNumber = 0; 	// index 값 역할을 할 변수(orders[0], orders[1], orders[2]..)
+			let form_contents ='';
+			let orderNumber = 0;
 			
 			$(".cart_info_td").each(function(index, element){
 				
@@ -431,12 +431,12 @@
 					orderNumber += 1;
 					
 				}
-			});
-			
+			});	
+
 			$(".order_form").html(form_contents);
 			$(".order_form").submit();
 		});
-	
+		
 	</script>
 
 </body>

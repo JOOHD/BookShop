@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.joo.model.BookVO;
 import com.joo.model.CartDTO;
+import com.joo.model.CheckOrderVO;
 import com.joo.model.MemberVO;
 import com.joo.model.OrderDTO;
 import com.joo.model.OrderItemDTO;
@@ -33,7 +34,7 @@ public interface OrderMapper {
 	public int deleteOrderCart(CartDTO dto);
 
 	/* 주문 확인(재고, 금액 마이너스 방지) */
-	// public int checkOrder(CheckOrderVO co);
+	public int checkOrder(CheckOrderVO co);
 	
 	/* 주문 취소 */
 	public int orderCancel(String orderId);
@@ -43,5 +44,6 @@ public interface OrderMapper {
 	
 	/* 주문 정보(주문 취소) */
 	public OrderDTO getOrder(String orderId);
+
 }
 

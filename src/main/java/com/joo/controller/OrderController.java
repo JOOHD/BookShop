@@ -50,6 +50,7 @@ public class OrderController {
 //	@ResponseBody
 //	public int checkOrderPOST(CheckOrderVO co) {
 //
+//		// 주문 확인
 //		int result = orderService.checkOrder(co);
 //		log.info("co : " + co);
 //		 
@@ -58,20 +59,19 @@ public class OrderController {
 	
 	@ApiOperation(value = "상품 주문 처리")
 	@PostMapping("/order")
-	public String orderPagePost(OrderDTO od, HttpServletRequest request) { // view에서 받은 정보(OrderDTO)
+	public String orderPagePost(OrderDTO od, HttpServletRequest request) {		
 		
-		orderService.order(od);	
+		orderService.order(od);
 		
 		MemberVO member = new MemberVO();
 		member.setMemberId(od.getMemberId());
-		log.info("member : " + member);
 		
 		HttpSession session = request.getSession();
 		
 		try {
-				MemberVO memberLogin = memberService.memberLogin(member);
-				memberLogin.setMemberPw("");
-				session.setAttribute("member", memberLogin);
+			MemberVO memberLogin = memberService.memberLogin(member);
+			memberLogin.setMemberPw("");
+			session.setAttribute("member", memberLogin);
 			
 		} catch (Exception e) {
 			

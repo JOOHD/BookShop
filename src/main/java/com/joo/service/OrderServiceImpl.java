@@ -17,6 +17,7 @@ import com.joo.mapper.OrderMapper;
 import com.joo.model.AttachImageVO;
 import com.joo.model.BookVO;
 import com.joo.model.CartDTO;
+import com.joo.model.CheckOrderVO;
 import com.joo.model.MemberVO;
 import com.joo.model.OrderCancelDTO;
 import com.joo.model.OrderDTO;
@@ -53,26 +54,13 @@ public class OrderServiceImpl implements OrderService {
 		
 		for(OrderPageItemDTO ord : orders ) {
 			
-			/*
-			 * orders : [bookId=45, bookCount=5, bookName=null, bookPrice=0, bookDiscount=0.0, salePrice=0, totalPrice=0, point=0, totalPoint=0]...
-			 * ord : orders[0]
-			 * goodsInfo1 : [bookId=45, bookCount=0, bookName=ideology, bookPrice=30700, bookDiscount=0.05, salePrice=0, totalPrice=0, point=0, totalPoint=0]
-			 * goodsInfo2 : [bookId=45, bookCount=5, bookName=ideology, bookPrice=30700, bookDiscount=0.05, salePrice=0, totalPrice=0, point=0, totalPoint=0]
-			 * goodsInfo3 : [bookId=45, bookCount=5, bookName=ideology, bookPrice=30700, bookDiscount=0.05, salePrice=29165, totalPrice=145825, point=1458, totalPoint=7290]
-			 */
 			
-			
-			log.info("orders : " + orders); // orders : view(장바구니 페이지) 전달받은 상품 정보(bookId)
-			log.info("ord : " + ord);
+			// log.info("orders : " + orders); // orders : view(장바구니 페이지) 전달받은 상품 정보(bookId)
 			// 상품 정보 메서드를 호출하여 goodsInfo 반환받은 객체에 저장.
 			OrderPageItemDTO goodsInfo = orderMapper.getGoodsInfo(ord.getBookId());
 			
-			log.info("goodsInfo1 : " + goodsInfo); 
-			
 			// goodsInfo 변수에는 상품 수량이 없기 때문에 view로부터 전달받은 수량 대입.
 			goodsInfo.setBookCount(ord.getBookCount());
-			
-			log.info("goodsInfo2 : " + goodsInfo); 
 			
 			// (salePrice, totalPrice, savePoint, totalSavePoint) 값 세팅.
 			goodsInfo.initSaleTotal();
@@ -81,29 +69,28 @@ public class OrderServiceImpl implements OrderService {
 			
 			goodsInfo.setImageList(imageList);
 			
-			log.info("goodsInfo3 : " + goodsInfo); // 계산된 값 세팅
 			// 만들어내야 할 상품 정보가 모두 세팅된 객체(List) 추가.
 			result.add(goodsInfo);
 		}
 		return result;
 	}
 	
-	/* 주문 확인(재고, 금액 마이너스 방지) 
+	/* 주문 확인(재고, 금액 마이너스 방지) */
 	@Override
 	public int checkOrder(CheckOrderVO co) {
-		
+				
 		if(co.getMoney() <= 0) {			// 잔액 확인
 			return 0; // 잔액 부족
 		} else if(co.getBookStock() <= 0) {	// 재고 확인
 			return 1; // 재고 부족
 		}
-		return orderMapper.checkOrder(co);
+		return 2;	  // 결제 완료
 		
-	}*/
+	}
 
 	@Override
 	@Transactional // 여러 개의 쿼리 작업 시,
-	public void order(OrderDTO ord) {
+	public int order(OrderDTO ord) {
 		
 		/* 사용할 데이터 가져오기 */
 			/* 회원 정보 */
@@ -112,10 +99,7 @@ public class OrderServiceImpl implements OrderService {
 			List<OrderItemDTO> ords = new ArrayList<>();
 			for(OrderItemDTO oit : ord.getOrders()) {
 				OrderItemDTO orderItem = orderMapper.getOrderInfo(oit.getBookId());
-				
-				log.info("oit2 : " + oit);
-				log.info("orderItem1 : " + orderItem);
-				
+							
 				// 수량 셋팅 (joo_book tb에는 bookCount가 없음)
 				orderItem.setBookCount(oit.getBookCount());
 				// 주문 아이템 번호 가져오기
@@ -124,13 +108,10 @@ public class OrderServiceImpl implements OrderService {
 				orderItem.initSaleTotal();
 				// List객체 추가
 				ords.add(orderItem);
-				log.info("orderItem2 : " + orderItem);
-				log.info("ords : " + ords);
 			}
 			/* OrderDTO 셋팅 */
 			ord.setOrders(ords);
 			ord.getOrderPriceInfo();
-			log.info("ord : " + ord);
 			
 		/* DB 주문, 주문상품(배송정보) 넣기 */
 			/* orderId 만들기 및 OrderDTO 객체 orderId에 저장 */
@@ -141,21 +122,17 @@ public class OrderServiceImpl implements OrderService {
 			// orderId = "회원 아이디" + "_년도 월 일 분"
 			String orderId = member.getMemberId() + format.format(date);
 			
-			log.info("orderId : " + orderId);
 			
 			ord.setOrderId(orderId);
 			
-			log.info("ord : " + ord);
 			
 			/* DB 넣기 */
 			orderMapper.enrollOrder(ord); 				// joo_order 등록
 			
 			for(OrderItemDTO oit : ord.getOrders()) {	// joo_orderItem 등록
-				log.info("oit1 : " + oit);
 				
 				oit.setOrderId(orderId);
 				
-				log.info("oit2 : " + oit);
 				orderMapper.enrollOrderItem(oit);
 			}
 		
@@ -163,9 +140,9 @@ public class OrderServiceImpl implements OrderService {
 			/* 비용 차감 & 변동 돈(money) Member객체 적용 */
 			int calMoney = member.getMoney();
 			calMoney -= ord.getOrderFinalSalePrice(); 	// 상품 주문에서 사용한 포인트 차감.
-			
-			log.info("calMoney : " + calMoney);
-			
+			if (member.getMoney() <= 0) { // 재고가 부족한 경우	           
+	            return 0;  				  // 클라이언트에게 금액 부족 메시지 반환
+	        }
 			member.setMoney(calMoney);					// 주문으로 인해 획득할 포인트 변수에 저장.
 			
 			/* 포인트 차감, 포인트 증가 & 변동 포인트 Member객체 적용 */
@@ -182,7 +159,12 @@ public class OrderServiceImpl implements OrderService {
 				BookVO book = bookMapper.getGoodsInfo(oit.getBookId());
 				book.setBookStock(book.getBookStock() - oit.getBookCount());
 				
+				if (book.getBookStock() <= 0) { // 재고가 부족한 경우	           
+		            return 1;  					// 클라이언트에게 재고 부족 메시지 반환
+		        }
+				
 				log.info("book : " + book);
+				
 				/* 변동 값 DB 적용 */
 				orderMapper.deductStock(book);
 			}
@@ -195,7 +177,21 @@ public class OrderServiceImpl implements OrderService {
 				
 				cartMapper.deleteOrderCart(dto);
 			}	
+			
+		/* 주문 확인 */
+			/* 주문 확인을 위한 객체 생성 */
+		    CheckOrderVO co = new CheckOrderVO();
+		    BookVO book = new BookVO();
+		    co.setMoney(ord.getOrderFinalSalePrice());
+		    co.setBookStock(book.getBookStock());
+		    
+		    // 주문 확인 메서드 호출
+		    int result = orderMapper.checkOrder(co);
+		    
+		    // 클라이언트에게 결과 값 반환
+		    return result;
 	}
+	
 	
 	/* 주문 취소 */
 	@Override
@@ -242,5 +238,6 @@ public class OrderServiceImpl implements OrderService {
 		
 		
 	}
+
 
 }

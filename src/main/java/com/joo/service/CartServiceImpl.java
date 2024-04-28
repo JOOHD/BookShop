@@ -52,11 +52,7 @@ public class CartServiceImpl implements CartService {
 			
 			List<AttachImageVO> imageList = attachMapper.getAttachList(bookId);
 			
-			// log.info("imageList : " + imageList);
-			
-			// log.info("dto2 : " + dto);
 			dto.setImageList(imageList);
-			// log.info("dto2 : " + dto);
 			
 		}
 		
