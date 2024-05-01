@@ -614,7 +614,7 @@ $(".order_btn").on("click", function(){
 
 	/* 주문 결제하기 버튼 */  
 	$.ajax({
-		url: '/order',
+		url: '/order/check',
 		type : 'POST',
 		data : form,
 		success : function(result){

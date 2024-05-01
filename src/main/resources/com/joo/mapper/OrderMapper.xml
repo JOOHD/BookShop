@@ -33,9 +33,9 @@
 	
 		select b.bookStock, m.money
 		
-		from BookVO b
+		from joo_book b
 		
-		inner join MemberVO m on b.memberId = m.memberId
+		inner join joo_member m on b.bookId = m.memberId
 		
 		where b.bookId = #{bookId} and memberId = #{memberId}
 		

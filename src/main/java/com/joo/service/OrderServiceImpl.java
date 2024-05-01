@@ -79,12 +79,9 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int checkOrder(CheckOrderVO co) {
 				
-		if(co.getMoney() <= 0) {			// 잔액 확인
-			return 0; // 잔액 부족
-		} else if(co.getBookStock() <= 0) {	// 재고 확인
-			return 1; // 재고 부족
-		}
-		return 2;	  // 결제 완료
+		BookVO book = bookMapper.getGoodsInfo(co.getBookId());
+        co.setBookStock(book.getBookStock());
+        return orderMapper.checkOrder(co);
 		
 	}
 
@@ -99,11 +96,13 @@ public class OrderServiceImpl implements OrderService {
 			List<OrderItemDTO> ords = new ArrayList<>();
 			for(OrderItemDTO oit : ord.getOrders()) {
 				OrderItemDTO orderItem = orderMapper.getOrderInfo(oit.getBookId());
-							
+			
+				log.info("oit : " + oit);
+				
 				// 수량 셋팅 (joo_book tb에는 bookCount가 없음)
 				orderItem.setBookCount(oit.getBookCount());
 				// 주문 아이템 번호 가져오기
-				orderItem.getOrderItemId();
+				// orderItem.getOrderItemId();
 				// 기본정보 셋팅
 				orderItem.initSaleTotal();
 				// List객체 추가
@@ -161,8 +160,7 @@ public class OrderServiceImpl implements OrderService {
 				
 				if (book.getBookStock() <= 0) { // 재고가 부족한 경우	           
 		            return 1;  					// 클라이언트에게 재고 부족 메시지 반환
-		        }
-				
+		        }				
 				log.info("book : " + book);
 				
 				/* 변동 값 DB 적용 */
@@ -177,19 +175,7 @@ public class OrderServiceImpl implements OrderService {
 				
 				cartMapper.deleteOrderCart(dto);
 			}	
-			
-		/* 주문 확인 */
-			/* 주문 확인을 위한 객체 생성 */
-		    CheckOrderVO co = new CheckOrderVO();
-		    BookVO book = new BookVO();
-		    co.setMoney(ord.getOrderFinalSalePrice());
-		    co.setBookStock(book.getBookStock());
-		    
-		    // 주문 확인 메서드 호출
-		    int result = orderMapper.checkOrder(co);
-		    
-		    // 클라이언트에게 결과 값 반환
-		    return result;
+			return 2; // 정상 결제
 	}
 	
 	

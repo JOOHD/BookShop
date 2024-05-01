@@ -120,7 +120,7 @@ C:\Users\user\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar
 		    2)타입도 맞았는데 계속된 에러 발생이면, 'character set'이 동일하지 않기 때문에 발생하는 에러.
 			utfmb4_unicode_ci 로 보이는 부분이 테이블의 character set 설정이다. 
 			varchar, char 의 타입을 가진 컬럼에만 나온다. 따라서 varchar, char 로 외래키를 엮으려고 하는데 			에러가 난다면 Collation 값이 동일한지 확인.
-	ㄴ해결 : 테이블 끝에 character set=utf-8 입력.
+	ㄴ해결 : 테이블 끝에 character set=utf8 입력.
 
 ※Cannot add or update a child row: a foreign key constraint fails (`bookshop`.`joo_orderitem`, CONSTRAINT 	`joo_orderitem_ibfk_2` FOREIGN KEY (`bookId`) REFERENCES `joo_book` (`bookId`))
 ㄴ문제 : mapper test 도중 발생 enroll 메서드 관련 insert into 쿼리문에서 발생
@@ -153,3 +153,10 @@ C:\Users\user\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar
 ※ javax.el.ELException: Failed to parse the expression [${this}]
 ㄴ문제 : 갑자기 위에 에러 문구와 함께 특정 페이지 500 ERROR
 	ㄴ해결 : Server 프로젝트의 catalina.properties 맨 밑에 org.apache.el.parser.SKIP_IDENTIFIER_CHECK=true 추가.
+
+※ Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 
+ㄴ문제 : 주문 테이블의 고유키(pk) orderId 중복 문제 
+	ㄴ원인 : orderId의 구조는 {memberId}_yyyyMMmmss 임 그래서 초단위로 pk를 구분하는데도 불구 에러 발생
+	ㄴ해결 : 몇 초 뒤에 주문하면 정상 작동...?
+
+※ NullPointerExceptino 은 보통 객체가 초기화되지 않은 상태에서 해당 객체의 메서드나 속성을 사용하려고 할 때,

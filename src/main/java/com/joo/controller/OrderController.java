@@ -45,17 +45,17 @@ public class OrderController {
 		return "/order";
 	}
 	
-//	@ApiOperation(value = "상품 주문 확인")
-//	@PostMapping("/order/check")
-//	@ResponseBody
-//	public int checkOrderPOST(CheckOrderVO co) {
-//
-//		// 주문 확인
-//		int result = orderService.checkOrder(co);
-//		log.info("co : " + co);
-//		 
-//		return result;
-//	}
+	@ApiOperation(value = "상품 주문 확인")
+	@PostMapping("/order/check")
+	@ResponseBody
+	public int checkOrderPOST(CheckOrderVO co) {
+
+		// 주문 확인
+		int result = orderService.checkOrder(co);
+		log.info("co : " + co);
+		 
+		return result;
+	}
 	
 	@ApiOperation(value = "상품 주문 처리")
 	@PostMapping("/order")
