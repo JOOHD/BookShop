@@ -25,10 +25,10 @@
 # ERD 구조
 <a href="https://www.erdcloud.com/d/WAJG2FdSEfvFEWRGk">👉 ERD Cloud에서 직접 보기</a>
 
-![ERD img]("C:\Users\user\OneDrive\바탕 화면\ERD.png")
+![ERD img](./img/ERD.png)
 
 # 시스템 아키텍처
-![System Architecture]("C:\Users\user\OneDrive\바탕 화면\web_icon\System_arch.png")
+![System Architecture](./img/System_arch.png)
 
 # 기술 스택
 ![Skill Stack](파일경로)
