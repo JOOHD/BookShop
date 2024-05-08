@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#xbaa9;&#xcc28;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="목차">목차</h1>
+<p>1.<a href="#ERD-%EA%B5%AC%EC%A1%B0">ERD 구조</a><br>
+2.<a href="#%EC%8B%9C%EC%8A%A4%ED%85%9C=%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98">시스템 아키텍처</a><br>
+3.<a href="#%EA%B8%B0%EC%88%A0-%EC%8A%A4%ED%83%9D">기술 스택</a><br>
+4.<a href="#%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5">주요 기능</a></p>
+<p>● 공통 : <a href="#%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85,-%EB%A1%9C%EA%B7%B8%EC%9D%B8">회원가입, 로그인</a> |  <a href="#%EC%83%81%ED%92%88-%EB%AA%A9%EB%A1%9D-%EB%B0%8F-%EC%83%81%ED%92%88%EC%83%81%EC%84%B8-%EC%A1%B0%ED%9A%8C">상품 목록 및 상품상세 조회</a><br>
+● 사용자 : <a href="#%EC%9E%A5%EB%B0%94%EA%B5%AC%EB%8B%88-%EA%B4%80%EB%A6%AC">장바구니 관리</a> | <a href="#%EC%A3%BC%EB%AC%B8-%EA%B4%80%EB%A6%AC">주문 관리</a> | <a href="#%EB%A6%AC%EB%B7%B0-%EA%B4%80%EB%A6%AC">리뷰 관리</a><br>
+● 관리자 : <a href="#%EC%83%81%ED%92%88-%EB%B0%8F-%EC%83%81%ED%92%88-%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC-%EA%B4%80%EB%A0%A8">상품 및 상품 카테고리 관련</a> | <a href="#%EC%98%B5%EC%85%98-%EB%B0%8F-%EC%98%B5%EC%85%98-%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC-%EA%B4%80%EB%A6%AC">옵션 및 옵션 카테고리 관리</a> | <a href="#%EC%A3%BC%EB%AC%B8-%EA%B4%80%EB%A6%AC">주문 관리</a></p>
+<p>5.<a href="#API-%EB%AA%85%EC%84%B8">API 명세</a><br>
+6.[형상 관리 - ]</p>
+<h4 id="프로젝트-소개">프로젝트 소개</h4>
+<p>처음 학원에서의 파이널 프로젝트의 주제가 책에서 멀어지는 현대 사회의 독서 증진을 목표로 사용자들에게 도서관 접근성을 제공하고자 카카오 맵 API를 사용하여 지도에 도서관 위치를 구현하였습니다.</p>
+<p>그러다 한 단계, 더 나아가 기능들을 추가하여 개발능력을 높이고자, 쇼핑관련 프로젝트로 개발 하였습니다.</p>
+<p>사용자가 편리하게 상품을 찾고, 구매 할 수 있도록 상품 등록, 수정, 조회, 주문, 이미지등록, 장바구니, 상품 이미지 등록등 기능들을 구현했습니다.</p>
+<p>개발 기간 및 인원</p>
+<p>24.01.22 ~ 24.04.30<br>
+프론트엔드 &amp; 백엔드 1명</p>
+<h2 id="erd-구조">ERD-구조</h2>
+<p><a href="https://www.erdcloud.com/d/WAJG2FdSEfvFEWRGk">👉 ERD Cloud에서 직접 보기</a></p>
+<p>![ERD img](&quot;C:\Users\user\OneDrive\바탕 화면\ERD.png&quot;)</p>
+<h2 id="시스템-아키텍처">시스템 아키텍처</h2>
+<p>![System Architecture](&quot;C:\Users\user\OneDrive\바탕 화면\web_icon\System_arch.png&quot;)</p>
+<h2 id="기술-스택">기술 스택</h2>
+<p><img src="file:///c:\Users\user\OneDrive\바탕 화면\Joo_Book\Joo_BookShop\%ED%8C%8C%EC%9D%BC%EA%B2%BD%EB%A1%9C" alt="Skill Stack"></p>
+<h2 id="주요-기능">주요 기능</h2>
+<p>요약
+| 공통 | 사용자   | 관리자 |
+|  -회원가입, 로그인   | -장바구니 관리 | -상품 등록 및 상품 카테고리 관리  |
+|  -상품 검색 &amp; 카테고리 검색   | -주문 | -작가 등록 및 작가 관리  |
+|  |  | -회원 관리 |
+|  |  | -주문 현황 관리 |</p>
+
+            
+            
+        </body>
+        </html>
