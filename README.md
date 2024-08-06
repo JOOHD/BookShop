@@ -108,10 +108,10 @@
 |          | /member/memberIdChk     | 아이디 중복 검사   | POST | - |
 |          | /admin/logout.do        | 비동기식 로그아웃  | POST | ADMIN |
 |  author  | /admin/authorDelete     | 작가 정보 삭제   | POST/DELETE | ADMIN |
-|          | /admin/authorDetail     | 작가 상세/수정 페이지 | GET/PATCH | ADMIN |
+|          | /admin/authorDetail     | 작가 상세/수정 페이지 | GET/PUT | ADMIN |
 |          | /admin/authorEnroll.do  | 작가 등록 | POST | ADMIN |
 |          | /admin/authorManage     | 작가 관리 접속 | GET | ADMIN |
-|          | /admin/authorModify     | 작가 정보 수정 | POST/PATCH | ADMIN |
+|          | /admin/authorModify     | 작가 정보 수정 | POST/PUT | ADMIN |
 |          | /admin/authorPop        | 작가 팝업 창   | GET | ADMIN |
 |  Book    | /book/display        | 이미지 출력  | GET | - |
 |          | /book/getAttachList  | 이미지 정보 반환 | GET | - |
@@ -120,14 +120,14 @@
 |          | /admin/deleteFile    | 이미지 파일 삭제 | POST/DELETE | - |
 |          | /admin/uploadAjaxAction | 첨부 파일 업로드 | POST | ADMIN  |
 |          | /admin/goodsDelete   | 상품 정보 삭제 | POST/DELETE  | ADMIN  |
-|          | /admin/goodsDetail   | 상품 조회/수정 | GET/PATCH | ADMIN |
-|          | /admin/goodsModify   | 상품 정보 수정  | POST/PATCH | ADMIN |
+|          | /admin/goodsDetail   | 상품 조회/수정 | GET/PUT | ADMIN |
+|          | /admin/goodsModify   | 상품 정보 수정  | POST/PUT | ADMIN |
 |          | /admin/goodsEnroll   | 상품 등록  | POST | ADMIN |
 |          | /admin/goodsManage   | 상품 관리  | GET  | ADMIN |
 |  Cart    | /cart/{memberId}     | 장바구니 정보 리스트 | GET | - |
 |          | /cart/add            | 장바구니 등록  | POST | - |
 |          | /cart/delet          | 장바구니 삭제  | POST/DELETE | - |
-|          | /cart/update         | 장바구니 수량 수정  | POST/PATCH | - |
+|          | /cart/update         | 장바구니 수량 수정  | POST/PUT | - |
 |  Order   | /order              | 상품 주문 처리    | POST | - |
 |          | /order/{memberId}   | 상품 주문 페이지  | GET | - |
 |          | /order/check        | 상품 주문 확인    | POST | - |
